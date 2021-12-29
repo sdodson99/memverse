@@ -1,0 +1,11 @@
+{
+  "name": "youtube-member-verifier",
+  "version": "1.0.0",
+  "description": "Package to verify if a user is a member of a YouTube channel.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sean Dodson",
+  "license": "ISC"
+}
