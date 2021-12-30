@@ -13,7 +13,7 @@
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "test": "jest",
     "test:cover": "jest --coverage",
-    "e2e": ""
+    "e2e": "jest -c ./e2e/jest.config.js"
   },
   "author": "Sean Dodson",
   "license": "ISC",
