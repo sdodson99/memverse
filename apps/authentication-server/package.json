@@ -2,10 +2,46 @@
   "name": "authentication-server",
   "version": "1.0.0",
   "description": "Server for authentication Memverse users.",
-  "main": "index.js",
+  "engines": {
+    "node": "14"
+  },
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "lint:eslint": "eslint \"src/**/*.ts\"",
+    "lint:prettier": "prettier --check \"src/**/*.ts\"",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "fix:eslint": "eslint --fix \"src/**/*.ts\"",
+    "fix:prettier": "prettier --write \"src/**/*.ts\"",
+    "fix": "npm run fix:eslint && npm run fix:prettier",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cover": "jest --coverage",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
   "author": "Sean Dodson",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "firebase-admin": "^9.8.0",
+    "firebase-functions": "^3.14.1"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
+    "@types/jest": "^27.0.3",
+    "@types/jest-when": "^2.7.4",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@typescript-eslint/parser": "^5.8.1",
+    "babel-jest": "^27.4.5",
+    "eslint": "^8.5.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^3.8.0"
+  },
+  "private": true
 }
