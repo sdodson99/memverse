@@ -12,6 +12,7 @@
     "fix:prettier": "prettier --write \"src/**/*.ts\"",
     "fix": "npm run fix:eslint && npm run fix:prettier",
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:cover": "jest --coverage",
     "e2e": "jest -c ./e2e/jest.config.js"
   },

@@ -1,1 +1,4 @@
-export { YouTubeMembersQuery } from './queries/youtube-members';
+export {
+  createIsYouTubeMemberQuery,
+  IsYouTubeMemberQuery,
+} from './queries/is-youtube-member';

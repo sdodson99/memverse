@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { YouTubeMembersQuery } from '../src';
+import { YouTubeMembersQuery } from '../src/queries/youtube-members';
 
 dotenv.config({ path: './e2e/.env.e2e' });
 
