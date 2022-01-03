@@ -4,7 +4,7 @@ import * as cors from 'cors';
 import { createLoginRouter } from './routes/login';
 
 const app = express();
-app.use(cors({ origin: true }));
+app.use(cors());
 
 app.use('/login', createLoginRouter());
 
