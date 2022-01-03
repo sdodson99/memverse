@@ -5,7 +5,7 @@
   "engines": {
     "node": "14"
   },
-  "main": "lib/index.js",
+  "main": "lib/functions/index.js",
   "scripts": {
     "build": "tsc",
     "dev": "npm run build && firebase emulators:start --only functions",
@@ -27,8 +27,11 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.24.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
     "firebase-admin": "^9.8.0",
-    "firebase-functions": "^3.14.1"
+    "firebase-functions": "^3.14.1",
+    "youtube-member-verifier": "^1.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.5",
