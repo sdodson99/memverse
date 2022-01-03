@@ -13,6 +13,9 @@
     "fix:eslint": "eslint --fix ./src --ext=.tsx,.ts",
     "fix:prettier": "prettier --write ./src",
     "fix": "npm run fix:eslint && npm run fix:prettier",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cover": "jest --coverage",
     "generate": "npx generate-react-cli component"
   },
   "dependencies": {
@@ -25,6 +28,14 @@
     "react-gapi-auth2": "^1.0.4"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.14.5",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.16.5",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^26.0.23",
     "@types/luxon": "^2.0.8",
     "@types/node": "17.0.5",
     "@types/react": "17.0.38",
@@ -33,6 +44,9 @@
     "eslint-config-next": "^11.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.24.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.0.4",
+    "jest-when": "^3.3.1",
     "prettier": "^2.3.1",
     "typescript": "4.5.4"
   }

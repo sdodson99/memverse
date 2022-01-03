@@ -11,7 +11,7 @@
       },
       "path": "src/components",
       "withStyle": true,
-      "withTest": false,
+      "withTest": true,
       "withStory": false,
       "withLazy": false
     }

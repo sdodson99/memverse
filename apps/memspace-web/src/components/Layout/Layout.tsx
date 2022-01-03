@@ -6,7 +6,9 @@ type LayoutProps = {
 };
 
 const Layout = ({ children }: LayoutProps) => (
-  <div className={styles.layout}>{children}</div>
+  <div className={styles.layout} data-testid="Layout">
+    {children}
+  </div>
 );
 
 export default Layout;
