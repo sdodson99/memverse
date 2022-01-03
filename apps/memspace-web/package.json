@@ -12,7 +12,8 @@
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "fix:eslint": "eslint --fix ./src --ext=.tsx,.ts",
     "fix:prettier": "prettier --write ./src",
-    "fix": "npm run fix:eslint && npm run fix:prettier"
+    "fix": "npm run fix:eslint && npm run fix:prettier",
+    "generate": "npx generate-react-cli component"
   },
   "dependencies": {
     "next": "12.0.7",

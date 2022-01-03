@@ -8,7 +8,7 @@ const googleClientConfig = {
   scope: 'https://www.googleapis.com/auth/youtube.readonly',
 };
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <GApiProvider clientConfig={googleClientConfig}>
       <Component {...pageProps} />
@@ -16,4 +16,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default App;
