@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGoogleAuth } from 'react-gapi-auth2';
 import { useIsLoggedIn } from '../../hooks/use-is-logged-in';
 import { useLogin } from '../../hooks/use-login';
+import { useLogout } from '../../hooks/use-logout';
 import styles from './AuthenticationPrompt.module.css';
 
 type AuthenticationPromptProps = {};
@@ -12,6 +13,7 @@ const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
 
   const isLoggedIn = useIsLoggedIn();
   const login = useLogin();
+  const logout = useLogout();
   const auth = useGoogleAuth();
 
   const handleLoginClick = async () => {
@@ -35,6 +37,8 @@ const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
 
     setIsLoggingIn(false);
   };
+
+  const handleLogoutClick = () => logout();
 
   return (
     <div
@@ -64,8 +68,19 @@ const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
         </div>
       )}
       {!isLoggedIn && !isLoggingIn && (
-        <button className={styles.loginButton} onClick={handleLoginClick}>
+        <button
+          className={styles.authenticationButton}
+          onClick={handleLoginClick}
+        >
           Login
+        </button>
+      )}
+      {isLoggedIn && (
+        <button
+          className={styles.authenticationButton}
+          onClick={handleLogoutClick}
+        >
+          Logout
         </button>
       )}
     </div>
