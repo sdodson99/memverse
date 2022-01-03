@@ -9,7 +9,7 @@ type AuthenticationPromptProps = {};
 
 const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [loginError, setLoginError] = useState(null);
+  const [hasLoginError, setHasLoginError] = useState(false);
 
   const isLoggedIn = useIsLoggedIn();
   const login = useLogin();
@@ -17,22 +17,22 @@ const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
   const auth = useGoogleAuth();
 
   const handleLoginClick = async () => {
-    setLoginError(null);
+    setHasLoginError(false);
     setIsLoggingIn(true);
 
-    const user = await auth.googleAuth?.signIn();
-    const authResponse = user?.getAuthResponse();
-
-    const accessToken = authResponse?.access_token;
-
-    if (!accessToken) {
-      return;
-    }
-
     try {
+      const user = await auth.googleAuth?.signIn();
+      const authResponse = user?.getAuthResponse();
+
+      const accessToken = authResponse?.access_token;
+
+      if (!accessToken) {
+        return;
+      }
+
       await login(accessToken);
     } catch (error) {
-      setLoginError(error);
+      setHasLoginError(true);
     }
 
     setIsLoggingIn(false);
@@ -48,12 +48,12 @@ const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
       {isLoggingIn && <div className={styles.status}>Logging in...</div>}
       {!isLoggingIn && (
         <div>
-          {loginError && (
+          {hasLoginError && (
             <div className={styles.status}>
               Login failed. You must be a member to login.
             </div>
           )}
-          {!loginError && (
+          {!hasLoginError && (
             <div>
               {isLoggedIn && (
                 <div className={styles.status}>
