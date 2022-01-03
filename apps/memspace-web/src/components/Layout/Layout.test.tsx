@@ -11,4 +11,12 @@ describe('<Layout />', () => {
 
     expect(layout).toBeInTheDocument();
   });
+
+  it('should render children', () => {
+    render(<Layout>Page</Layout>);
+
+    const children = screen.getByText('Page');
+
+    expect(children).toBeInTheDocument();
+  });
 });
