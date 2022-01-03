@@ -1,21 +1,26 @@
 import * as functions from 'firebase-functions';
 import { Router as createRouter } from 'express';
-import { createIsYouTubeMemberQuery } from '../../../../packages/youtube-member-verifier/lib/src';
+import { createIsYouTubeMemberQuery } from 'youtube-member-verifier';
 import { YouTubeChannelQuery } from '../queries/youtube-channel';
 import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
+import { ChannelOwnerIsYouTubeMemberQuery } from '../queries/is-youtube-member';
 
 const firebaseConfig = functions.config();
 const youTubeStudioConfig = firebaseConfig.youtube_studio;
 const accessTokenConfig = firebaseConfig.access_token;
 
 const youTubeChannelQuery = new YouTubeChannelQuery();
-const isYouTubeMemberQuery = createIsYouTubeMemberQuery({
+const baseIsYouTubeMemberQuery = createIsYouTubeMemberQuery({
   apiKey: youTubeStudioConfig.api_key,
   channelId: youTubeStudioConfig.channel_id,
   onBehalfOfUser: youTubeStudioConfig.user_behalf_id,
   cookieHeader: youTubeStudioConfig.cookie_header,
   authorizationHeader: youTubeStudioConfig.authorization_header,
 });
+const isYouTubeMemberQuery = new ChannelOwnerIsYouTubeMemberQuery(
+  youTubeStudioConfig.channel_id,
+  baseIsYouTubeMemberQuery
+);
 const accessTokenGenerator = new AccessTokenGenerator(
   accessTokenConfig.secret_key,
   accessTokenConfig.expires_in
@@ -39,9 +44,7 @@ export const createLoginRouter = () => {
 
     const { id: channelId } = youTubeChannel;
 
-    const isChannelOwner = channelId === youTubeStudioConfig.channel_id;
-    const isMember =
-      isChannelOwner || (await isYouTubeMemberQuery.execute(channelId));
+    const isMember = await isYouTubeMemberQuery.execute(channelId);
 
     if (!isMember) {
       return res.sendStatus(403);
