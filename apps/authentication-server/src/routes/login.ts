@@ -41,7 +41,9 @@ export const createLoginRouter = () => {
       const { id: channelId } = youTubeChannel;
 
       try {
-        const isMember = await isYouTubeMemberQuery.execute(channelId);
+        const isChannelOwner = channelId === youTubeStudioConfig.channel_id;
+        const isMember =
+          isChannelOwner || (await isYouTubeMemberQuery.execute(channelId));
 
         if (!isMember) {
           return res.sendStatus(403);

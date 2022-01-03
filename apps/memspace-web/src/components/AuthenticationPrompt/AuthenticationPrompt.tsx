@@ -1,40 +1,72 @@
-import React from 'react';
-import { useGoogleAuth, useGoogleUser } from 'react-gapi-auth2';
+import React, { useState } from 'react';
+import { useGoogleAuth } from 'react-gapi-auth2';
+import { useIsLoggedIn } from '../../hooks/use-is-logged-in';
+import { useLogin } from '../../hooks/use-login';
 import styles from './AuthenticationPrompt.module.css';
 
 type AuthenticationPromptProps = {};
 
 const AuthenticationPrompt = ({}: AuthenticationPromptProps) => {
-  const loggedInUserValue = useGoogleUser();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+
+  const isLoggedIn = useIsLoggedIn();
+  const login = useLogin();
   const auth = useGoogleAuth();
 
   const handleLoginClick = async () => {
+    setLoginError(null);
+    setIsLoggingIn(true);
+
     const user = await auth.googleAuth?.signIn();
     const authResponse = user?.getAuthResponse();
 
     const accessToken = authResponse?.access_token;
-    console.log(accessToken);
-  };
 
-  const isLoggedIn = loggedInUserValue.currentUser !== null;
+    if (!accessToken) {
+      return;
+    }
+
+    try {
+      await login(accessToken);
+    } catch (error) {
+      setLoginError(error);
+    }
+
+    setIsLoggingIn(false);
+  };
 
   return (
     <div
       className={styles.authenticationPrompt}
       data-testid="AuthenticationPrompt"
     >
-      {isLoggedIn && (
-        <div className={styles.status}>
-          You are now logged in! Thank you for being a member.
+      {isLoggingIn && <div className={styles.status}>Logging in...</div>}
+      {!isLoggingIn && (
+        <div>
+          {loginError && (
+            <div className={styles.status}>
+              Login failed. You must be a member to login.
+            </div>
+          )}
+          {!loginError && (
+            <div>
+              {isLoggedIn && (
+                <div className={styles.status}>
+                  You are now logged in! Thank you for being a member.
+                </div>
+              )}
+              {!isLoggedIn && (
+                <div className={styles.status}>You are not logged in.</div>
+              )}
+            </div>
+          )}
         </div>
       )}
-      {!isLoggedIn && (
-        <div>
-          <div className={styles.status}>You are not logged in.</div>
-          <button className={styles.loginButton} onClick={handleLoginClick}>
-            Login
-          </button>
-        </div>
+      {!isLoggedIn && !isLoggingIn && (
+        <button className={styles.loginButton} onClick={handleLoginClick}>
+          Login
+        </button>
       )}
     </div>
   );
