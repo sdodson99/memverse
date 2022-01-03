@@ -9,6 +9,11 @@ const YOUTUBE_MEMBERS_ENDPOINT =
 export class YouTubeMembersQuery {
   constructor(private options: YouTubeMembersQueryOptions) {}
 
+  /**
+   * Get YouTube channel members.
+   * @returns The YouTube members for the configured channel. Empty if no members found.
+   * @throws {Error} Thrown if query fails.
+   */
   async execute(): Promise<YouTubeMember[]> {
     const headers = {
       'x-origin': 'https://studio.youtube.com',

@@ -31,33 +31,25 @@ export const createLoginRouter = () => {
       return res.sendStatus(401);
     }
 
-    try {
-      const youTubeChannel = await youTubeChannelQuery.execute(userAccessToken);
+    const youTubeChannel = await youTubeChannelQuery.execute(userAccessToken);
 
-      if (!youTubeChannel) {
-        return res.sendStatus(401);
-      }
-
-      const { id: channelId } = youTubeChannel;
-
-      try {
-        const isChannelOwner = channelId === youTubeStudioConfig.channel_id;
-        const isMember =
-          isChannelOwner || (await isYouTubeMemberQuery.execute(channelId));
-
-        if (!isMember) {
-          return res.sendStatus(403);
-        }
-
-        const accessToken = accessTokenGenerator.generate(channelId);
-
-        return res.send(accessToken);
-      } catch (error) {
-        return res.sendStatus(403);
-      }
-    } catch (error) {
+    if (!youTubeChannel) {
       return res.sendStatus(401);
     }
+
+    const { id: channelId } = youTubeChannel;
+
+    const isChannelOwner = channelId === youTubeStudioConfig.channel_id;
+    const isMember =
+      isChannelOwner || (await isYouTubeMemberQuery.execute(channelId));
+
+    if (!isMember) {
+      return res.sendStatus(403);
+    }
+
+    const accessToken = accessTokenGenerator.generate(channelId);
+
+    return res.send(accessToken);
   });
 
   return router;
