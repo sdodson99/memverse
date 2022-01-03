@@ -2,9 +2,11 @@ import * as functions from 'firebase-functions';
 import { Router as createRouter } from 'express';
 import { createIsYouTubeMemberQuery } from '../../../../packages/youtube-member-verifier/lib/src';
 import { YouTubeChannelQuery } from '../queries/youtube-channel';
+import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
 
 const firebaseConfig = functions.config();
 const youTubeStudioConfig = firebaseConfig.youtube_studio;
+const accessTokenConfig = firebaseConfig.access_token;
 
 const youTubeChannelQuery = new YouTubeChannelQuery();
 const isYouTubeMemberQuery = createIsYouTubeMemberQuery({
@@ -14,6 +16,10 @@ const isYouTubeMemberQuery = createIsYouTubeMemberQuery({
   cookieHeader: youTubeStudioConfig.cookie_header,
   authorizationHeader: youTubeStudioConfig.authorization_header,
 });
+const accessTokenGenerator = new AccessTokenGenerator(
+  accessTokenConfig.secret_key,
+  accessTokenConfig.expires_in
+);
 
 export const createLoginRouter = () => {
   const router = createRouter();
@@ -41,7 +47,9 @@ export const createLoginRouter = () => {
           return res.sendStatus(403);
         }
 
-        return res.send(youTubeChannel?.id);
+        const accessToken = accessTokenGenerator.generate(channelId);
+
+        return res.send(accessToken);
       } catch (error) {
         return res.sendStatus(403);
       }
