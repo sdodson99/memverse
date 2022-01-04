@@ -1,6 +1,6 @@
 {
   "name": "youtube-member-verifier",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Package to verify if a user is a member of a YouTube channel.",
   "main": "lib/src/index.js",
   "scripts": {

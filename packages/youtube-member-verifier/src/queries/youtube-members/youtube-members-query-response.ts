@@ -8,4 +8,6 @@ type YouTubeSponsorsDataResponse = {
 
 type YouTubeSponsorResponse = {
   externalChannelId: string;
+  displayName: string;
+  profileImageUrl: string;
 };

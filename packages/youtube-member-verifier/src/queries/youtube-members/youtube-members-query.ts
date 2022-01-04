@@ -53,6 +53,8 @@ export class YouTubeMembersQuery {
     return (
       data?.sponsorsData?.sponsors?.map((s) => ({
         channelId: s.externalChannelId,
+        username: s.displayName,
+        photoUrl: s.profileImageUrl,
       })) ?? []
     );
   }
