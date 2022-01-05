@@ -31,7 +31,7 @@
     "express": "^4.17.2",
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
-    "youtube-member-verifier": "^1.0.0"
+    "youtube-member-verifier": "^1.1.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.5",
