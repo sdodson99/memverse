@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useGoogleAuth } from 'react-gapi-auth2';
-import { useIsLoggedIn } from '../../hooks/use-is-logged-in';
-import { useLogin } from '../../hooks/use-login';
-import { useLogout } from '../../hooks/use-logout';
+import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
+import { useLogin } from '../../hooks/authentication/use-login';
+import { useLogout } from '../../hooks/authentication/use-logout';
 import styles from './AuthenticationPrompt.module.css';
 
 type AuthenticationPromptProps = {};
