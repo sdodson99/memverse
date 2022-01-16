@@ -1,12 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-
-type Member = {
-  id: string;
-  username: string;
-  photoUrl: string;
-  message: string;
-};
+import { Member } from '../../models/member';
 
 export const useMembers = () => {
   const [members, setMembers] = useState<Member[]>([]);
