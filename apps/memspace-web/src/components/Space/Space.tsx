@@ -8,6 +8,9 @@ type SpaceProps = {
 };
 
 const Space = ({ members }: SpaceProps) => {
+  const [currentMembers, setCurrentMembers] = useState<Member[]>([]);
+  const [memberRasters, setMemberRasters] = useState<paper.Raster[]>([]);
+
   const [paperInitialized, setPaperInitialized] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -32,19 +35,33 @@ const Space = ({ members }: SpaceProps) => {
       return;
     }
 
-    const addMembers = () => {
-      members.forEach((m) => {
+    if (members === currentMembers) {
+      return;
+    }
+
+    const addMembersToView = () => {
+      const currentMemberRasters = members.map((m) => {
         const raster = new paper.Raster(m.photoUrl);
 
         raster.position = paper.view.center;
         raster.onMouseEnter = () => {
           console.log(m.username);
         };
+
+        return raster;
       });
+
+      setMemberRasters(currentMemberRasters);
+      setCurrentMembers(members);
     };
 
-    addMembers();
-  }, [paperInitialized, members]);
+    const removePreviousMembersFromView = () => {
+      memberRasters.forEach((r) => r.remove());
+    };
+
+    removePreviousMembersFromView();
+    addMembersToView();
+  }, [paperInitialized, members, currentMembers, memberRasters]);
 
   return (
     <canvas ref={canvasRef} className={styles.space} data-testid="Space" />
