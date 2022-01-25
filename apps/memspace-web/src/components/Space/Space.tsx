@@ -7,9 +7,14 @@ type SpaceProps = {
   members: Member[];
 };
 
+type MemberRaster = {
+  raster: paper.Raster;
+  directionRadians: number;
+};
+
 const Space = ({ members }: SpaceProps) => {
   const [currentMembers, setCurrentMembers] = useState<Member[]>([]);
-  const [memberRasters, setMemberRasters] = useState<paper.Raster[]>([]);
+  const [memberRasters, setMemberRasters] = useState<MemberRaster[]>([]);
 
   const [paperInitialized, setPaperInitialized] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,6 +40,26 @@ const Space = ({ members }: SpaceProps) => {
       return;
     }
 
+    paper.view.onFrame = ({ delta: timeElapsedSeconds }: { delta: number }) => {
+      const pixelsPerSecond = 10;
+      const pixelsTravelled = pixelsPerSecond * timeElapsedSeconds;
+
+      memberRasters.forEach((m) => {
+        const xPixelsTravelled = Math.cos(m.directionRadians) * pixelsTravelled;
+        const yPixelsTravelled = Math.sin(m.directionRadians) * pixelsTravelled;
+
+        m.raster.position = m.raster.position.add(
+          new paper.Point(xPixelsTravelled, yPixelsTravelled)
+        );
+      });
+    };
+  }, [paperInitialized, memberRasters]);
+
+  useEffect(() => {
+    if (!paperInitialized) {
+      return;
+    }
+
     if (members === currentMembers) {
       return;
     }
@@ -53,7 +78,7 @@ const Space = ({ members }: SpaceProps) => {
         return new paper.Point(x, y);
       };
 
-      const currentMemberRasters = members.map((m) => {
+      const currentMemberRasters: MemberRaster[] = members.map((m) => {
         const raster = new paper.Raster();
 
         raster.onMouseEnter = () => {
@@ -70,7 +95,12 @@ const Space = ({ members }: SpaceProps) => {
         raster.size.width = 50;
         raster.size.height = 50;
 
-        return raster;
+        const directionRadians = generateRandom(0, 2 * Math.PI);
+
+        return {
+          raster,
+          directionRadians,
+        };
       });
 
       setMemberRasters(currentMemberRasters);
@@ -78,7 +108,7 @@ const Space = ({ members }: SpaceProps) => {
     };
 
     const removePreviousMembersFromView = () => {
-      memberRasters.forEach((r) => r.remove());
+      memberRasters.forEach(({ raster }) => raster.remove());
     };
 
     removePreviousMembersFromView();
