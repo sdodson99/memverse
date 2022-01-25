@@ -1,14 +1,19 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import AuthenticationPrompt from '../components/AuthenticationPrompt/AuthenticationPrompt';
 import Layout from '../components/Layout/Layout';
+import { useMembers } from '../hooks/members/use-members';
+import Space from '../components/Space/Space';
 
-const Home: NextPage = () => {
-  return (
-    <Layout>
-      <AuthenticationPrompt />
-    </Layout>
-  );
+const SpacePage: NextPage = () => {
+  const {
+    members,
+    loading: membersLoading,
+    error: membersError,
+  } = useMembers();
+
+  const membersLoaded = !membersLoading && !membersError;
+
+  return <Layout>{membersLoaded && <Space members={members} />}</Layout>;
 };
 
-export default Home;
+export default SpacePage;
