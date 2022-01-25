@@ -40,13 +40,35 @@ const Space = ({ members }: SpaceProps) => {
     }
 
     const addMembersToView = () => {
-      const currentMemberRasters = members.map((m) => {
-        const raster = new paper.Raster(m.photoUrl);
+      const generateRandom = (min: number, max: number) => {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      };
 
-        raster.position = paper.view.center;
+      const getRandomPosition = () => {
+        const { left, right, top, bottom } = paper.view.bounds;
+
+        const x = generateRandom(left, right);
+        const y = generateRandom(top, bottom);
+
+        return new paper.Point(x, y);
+      };
+
+      const currentMemberRasters = members.map((m) => {
+        const raster = new paper.Raster();
+
         raster.onMouseEnter = () => {
           console.log(m.username);
         };
+
+        raster.onLoad = () => {
+          raster.size.width = 50;
+          raster.size.height = 50;
+        };
+
+        raster.source = m.photoUrl;
+        raster.position = getRandomPosition();
+        raster.size.width = 50;
+        raster.size.height = 50;
 
         return raster;
       });
