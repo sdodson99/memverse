@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { Router as createRouter } from 'express';
-import { YouTubeMembersQuery } from '../../../../packages/youtube-member-verifier/lib/src';
+import { YouTubeMembersQuery } from 'youtube-member-verifier';
 import { MembersQuery } from '../queries/members/members-query';
 import { ManyMessagesByIdsQuery } from '../queries/many-messages-by-ids/many-messages-by-ids-query';
 
