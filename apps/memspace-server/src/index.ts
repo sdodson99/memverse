@@ -8,4 +8,4 @@ app.use(cors());
 
 app.use('/members', createMembersRouter());
 
-export const api = functions.https.onRequest(app);
+export const memspaceApi = functions.https.onRequest(app);

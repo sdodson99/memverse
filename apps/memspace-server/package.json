@@ -20,7 +20,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cover": "jest --coverage",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase deploy --only functions:memspaceApi",
     "logs": "firebase functions:log"
   },
   "author": "Sean Dodson",

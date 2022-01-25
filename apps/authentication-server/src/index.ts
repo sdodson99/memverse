@@ -8,4 +8,4 @@ app.use(cors());
 
 app.use('/login', createLoginRouter());
 
-export const api = functions.https.onRequest(app);
+export const authenticationApi = functions.https.onRequest(app);
