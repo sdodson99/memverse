@@ -96,6 +96,11 @@ export class MemberRaster {
   }
 
   update(timeElapsedSeconds: number) {
+    // TODO: Currently, this does not support large amounts of elapsed time.
+    // Members get pushed to the edges when a large amount of time has elapsed.
+    // Instead, we should calculate all boundary collisions before moving member.
+    if (timeElapsedSeconds > 1) return;
+
     const pixelsTravelled = this.speedPixelsPerSecond * timeElapsedSeconds;
 
     const xPixelsTravelled = Math.cos(this.directionRadians) * pixelsTravelled;

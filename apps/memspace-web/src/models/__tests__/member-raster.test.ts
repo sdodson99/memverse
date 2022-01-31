@@ -46,40 +46,40 @@ describe('MemberRaster', () => {
     });
 
     it('should bounce raster off left wall on collision', () => {
-      member.speedPixelsPerSecond = 10;
+      member.speedPixelsPerSecond = 80;
       member.directionRadians = (5 * Math.PI) / 6; // 150 degree angle
 
-      member.update(8);
+      member.update(1);
 
       expect(mockRaster.position.x).toBe(0);
       expect(member.directionRadians).toBeCloseTo(Math.PI / 6); // 30 degree angle
     });
 
     it('should bounce raster off right wall on collision', () => {
-      member.speedPixelsPerSecond = 10;
+      member.speedPixelsPerSecond = 80;
       member.directionRadians = Math.PI / 6; // 30 degree angle
 
-      member.update(8);
+      member.update(1);
 
       expect(mockRaster.position.x).toBe(100);
       expect(member.directionRadians).toBeCloseTo((5 * Math.PI) / 6); // 150 degree angle
     });
 
     it('should bounce raster off top wall on collision', () => {
-      member.speedPixelsPerSecond = 10;
+      member.speedPixelsPerSecond = 80;
       member.directionRadians = Math.PI / 3; // 60 degree angle
 
-      member.update(8);
+      member.update(1);
 
       expect(mockRaster.position.y).toBe(100);
       expect(member.directionRadians).toBeCloseTo((5 * Math.PI) / 3); // 300 degree angle
     });
 
     it('should bounce raster off bottom wall on collision', () => {
-      member.speedPixelsPerSecond = 10;
+      member.speedPixelsPerSecond = 80;
       member.directionRadians = (4 * Math.PI) / 3; // 240 degree angle
 
-      member.update(8);
+      member.update(1);
 
       expect(mockRaster.position.y).toBe(0);
       expect(member.directionRadians).toBeCloseTo((2 * Math.PI) / 3); // 120 degree angle
