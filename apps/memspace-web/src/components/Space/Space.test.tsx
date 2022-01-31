@@ -4,10 +4,10 @@ import '@testing-library/jest-dom/extend-expect';
 import Space from './Space';
 import paper from 'paper';
 import { Member } from '../../models/member';
-
-jest.mock('paper');
-const mockPaperSetup = paper.setup as jest.Mock;
-const mockPaperRaster = paper.Raster as jest.Mock;
+import { usePaperScope } from '../../hooks/space/usePaperScope';
+import { useUpdateMemberRasters } from '../../hooks/space/useUpdateMemberRasters';
+import { useAddMemberRasters } from '../../hooks/space/useAddMemberRasters';
+import { when } from 'jest-when';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -15,9 +15,19 @@ jest.mock('react', () => ({
 }));
 const mockUseRef = useRef as jest.Mock;
 
+jest.mock('../../hooks/space/usePaperScope');
+const mockUsePaperScope = usePaperScope as jest.Mock;
+
+jest.mock('../../hooks/space/useUpdateMemberRasters');
+const mockUseUpdateMemberRasters = useUpdateMemberRasters as jest.Mock;
+
+jest.mock('../../hooks/space/useAddMemberRasters');
+const mockUseAddMemberRasters = useAddMemberRasters as jest.Mock;
+
 describe('<Space />', () => {
   let members: Member[];
   let mockCanvasRef: MutableRefObject<HTMLCanvasElement | null>;
+  let mockPaperScope: paper.PaperScope;
 
   beforeEach(() => {
     members = [
@@ -40,13 +50,15 @@ describe('<Space />', () => {
     };
     mockUseRef.mockReturnValue(mockCanvasRef);
 
-    // @ts-ignore
-    paper.view = {};
+    mockPaperScope = {} as paper.PaperScope;
+    mockUsePaperScope.mockReturnValue({
+      scope: mockPaperScope,
+    });
+
+    mockUseAddMemberRasters.mockReturnValue({});
   });
 
   afterEach(() => {
-    mockPaperSetup.mockReset();
-    mockPaperRaster.mockReset();
     mockUseRef.mockReset();
   });
 
@@ -58,19 +70,23 @@ describe('<Space />', () => {
     expect(space).toBeInTheDocument();
   });
 
-  it('should setup Paper', () => {
-    mockCanvasRef.current = {} as HTMLCanvasElement;
-
+  it('should add member rasters to paper scope', () => {
     render(<Space members={members} />);
 
-    expect(mockPaperSetup).toBeCalledTimes(1);
+    expect(mockUseAddMemberRasters).toBeCalledWith(members, mockPaperScope);
   });
 
-  it('should add members to canvas', () => {
-    mockCanvasRef.current = {} as HTMLCanvasElement;
+  it('should update member rasters', () => {
+    const memberRasters = [{}];
+    when(mockUseAddMemberRasters)
+      .calledWith(members, mockPaperScope)
+      .mockReturnValue({ memberRasters });
 
     render(<Space members={members} />);
 
-    expect(mockPaperRaster).toBeCalledTimes(2);
+    expect(mockUseUpdateMemberRasters).toBeCalledWith(
+      memberRasters,
+      mockPaperScope
+    );
   });
 });

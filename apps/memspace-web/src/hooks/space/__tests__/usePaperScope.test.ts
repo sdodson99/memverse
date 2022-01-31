@@ -34,7 +34,7 @@ describe('usePaperScope', () => {
       const { result } = renderHook(() => usePaperScope(canvasRef));
 
       expect(mockPaperScopeSetup).toBeCalledWith(canvasRef.current);
-      expect(result.current.initialized).toBeTruthy();
+      expect(result.current.scope).not.toBeNull();
     });
 
     it('should only initialize paper scope once', () => {
@@ -52,6 +52,6 @@ describe('usePaperScope', () => {
     );
 
     expect(mockPaperScopeSetup).not.toBeCalled();
-    expect(result.current.initialized).toBeFalsy();
+    expect(result.current.scope).toBeNull();
   });
 });

@@ -2,8 +2,9 @@ import { RefObject, useEffect, useState } from 'react';
 import paper from 'paper';
 
 export const usePaperScope = (canvasRef: RefObject<HTMLCanvasElement>) => {
-  const [scope] = useState<paper.PaperScope>(() => new paper.PaperScope());
-  const [initialized, setInitialized] = useState(false);
+  const [scope, setScope] = useState<paper.PaperScope | null>(null);
+
+  const initialized = scope !== null;
 
   useEffect(() => {
     if (initialized) {
@@ -16,13 +17,14 @@ export const usePaperScope = (canvasRef: RefObject<HTMLCanvasElement>) => {
       return;
     }
 
-    scope.setup(canvas);
+    const paperScope = new paper.PaperScope();
 
-    setInitialized(true);
-  }, [canvasRef, scope, initialized]);
+    paperScope.setup(canvas);
+
+    setScope(paperScope);
+  }, [canvasRef, initialized]);
 
   return {
-    initialized,
     scope,
   };
 };
