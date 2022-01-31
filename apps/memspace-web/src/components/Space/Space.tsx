@@ -17,7 +17,12 @@ const Space = ({ members }: SpaceProps) => {
   useUpdateMemberRasters(memberRasters, paperScope);
 
   return (
-    <canvas ref={canvasRef} className={styles.space} data-testid="Space" />
+    <canvas
+      ref={canvasRef}
+      className={styles.space}
+      data-testid="Space"
+      data-paper-resize="true"
+    />
   );
 };
 
