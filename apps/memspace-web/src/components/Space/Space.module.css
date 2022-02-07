@@ -1,0 +1,21 @@
+.space {
+  flex-grow: 1;
+  display: grid;
+  overflow: hidden;
+}
+
+.spaceCanvas {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.spaceToolbar {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 2;
+  align-self: end;
+  justify-self: end;
+}
