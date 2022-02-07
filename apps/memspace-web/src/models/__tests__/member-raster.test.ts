@@ -16,6 +16,10 @@ describe('MemberRaster', () => {
           right: 100,
         },
       },
+      size: {
+        height: 4,
+        width: 4,
+      },
     } as unknown as paper.Raster;
 
     member = new MemberRaster(mockRaster, new paper.Point(50, 50));
@@ -51,7 +55,7 @@ describe('MemberRaster', () => {
 
       member.update(1);
 
-      expect(mockRaster.position.x).toBe(0);
+      expect(mockRaster.position.x).toBe(2); // Left wall and half width of raster
       expect(member.directionRadians).toBeCloseTo(Math.PI / 6); // 30 degree angle
     });
 
@@ -61,7 +65,7 @@ describe('MemberRaster', () => {
 
       member.update(1);
 
-      expect(mockRaster.position.x).toBe(100);
+      expect(mockRaster.position.x).toBe(98); // Right wall and half width of raster
       expect(member.directionRadians).toBeCloseTo((5 * Math.PI) / 6); // 150 degree angle
     });
 
@@ -71,7 +75,7 @@ describe('MemberRaster', () => {
 
       member.update(1);
 
-      expect(mockRaster.position.y).toBe(100);
+      expect(mockRaster.position.y).toBe(98); // Top wall and half height of raster
       expect(member.directionRadians).toBeCloseTo((5 * Math.PI) / 3); // 300 degree angle
     });
 
@@ -81,7 +85,7 @@ describe('MemberRaster', () => {
 
       member.update(1);
 
-      expect(mockRaster.position.y).toBe(0);
+      expect(mockRaster.position.y).toBe(2); // Bottom wall and half height of raster
       expect(member.directionRadians).toBeCloseTo((2 * Math.PI) / 3); // 120 degree angle
     });
   });

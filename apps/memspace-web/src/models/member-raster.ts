@@ -113,25 +113,27 @@ export class MemberRaster {
     this.position = this.position.add(new paper.Point(xPixels, yPixels));
 
     const { top, left, bottom, right } = this._raster.view.bounds;
+    const halfWidth = this.width / 2;
+    const halfHeight = this.height / 2;
 
-    if (this.position.x > right) {
+    if (this.position.x > right - halfWidth) {
       this.directionRadians = Math.PI - this.directionRadians;
-      this.position.x = right;
+      this.position.x = right - halfWidth;
     }
 
-    if (this.position.x < left) {
+    if (this.position.x < left + halfWidth) {
       this.directionRadians = Math.PI - this.directionRadians;
-      this.position.x = left;
+      this.position.x = left + halfWidth;
     }
 
-    if (this.position.y > bottom) {
+    if (this.position.y > bottom - halfHeight) {
       this.directionRadians = 2 * Math.PI - this.directionRadians;
-      this.position.y = bottom;
+      this.position.y = bottom - halfHeight;
     }
 
-    if (this.position.y < top) {
+    if (this.position.y < top + halfHeight) {
       this.directionRadians = 2 * Math.PI - this.directionRadians;
-      this.position.y = top;
+      this.position.y = top + halfHeight;
     }
   }
 
