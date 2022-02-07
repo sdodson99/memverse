@@ -1,6 +1,5 @@
 .spaceCanvas {
   background-image: url('/space-bg.png');
-  flex-grow: 1;
   width: 100%;
   height: 100%;
 }

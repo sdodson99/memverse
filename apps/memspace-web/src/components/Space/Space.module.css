@@ -1,21 +1,18 @@
 .space {
   flex-grow: 1;
-  display: grid;
-  overflow: hidden;
+  position: relative;
 }
 
 .spaceCanvas {
-  grid-column: 1;
-  grid-row: 1;
+  position: absolute;
   z-index: 1;
-  display: flex;
-  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 .spaceToolbar {
-  grid-column: 1;
-  grid-row: 1;
+  position: absolute;
   z-index: 2;
-  align-self: end;
-  justify-self: end;
+  bottom: 0;
+  width: 100%;
 }
