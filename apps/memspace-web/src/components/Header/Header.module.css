@@ -1,2 +1,10 @@
 .header {
+  background: var(--color-space);
+  padding: 1rem;
+  color: white;
+  text-align: center;
+}
+
+.logo {
+  max-height: 50px;
 }

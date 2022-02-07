@@ -5,7 +5,7 @@ type FooterProps = {};
 
 const Footer = ({}: FooterProps) => (
   <div className={styles.footer} data-testid="Footer">
-    Footer Component
+    © 2022 SingletonSean
   </div>
 );
 
