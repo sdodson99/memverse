@@ -2,7 +2,7 @@ import React from 'react';
 import type { NextPage } from 'next';
 import Layout from '../components/Layout/Layout';
 import { useMembers } from '../hooks/members/use-members';
-import Space from '../components/Space/Space';
+import SpaceCanvas from '../components/SpaceCanvas/SpaceCanvas';
 
 const SpacePage: NextPage = () => {
   const {
@@ -13,7 +13,7 @@ const SpacePage: NextPage = () => {
 
   const membersLoaded = !membersLoading && !membersError;
 
-  return <Layout>{membersLoaded && <Space members={members} />}</Layout>;
+  return <Layout>{membersLoaded && <SpaceCanvas members={members} />}</Layout>;
 };
 
 export default SpacePage;

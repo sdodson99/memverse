@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
-import styles from './Space.module.css';
+import styles from './SpaceCanvas.module.css';
 import { Member } from '../../models/member';
 import { usePaperScope } from '../../hooks/space/usePaperScope';
 import { useUpdateMemberRasters } from '../../hooks/space/useUpdateMemberRasters';
 import { useAddMemberRasters } from '../../hooks/space/useAddMemberRasters';
 
-type SpaceProps = {
+type SpaceCanvasProps = {
   members: Member[];
 };
 
-const Space = ({ members }: SpaceProps) => {
+const SpaceCanvas = ({ members }: SpaceCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scope: paperScope } = usePaperScope(canvasRef);
 
@@ -19,11 +19,11 @@ const Space = ({ members }: SpaceProps) => {
   return (
     <canvas
       ref={canvasRef}
-      className={styles.space}
-      data-testid="Space"
+      className={styles.spaceCanvas}
+      data-testid="SpaceCanvas"
       data-paper-resize="true"
     />
   );
 };
 
-export default Space;
+export default SpaceCanvas;
