@@ -6,7 +6,7 @@ type OnFrameEvent = {
   delta: number;
 };
 
-export const useUpdateMemberRasters = (
+export const useUpdateSpaceMemberRasters = (
   memberRasters: SpaceMemberRaster[],
   paperScope: paper.PaperScope | null
 ) => {

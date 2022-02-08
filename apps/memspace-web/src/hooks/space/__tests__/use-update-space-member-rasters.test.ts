@@ -1,7 +1,7 @@
 import paper from 'paper';
 import { SpaceMemberRaster } from '../../../models/space-member-raster';
 import { renderHook } from '@testing-library/react-hooks';
-import { useUpdateMemberRasters } from '../useUpdateMemberRasters';
+import { useUpdateSpaceMemberRasters } from '../use-update-space-member-rasters';
 
 describe('useUpdateMemberRasters', () => {
   let memberRasters: SpaceMemberRaster[];
@@ -29,7 +29,7 @@ describe('useUpdateMemberRasters', () => {
   });
 
   it('should attach member raster update handler when paper view provided', () => {
-    renderHook(() => useUpdateMemberRasters(memberRasters, paperScope));
+    renderHook(() => useUpdateSpaceMemberRasters(memberRasters, paperScope));
 
     paperScope.view.onFrame?.({ delta: 5 });
 
@@ -40,7 +40,7 @@ describe('useUpdateMemberRasters', () => {
   });
 
   it('should not attach member raster update handler when paper view not provided', () => {
-    renderHook(() => useUpdateMemberRasters(memberRasters, null));
+    renderHook(() => useUpdateSpaceMemberRasters(memberRasters, null));
 
     paperScope.view.onFrame?.({ delta: 5 });
 

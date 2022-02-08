@@ -1,6 +1,6 @@
 import paper from 'paper';
 import { renderHook } from '@testing-library/react-hooks';
-import { useAddMemberRasters } from '../useAddMemberRasters';
+import { useAddSpaceMemberRasters } from '../use-add-space-member-rasters';
 import { createSpaceMemberRaster } from '../../../models/space-member-raster-factory';
 import { SpaceMember } from '../../../models/space-member';
 
@@ -29,7 +29,7 @@ describe('useAddMemberRasters', () => {
 
   it('should add members to paper view', () => {
     const { result } = renderHook(() =>
-      useAddMemberRasters(members, paperScope)
+      useAddSpaceMemberRasters(members, paperScope)
     );
 
     expect(result.current.memberRasters).toHaveLength(3);
@@ -37,7 +37,7 @@ describe('useAddMemberRasters', () => {
 
   it('should update members when members have changed', () => {
     const { result, rerender } = renderHook<SpaceMember[], any>(
-      (mems) => useAddMemberRasters(mems, paperScope),
+      (mems) => useAddSpaceMemberRasters(mems, paperScope),
       {
         initialProps: [],
       }
@@ -51,7 +51,7 @@ describe('useAddMemberRasters', () => {
 
   it('should not update members when members have not changed', () => {
     const { result, rerender } = renderHook<SpaceMember[], any>(
-      (mems) => useAddMemberRasters(mems, paperScope),
+      (mems) => useAddSpaceMemberRasters(mems, paperScope),
       {
         initialProps: members,
       }
@@ -66,7 +66,9 @@ describe('useAddMemberRasters', () => {
   });
 
   it('should not add members to view when paper view not provided', () => {
-    const { result } = renderHook(() => useAddMemberRasters(members, null));
+    const { result } = renderHook(() =>
+      useAddSpaceMemberRasters(members, null)
+    );
 
     expect(result.current.memberRasters).toHaveLength(0);
   });

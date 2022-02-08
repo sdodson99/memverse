@@ -5,7 +5,7 @@ import { createSpaceMemberRaster } from '../../models/space-member-raster-factor
 import { generateRandom } from '../../utilities/generate-random';
 import { SpaceMember } from '../../models/space-member';
 
-export const useAddMemberRasters = (
+export const useAddSpaceMemberRasters = (
   members: SpaceMember[],
   paperScope: paper.PaperScope | null
 ) => {

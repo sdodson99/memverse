@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import styles from './SpaceCanvas.module.css';
-import { usePaperScope } from '../../hooks/space/usePaperScope';
-import { useUpdateMemberRasters } from '../../hooks/space/useUpdateMemberRasters';
-import { useAddMemberRasters } from '../../hooks/space/useAddMemberRasters';
+import { usePaperScope } from '../../hooks/space/use-paper-scope';
+import { useUpdateSpaceMemberRasters } from '../../hooks/space/use-update-space-member-rasters';
+import { useAddSpaceMemberRasters } from '../../hooks/space/use-add-space-member-rasters';
 import { SpaceMember } from '../../models/space-member';
 
 type SpaceCanvasProps = {
@@ -13,8 +13,8 @@ const SpaceCanvas = ({ members }: SpaceCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scope: paperScope } = usePaperScope(canvasRef);
 
-  const { memberRasters } = useAddMemberRasters(members, paperScope);
-  useUpdateMemberRasters(memberRasters, paperScope);
+  const { memberRasters } = useAddSpaceMemberRasters(members, paperScope);
+  useUpdateSpaceMemberRasters(memberRasters, paperScope);
 
   return (
     <canvas

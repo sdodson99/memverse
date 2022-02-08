@@ -1,6 +1,6 @@
 import paper from 'paper';
 import { renderHook } from '@testing-library/react-hooks';
-import { usePaperScope } from '../usePaperScope';
+import { usePaperScope } from '../use-paper-scope';
 import { MutableRefObject, RefObject } from 'react';
 
 jest.mock('paper');
