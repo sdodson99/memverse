@@ -8,6 +8,7 @@ import { useUpdateSpaceMemberRasters } from '../../hooks/space/use-update-space-
 import { useAddSpaceMemberRasters } from '../../hooks/space/use-add-space-member-rasters';
 import { when } from 'jest-when';
 import { SpaceMember } from '../../models/space-member';
+import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -24,6 +25,9 @@ const mockUseUpdateSpaceMemberRasters =
 
 jest.mock('../../hooks/space/use-add-space-member-rasters');
 const mockUseAddSpaceMemberRasters = useAddSpaceMemberRasters as jest.Mock;
+
+jest.mock('../../hooks/space/use-space-members-context');
+const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
 describe('<SpaceCanvas />', () => {
   let members: SpaceMember[];
@@ -45,6 +49,7 @@ describe('<SpaceCanvas />', () => {
         username: 'username2',
       },
     ] as SpaceMember[];
+    mockUseSpaceMembersContext.mockReturnValue({ spaceMembers: members });
 
     mockCanvasRef = {
       current: null,
@@ -64,7 +69,7 @@ describe('<SpaceCanvas />', () => {
   });
 
   it('should mount', () => {
-    render(<SpaceCanvas members={members} />);
+    render(<SpaceCanvas />);
 
     const spaceCanvas = screen.getByTestId('SpaceCanvas');
 
@@ -72,7 +77,7 @@ describe('<SpaceCanvas />', () => {
   });
 
   it('should add member rasters to paper scope', () => {
-    render(<SpaceCanvas members={members} />);
+    render(<SpaceCanvas />);
 
     expect(mockUseAddSpaceMemberRasters).toBeCalledWith(
       members,
@@ -86,7 +91,7 @@ describe('<SpaceCanvas />', () => {
       .calledWith(members, mockPaperScope)
       .mockReturnValue({ memberRasters });
 
-    render(<SpaceCanvas members={members} />);
+    render(<SpaceCanvas />);
 
     expect(mockUseUpdateSpaceMemberRasters).toBeCalledWith(
       memberRasters,

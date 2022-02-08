@@ -1,8 +1,13 @@
+import constate from 'constate';
 import { useEffect, useState } from 'react';
 import { Member } from '../../models/member';
 import { SpaceMember } from '../../models/space-member';
 
-export const useSpaceMembers = (members: Member[]) => {
+type UseSpaceMembersProps = {
+  members: Member[];
+};
+
+const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   const [spaceMembers, setSpaceMembers] = useState<SpaceMember[]>([]);
 
   useEffect(() => {
@@ -17,3 +22,8 @@ export const useSpaceMembers = (members: Member[]) => {
     spaceMembers,
   };
 };
+
+const [SpaceMembersProvider, useSpaceMembersContext] =
+  constate(useSpaceMembers);
+
+export { SpaceMembersProvider, useSpaceMembersContext };

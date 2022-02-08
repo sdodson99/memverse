@@ -1,8 +1,12 @@
+import React from 'react';
 import { Member } from '../../../models/member';
 import { renderHook } from '@testing-library/react-hooks';
-import { useSpaceMembers } from '../use-space-members';
+import {
+  useSpaceMembersContext,
+  SpaceMembersProvider,
+} from '../use-space-members-context';
 
-describe('useSpaceMembers', () => {
+describe('useSpaceMembersContext', () => {
   let members: Member[];
 
   beforeEach(() => {
@@ -23,7 +27,13 @@ describe('useSpaceMembers', () => {
   });
 
   it('should return mapped space members', () => {
-    const { result } = renderHook(() => useSpaceMembers(members));
+    const { result } = renderHook(() => useSpaceMembersContext(), {
+      wrapper: ({ children }) => (
+        <SpaceMembersProvider members={members}>
+          {children}
+        </SpaceMembersProvider>
+      ),
+    });
 
     expect(result.current.spaceMembers).toHaveLength(2);
   });

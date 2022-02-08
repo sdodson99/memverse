@@ -12,6 +12,10 @@ export const useAddSpaceMemberRasters = (
   const [memberRasters, setMemberRasters] = useState<SpaceMemberRaster[]>([]);
   const [currentMembers, setCurrentMembers] = useState<SpaceMember[]>([]);
 
+  // add ONLY rasters on component mount
+
+  // handle raster reset/added/updated/removed events from useSpaceMembers context
+
   useEffect(() => {
     if (!paperScope) {
       return;

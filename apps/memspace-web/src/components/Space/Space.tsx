@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSpaceMembers } from '../../hooks/space/use-space-members';
+import { SpaceMembersProvider } from '../../hooks/space/use-space-members-context';
 import { Member } from '../../models/member';
 import SpaceCanvas from '../SpaceCanvas/SpaceCanvas';
 import SpaceToolbar from '../SpaceToolbar/SpaceToolbar';
@@ -10,16 +10,16 @@ type SpaceProps = {
 };
 
 const Space = ({ members }: SpaceProps) => {
-  const { spaceMembers } = useSpaceMembers(members);
-
   return (
     <div className={styles.space} data-testid="Space">
-      <div className={styles.spaceCanvas}>
-        <SpaceCanvas members={spaceMembers} />
-      </div>
-      <div className={styles.spaceToolbar}>
-        <SpaceToolbar />
-      </div>
+      <SpaceMembersProvider members={members}>
+        <div className={styles.spaceCanvas}>
+          <SpaceCanvas />
+        </div>
+        <div className={styles.spaceToolbar}>
+          <SpaceToolbar />
+        </div>
+      </SpaceMembersProvider>
     </div>
   );
 };

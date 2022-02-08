@@ -3,13 +3,13 @@ import styles from './SpaceCanvas.module.css';
 import { usePaperScope } from '../../hooks/space/use-paper-scope';
 import { useUpdateSpaceMemberRasters } from '../../hooks/space/use-update-space-member-rasters';
 import { useAddSpaceMemberRasters } from '../../hooks/space/use-add-space-member-rasters';
-import { SpaceMember } from '../../models/space-member';
+import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 
-type SpaceCanvasProps = {
-  members: SpaceMember[];
-};
+type SpaceCanvasProps = {};
 
-const SpaceCanvas = ({ members }: SpaceCanvasProps) => {
+const SpaceCanvas = ({}: SpaceCanvasProps) => {
+  const { spaceMembers: members } = useSpaceMembersContext();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { scope: paperScope } = usePaperScope(canvasRef);
 
