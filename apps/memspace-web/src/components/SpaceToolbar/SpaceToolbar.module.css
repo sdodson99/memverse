@@ -1,2 +1,20 @@
 .spaceToolbar {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 1rem 0;
+}
+
+.spaceToolbarContent {
+  display: flex;
+  justify-content: center;
+}
+
+.toolbarItem {
+  font-size: 18px;
+}
+
+button.toolbarItem {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
 }
