@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import 'react-spring-bottom-sheet/dist/style.css';
 import React from 'react';
 import type { AppProps } from 'next/app';
 import { GApiProvider } from 'react-gapi-auth2';
