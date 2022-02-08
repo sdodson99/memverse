@@ -1,13 +1,20 @@
 import { generateRandom } from '../utilities/generate-random';
-import { Member } from './member';
-import { MemberRaster } from './member-raster';
+import { SpaceMemberRaster } from './space-member-raster';
 import paper from 'paper';
+import { SpaceMember } from './space-member';
 
 const DEFAULT_SPEED_PIXELS_PER_SECOND = 50;
 const DEFAULT_SIZE_PIXELS = 50;
 
-export const createMemberRaster = (member: Member, position: paper.Point) => {
-  const memberRaster = new MemberRaster(new paper.Raster(), position);
+export const createSpaceMemberRaster = (
+  member: SpaceMember,
+  position: paper.Point
+) => {
+  const memberRaster = new SpaceMemberRaster(
+    member,
+    new paper.Raster(),
+    position
+  );
 
   memberRaster.source = member.photoUrl;
   memberRaster.directionRadians = generateRandom(0, 2 * Math.PI);

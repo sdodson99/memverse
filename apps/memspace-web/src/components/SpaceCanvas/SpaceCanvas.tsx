@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import styles from './SpaceCanvas.module.css';
-import { Member } from '../../models/member';
 import { usePaperScope } from '../../hooks/space/usePaperScope';
 import { useUpdateMemberRasters } from '../../hooks/space/useUpdateMemberRasters';
 import { useAddMemberRasters } from '../../hooks/space/useAddMemberRasters';
+import { SpaceMember } from '../../models/space-member';
 
 type SpaceCanvasProps = {
-  members: Member[];
+  members: SpaceMember[];
 };
 
 const SpaceCanvas = ({ members }: SpaceCanvasProps) => {

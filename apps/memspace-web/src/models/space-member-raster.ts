@@ -1,16 +1,20 @@
 import paper from 'paper';
+import { SpaceMember } from './space-member';
 
-export class MemberRaster {
+export class SpaceMemberRaster {
+  private _member: SpaceMember;
   private _raster: paper.Raster;
-  private _speedPixelsPerSecond: number;
-  private _directionRadians: number;
 
-  constructor(raster: paper.Raster, position: paper.Point) {
+  constructor(
+    // TODO: For now we can just take SpaceMember instance here and read speed, direction, etc.
+    // However, we might want to use a more decoupled, pub/sub solution where this class does not need to reference SpaceMember.
+    member: SpaceMember,
+    raster: paper.Raster,
+    position: paper.Point
+  ) {
+    this._member = member;
     this._raster = raster;
     this._raster.position = position;
-
-    this._speedPixelsPerSecond = 0;
-    this._directionRadians = 0;
   }
 
   get source() {
@@ -22,29 +26,19 @@ export class MemberRaster {
   }
 
   get speedPixelsPerSecond() {
-    return this._speedPixelsPerSecond;
+    return this._member.speedPixelsPerSecond;
   }
 
   set speedPixelsPerSecond(value: number) {
-    this._speedPixelsPerSecond = value;
+    this._member.speedPixelsPerSecond = value;
   }
 
   get directionRadians() {
-    return this._directionRadians;
+    return this._member.directionRadians;
   }
 
   set directionRadians(value: number) {
-    let coercedValue = value;
-
-    while (coercedValue < 0) {
-      coercedValue += 2 * Math.PI;
-    }
-
-    while (coercedValue > 2 * Math.PI) {
-      coercedValue -= 2 * Math.PI;
-    }
-
-    this._directionRadians = coercedValue;
+    this._member.directionRadians = value;
   }
 
   get width() {

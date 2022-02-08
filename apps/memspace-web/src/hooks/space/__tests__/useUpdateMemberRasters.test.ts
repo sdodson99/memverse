@@ -1,10 +1,10 @@
 import paper from 'paper';
-import { MemberRaster } from '../../../models/member-raster';
+import { SpaceMemberRaster } from '../../../models/space-member-raster';
 import { renderHook } from '@testing-library/react-hooks';
 import { useUpdateMemberRasters } from '../useUpdateMemberRasters';
 
 describe('useUpdateMemberRasters', () => {
-  let memberRasters: MemberRaster[];
+  let memberRasters: SpaceMemberRaster[];
   let paperScope: paper.PaperScope;
 
   let mockMemberRasterUpdate: jest.Mock;
@@ -21,7 +21,7 @@ describe('useUpdateMemberRasters', () => {
       {
         update: mockMemberRasterUpdate,
       },
-    ] as unknown as MemberRaster[];
+    ] as unknown as SpaceMemberRaster[];
 
     paperScope = {
       view: {},

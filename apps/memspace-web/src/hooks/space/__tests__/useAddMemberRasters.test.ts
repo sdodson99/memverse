@@ -1,18 +1,18 @@
 import paper from 'paper';
 import { renderHook } from '@testing-library/react-hooks';
 import { useAddMemberRasters } from '../useAddMemberRasters';
-import { Member } from '../../../models/member';
-import { createMemberRaster } from '../../../models/member-raster-factory';
+import { createSpaceMemberRaster } from '../../../models/space-member-raster-factory';
+import { SpaceMember } from '../../../models/space-member';
 
-jest.mock('../../../models/member-raster-factory');
-const mockCreateMemberRaster = createMemberRaster as jest.Mock;
+jest.mock('../../../models/space-member-raster-factory');
+const mockCreateSpaceMemberRaster = createSpaceMemberRaster as jest.Mock;
 
 describe('useAddMemberRasters', () => {
-  let members: Member[];
+  let members: SpaceMember[];
   let paperScope: paper.PaperScope;
 
   beforeEach(() => {
-    members = [{}, {}, {}] as Member[];
+    members = [{}, {}, {}] as SpaceMember[];
 
     paperScope = {
       view: {
@@ -20,11 +20,11 @@ describe('useAddMemberRasters', () => {
       },
     } as paper.PaperScope;
 
-    mockCreateMemberRaster.mockReturnValue({});
+    mockCreateSpaceMemberRaster.mockReturnValue({});
   });
 
   afterEach(() => {
-    mockCreateMemberRaster.mockReset();
+    mockCreateSpaceMemberRaster.mockReset();
   });
 
   it('should add members to paper view', () => {
@@ -36,7 +36,7 @@ describe('useAddMemberRasters', () => {
   });
 
   it('should update members when members have changed', () => {
-    const { result, rerender } = renderHook<Member[], any>(
+    const { result, rerender } = renderHook<SpaceMember[], any>(
       (mems) => useAddMemberRasters(mems, paperScope),
       {
         initialProps: [],
@@ -50,14 +50,14 @@ describe('useAddMemberRasters', () => {
   });
 
   it('should not update members when members have not changed', () => {
-    const { result, rerender } = renderHook<Member[], any>(
+    const { result, rerender } = renderHook<SpaceMember[], any>(
       (mems) => useAddMemberRasters(mems, paperScope),
       {
         initialProps: members,
       }
     );
 
-    mockCreateMemberRaster.mockImplementation(() => {
+    mockCreateSpaceMemberRaster.mockImplementation(() => {
       throw new Error();
     });
     rerender(members);

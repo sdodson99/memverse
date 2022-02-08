@@ -3,11 +3,11 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import SpaceCanvas from './SpaceCanvas';
 import paper from 'paper';
-import { Member } from '../../models/member';
 import { usePaperScope } from '../../hooks/space/usePaperScope';
 import { useUpdateMemberRasters } from '../../hooks/space/useUpdateMemberRasters';
 import { useAddMemberRasters } from '../../hooks/space/useAddMemberRasters';
 import { when } from 'jest-when';
+import { SpaceMember } from '../../models/space-member';
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -25,7 +25,7 @@ jest.mock('../../hooks/space/useAddMemberRasters');
 const mockUseAddMemberRasters = useAddMemberRasters as jest.Mock;
 
 describe('<SpaceCanvas />', () => {
-  let members: Member[];
+  let members: SpaceMember[];
   let mockCanvasRef: MutableRefObject<HTMLCanvasElement | null>;
   let mockPaperScope: paper.PaperScope;
 
@@ -43,7 +43,7 @@ describe('<SpaceCanvas />', () => {
         photoUrl: 'photoUrl2',
         username: 'username2',
       },
-    ];
+    ] as SpaceMember[];
 
     mockCanvasRef = {
       current: null,

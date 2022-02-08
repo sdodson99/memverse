@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import paper from 'paper';
-import { MemberRaster } from '../../models/member-raster';
+import { SpaceMemberRaster } from '../../models/space-member-raster';
 
 type OnFrameEvent = {
   delta: number;
 };
 
 export const useUpdateMemberRasters = (
-  memberRasters: MemberRaster[],
+  memberRasters: SpaceMemberRaster[],
   paperScope: paper.PaperScope | null
 ) => {
   useEffect(() => {

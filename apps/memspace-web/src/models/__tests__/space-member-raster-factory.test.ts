@@ -1,8 +1,8 @@
-import { Member } from '../member';
-import { createMemberRaster } from '../member-raster-factory';
+import { createSpaceMemberRaster } from '../space-member-raster-factory';
 import paper from 'paper';
 import { generateRandom } from '../../utilities/generate-random';
 import { when } from 'jest-when';
+import { SpaceMember } from '../space-member';
 
 jest.mock('paper');
 const mockPaperRaster = paper.Raster as jest.Mock;
@@ -10,17 +10,12 @@ const mockPaperRaster = paper.Raster as jest.Mock;
 jest.mock('../../utilities/generate-random');
 const mockGenerateRandom = generateRandom as jest.Mock;
 
-describe('createMemberRaster', () => {
-  let member: Member;
+describe('createSpaceMemberRaster', () => {
+  let member: SpaceMember;
   let position: paper.Point;
 
   beforeEach(() => {
-    member = {
-      id: '1',
-      username: 'username',
-      photoUrl: 'photoUrl',
-      message: 'message',
-    };
+    member = new SpaceMember('1', 'username', 'photoUrl', 'message');
     position = new paper.Point(0, 0);
 
     mockPaperRaster.mockReturnValue({ size: {} });
@@ -37,7 +32,7 @@ describe('createMemberRaster', () => {
       .calledWith(0, 2 * Math.PI)
       .mockReturnValue(mockDirectionRadians);
 
-    const memberRaster = createMemberRaster(member, position);
+    const memberRaster = createSpaceMemberRaster(member, position);
 
     expect(memberRaster.source).toBe(member.photoUrl);
     expect(memberRaster.directionRadians).toBe(mockDirectionRadians);
@@ -47,7 +42,7 @@ describe('createMemberRaster', () => {
   });
 
   it('should return member with onLoad handler', () => {
-    const memberRaster = createMemberRaster(member, position);
+    const memberRaster = createSpaceMemberRaster(member, position);
 
     memberRaster.onLoad?.();
 
@@ -56,7 +51,7 @@ describe('createMemberRaster', () => {
   });
 
   it('should return member with onMouseEnter handler', () => {
-    const memberRaster = createMemberRaster(member, position);
+    const memberRaster = createSpaceMemberRaster(member, position);
 
     memberRaster.onMouseEnter?.();
 
@@ -64,7 +59,7 @@ describe('createMemberRaster', () => {
   });
 
   it('should return member with onMouseLeave handler', () => {
-    const memberRaster = createMemberRaster(member, position);
+    const memberRaster = createSpaceMemberRaster(member, position);
 
     memberRaster.onMouseLeave?.();
 

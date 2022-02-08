@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import paper from 'paper';
-import { Member } from '../../models/member';
-import { MemberRaster } from '../../models/member-raster';
-import { createMemberRaster } from '../../models/member-raster-factory';
+import { SpaceMemberRaster } from '../../models/space-member-raster';
+import { createSpaceMemberRaster } from '../../models/space-member-raster-factory';
 import { generateRandom } from '../../utilities/generate-random';
+import { SpaceMember } from '../../models/space-member';
 
 export const useAddMemberRasters = (
-  members: Member[],
+  members: SpaceMember[],
   paperScope: paper.PaperScope | null
 ) => {
-  const [memberRasters, setMemberRasters] = useState<MemberRaster[]>([]);
-  const [currentMembers, setCurrentMembers] = useState<Member[]>([]);
+  const [memberRasters, setMemberRasters] = useState<SpaceMemberRaster[]>([]);
+  const [currentMembers, setCurrentMembers] = useState<SpaceMember[]>([]);
 
   useEffect(() => {
     if (!paperScope) {
@@ -31,8 +31,8 @@ export const useAddMemberRasters = (
         return new paper.Point(x, y);
       };
 
-      const currentMemberRasters: MemberRaster[] = members.map((m) => {
-        return createMemberRaster(m, getRandomPosition());
+      const currentMemberRasters: SpaceMemberRaster[] = members.map((m) => {
+        return createSpaceMemberRaster(m, getRandomPosition());
       });
 
       setMemberRasters(currentMemberRasters);

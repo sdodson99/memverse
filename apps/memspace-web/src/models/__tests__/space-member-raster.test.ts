@@ -1,8 +1,9 @@
-import { MemberRaster } from '../member-raster';
+import { SpaceMemberRaster } from '../space-member-raster';
 import paper from 'paper';
+import { SpaceMember } from '../space-member';
 
-describe('MemberRaster', () => {
-  let member: MemberRaster;
+describe('SpaceMemberRaster', () => {
+  let member: SpaceMemberRaster;
 
   let mockRaster: paper.Raster;
 
@@ -22,7 +23,11 @@ describe('MemberRaster', () => {
       },
     } as unknown as paper.Raster;
 
-    member = new MemberRaster(mockRaster, new paper.Point(50, 50));
+    member = new SpaceMemberRaster(
+      new SpaceMember('1', 'username', 'photoUrl', 'message'),
+      mockRaster,
+      new paper.Point(50, 50)
+    );
     member.speedPixelsPerSecond = 5;
     member.directionRadians = 0;
   });
