@@ -19,6 +19,7 @@
     "generate": "npx generate-react-cli component"
   },
   "dependencies": {
+    "@psychobolt/react-paperjs": "^1.0.3",
     "axios": "^0.24.0",
     "constate": "^3.3.0",
     "luxon": "^2.3.0",

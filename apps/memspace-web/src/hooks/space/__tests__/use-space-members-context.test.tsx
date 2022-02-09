@@ -1,13 +1,27 @@
 import React from 'react';
 import { Member } from '../../../models/member';
-import { renderHook } from '@testing-library/react-hooks';
+import {
+  renderHook,
+  RenderHookOptions,
+  act,
+} from '@testing-library/react-hooks';
 import {
   useSpaceMembersContext,
   SpaceMembersProvider,
 } from '../use-space-members-context';
+import { SpaceMember } from '../../../models/space-member';
+import { createSpaceMember } from '../../../models/space-member-factory';
+
+jest.mock('../../../models/space-member-factory');
+const mockCreateSpaceMember = createSpaceMember as jest.Mock;
 
 describe('useSpaceMembersContext', () => {
   let members: Member[];
+  let renderOptions: RenderHookOptions<any>;
+
+  let mockSpaceMemberLoad: jest.Mock;
+  let mockSpaceMemberUpdate: jest.Mock;
+  let mockSpaceMemberInitializePosition: jest.Mock;
 
   beforeEach(() => {
     members = [
@@ -24,17 +38,119 @@ describe('useSpaceMembersContext', () => {
         username: 'username2',
       },
     ];
-  });
 
-  it('should return mapped space members', () => {
-    const { result } = renderHook(() => useSpaceMembersContext(), {
+    renderOptions = {
       wrapper: ({ children }) => (
         <SpaceMembersProvider members={members}>
           {children}
         </SpaceMembersProvider>
       ),
+    };
+
+    mockSpaceMemberLoad = jest.fn();
+    mockSpaceMemberUpdate = jest.fn();
+    mockSpaceMemberInitializePosition = jest.fn();
+
+    mockCreateSpaceMember.mockImplementation((m: Member) => {
+      const spaceMember = {
+        ...m,
+        positionInitialized: false,
+        load: mockSpaceMemberLoad,
+        update: mockSpaceMemberUpdate,
+        initializePosition: () => {
+          spaceMember.positionInitialized = true;
+          mockSpaceMemberInitializePosition();
+        },
+        clone: () => spaceMember,
+      };
+
+      return spaceMember;
     });
+  });
+
+  afterEach(() => {
+    mockCreateSpaceMember.mockReset();
+  });
+
+  it('should return mapped space members', () => {
+    const { result } = renderHook(
+      () => useSpaceMembersContext(),
+      renderOptions
+    );
 
     expect(result.current.spaceMembers).toHaveLength(2);
+  });
+
+  describe('loadSpaceMember', () => {
+    it('should load space member if member exists', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.loadSpaceMember(result.current.spaceMembers[0]);
+      });
+
+      expect(mockSpaceMemberLoad).toBeCalledTimes(1);
+    });
+
+    it('should abort if space member does not exist', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.loadSpaceMember(new SpaceMember('a', 'a', 'a', 'a'));
+      });
+
+      expect(mockSpaceMemberLoad).toBeCalledTimes(0);
+    });
+  });
+
+  describe('updateSpaceMembers', () => {
+    let timeElapsedSeconds: number;
+    let bounds: paper.Rectangle;
+
+    beforeEach(() => {
+      timeElapsedSeconds = 1;
+      bounds = {
+        top: 0,
+        left: 0,
+        bottom: 100,
+        right: 100,
+      } as paper.Rectangle;
+    });
+
+    it('should update each space member', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
+      });
+
+      expect(mockSpaceMemberUpdate).toBeCalledTimes(2);
+    });
+
+    it("should only initialize each space member's position once", () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
+      });
+
+      act(() => {
+        result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
+      });
+
+      expect(mockSpaceMemberInitializePosition).toBeCalledTimes(2);
+    });
   });
 });
