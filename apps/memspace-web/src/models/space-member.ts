@@ -66,6 +66,10 @@ export class SpaceMember {
     return this._y;
   }
 
+  get username() {
+    return this._username;
+  }
+
   get photoUrl() {
     return this._photoUrl;
   }

@@ -1,0 +1,18 @@
+.spaceMembersSheet {
+  --rsbs-overlay-rounded: 16px !important; /* Ensure corners are always rounded. */
+}
+
+.content {
+  max-width: 600px;
+  padding: 0 1rem;
+  margin: auto;
+}
+
+.description {
+  font-weight: 100;
+  margin-top: 1rem;
+}
+
+.listing {
+  margin-top: 1rem;
+}

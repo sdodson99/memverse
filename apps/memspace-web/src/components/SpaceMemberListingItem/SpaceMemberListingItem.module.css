@@ -1,0 +1,12 @@
+.spaceMemberListingItem {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  max-width: 100px;
+}
+
+.username {
+  margin-left: 1rem;
+}
