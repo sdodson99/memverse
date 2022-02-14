@@ -31,6 +31,7 @@
     "express": "^4.17.2",
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
+    "jsonwebtoken": "^8.5.1",
     "youtube-member-verifier": "^1.1.0"
   },
   "devDependencies": {
@@ -38,7 +39,7 @@
     "@babel/preset-typescript": "^7.16.5",
     "@types/jest": "^27.0.3",
     "@types/jest-when": "^2.7.4",
-    "@types/jsonwebtoken": "^8.5.6",
+    "@types/jsonwebtoken": "^8.5.8",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
     "babel-jest": "^27.4.5",
