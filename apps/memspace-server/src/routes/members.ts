@@ -1,8 +1,8 @@
 import * as functions from 'firebase-functions';
 import { Router as createRouter } from 'express';
 import { YouTubeMembersQuery } from 'youtube-member-verifier';
-import { MembersQuery } from '../queries/members/members-query';
-import { ManyMessagesByIdsQuery } from '../queries/many-messages-by-ids/many-messages-by-ids-query';
+import { AllMembersQuery } from '../queries/all-members';
+import { ManyMessagesByMemberIdsQuery } from '../queries/many-messages-by-member-ids';
 
 const firebaseConfig = functions.config();
 const youTubeStudioConfig = firebaseConfig.youtube_studio;
@@ -14,17 +14,17 @@ const youTubeMembersQuery = new YouTubeMembersQuery({
   cookieHeader: youTubeStudioConfig.cookie_header,
   authorizationHeader: youTubeStudioConfig.authorization_header,
 });
-const manyMessagesByIdsQuery = new ManyMessagesByIdsQuery();
-const membersQuery = new MembersQuery(
+const manyMessagesByMemberIdsQuery = new ManyMessagesByMemberIdsQuery();
+const allMembersQuery = new AllMembersQuery(
   youTubeMembersQuery,
-  manyMessagesByIdsQuery
+  manyMessagesByMemberIdsQuery
 );
 
 export const createMembersRouter = () => {
   const router = createRouter();
 
   router.get('/', async (req, res) => {
-    const members = await membersQuery.execute();
+    const members = await allMembersQuery.execute();
 
     return res.send(members);
   });

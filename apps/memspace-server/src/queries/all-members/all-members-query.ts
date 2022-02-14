@@ -1,11 +1,11 @@
 import { YouTubeMembersQuery } from 'youtube-member-verifier';
 import { Member } from '../../models/member';
-import { ManyMessagesByIdsQuery } from '../many-messages-by-ids/many-messages-by-ids-query';
+import { ManyMessagesByMemberIdsQuery } from '../many-messages-by-member-ids';
 
-export class MembersQuery {
+export class AllMembersQuery {
   constructor(
     private youTubeMembersQuery: YouTubeMembersQuery,
-    private manyMessagesByIdsQuery: ManyMessagesByIdsQuery
+    private manyMessagesByMemberIdsQuery: ManyMessagesByMemberIdsQuery
   ) {}
 
   async execute(): Promise<Member[]> {
@@ -13,7 +13,9 @@ export class MembersQuery {
 
     // TODO: Query and map messages
     const memberIds = youTubeMembers.map((m) => m.channelId);
-    const memberMessages = await this.manyMessagesByIdsQuery.execute(memberIds);
+    const memberMessages = await this.manyMessagesByMemberIdsQuery.execute(
+      memberIds
+    );
 
     return youTubeMembers.map((y) => ({
       id: y.channelId,
