@@ -1,0 +1,15 @@
+.spaceLoading {
+  background-color: var(--color-space);
+  color: white;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.description {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
