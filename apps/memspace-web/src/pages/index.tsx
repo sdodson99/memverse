@@ -5,6 +5,7 @@ import { useMembers } from '../hooks/members/use-members';
 import Space from '../components/Space/Space';
 import LoadingErrorEmptyDataLayout from '../components/LoadingErrorEmptyDataLayout/LoadingErrorEmptyDataLayout';
 import SpaceLoading from '../components/SpaceLoading/SpaceLoading';
+import SpaceError from '../components/SpaceError/SpaceError';
 
 const SpacePage: NextPage = () => {
   const {
@@ -19,7 +20,7 @@ const SpacePage: NextPage = () => {
         isLoading={membersLoading}
         loadingDisplay={<SpaceLoading />}
         hasError={!!membersError}
-        errorDisplay={'Error'}
+        errorDisplay={<SpaceError />}
         dataDisplay={<Space members={members} />}
       />
     </Layout>
