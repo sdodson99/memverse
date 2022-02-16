@@ -11,17 +11,20 @@ export class AllMembersQuery {
   async execute(): Promise<Member[]> {
     const youTubeMembers = await this.youTubeMembersQuery.execute();
 
-    // TODO: Query and map messages
-    const memberIds = youTubeMembers.map((m) => m.channelId);
+    // Filter out member that don't have channel IDs. Maybe the channel was deleted?
+    // Move this to youtube-member-verifier package in the future.
+    const validYouTubeMembers = youTubeMembers.filter((m) => m.channelId);
+
+    const memberIds = validYouTubeMembers.map((m) => m.channelId);
     const memberMessages = await this.manyMessagesByMemberIdsQuery.execute(
       memberIds
     );
 
-    return youTubeMembers.map((y) => ({
+    return validYouTubeMembers.map((y) => ({
       id: y.channelId,
       username: y.username,
       photoUrl: y.photoUrl,
-      message: memberMessages[y.channelId],
+      message: memberMessages[y.channelId]?.content ?? '',
     }));
   }
 }

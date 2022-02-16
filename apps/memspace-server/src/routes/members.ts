@@ -3,6 +3,9 @@ import { Router as createRouter } from 'express';
 import { YouTubeMembersQuery } from 'youtube-member-verifier';
 import { AllMembersQuery } from '../queries/all-members';
 import { ManyMessagesByMemberIdsQuery } from '../queries/many-messages-by-member-ids';
+import { DatabasePaths } from '../configuration/database-paths';
+import { MessageByMemberIdQuery } from '../queries/message-by-member-id';
+import { getFirebaseApp } from '../startup/firebase-app';
 
 const firebaseConfig = functions.config();
 const youTubeStudioConfig = firebaseConfig.youtube_studio;
@@ -14,7 +17,14 @@ const youTubeMembersQuery = new YouTubeMembersQuery({
   cookieHeader: youTubeStudioConfig.cookie_header,
   authorizationHeader: youTubeStudioConfig.authorization_header,
 });
-const manyMessagesByMemberIdsQuery = new ManyMessagesByMemberIdsQuery();
+const firebaseApp = getFirebaseApp();
+const messageByMemberIdQuery = new MessageByMemberIdQuery(
+  firebaseApp,
+  DatabasePaths.MESSAGES
+);
+const manyMessagesByMemberIdsQuery = new ManyMessagesByMemberIdsQuery(
+  messageByMemberIdQuery
+);
 const allMembersQuery = new AllMembersQuery(
   youTubeMembersQuery,
   manyMessagesByMemberIdsQuery

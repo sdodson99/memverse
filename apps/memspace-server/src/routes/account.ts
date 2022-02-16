@@ -1,11 +1,12 @@
 import { Router as createRouter } from 'express';
 import { SaveMessageCommand } from '../commands/save-message';
+import { DatabasePaths } from '../configuration/database-paths';
 import { authenticate } from '../middleware/authenticate';
 import { MessageByMemberIdQuery } from '../queries/message-by-member-id';
 import { getFirebaseApp } from '../startup/firebase-app';
 
 const firebaseApp = getFirebaseApp();
-const messagesPath = '/messages';
+const messagesPath = DatabasePaths.MESSAGES;
 const messageByMemberIdQuery = new MessageByMemberIdQuery(
   firebaseApp,
   messagesPath
