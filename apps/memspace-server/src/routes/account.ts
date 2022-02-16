@@ -1,4 +1,5 @@
 import { Router as createRouter } from 'express';
+import { SaveMessageCommand } from '../commands/save-message';
 import { authenticate } from '../middleware/authenticate';
 import { MessageByMemberIdQuery } from '../queries/message-by-member-id';
 import { getFirebaseApp } from '../startup/firebase-app';
@@ -9,6 +10,7 @@ const messageByMemberIdQuery = new MessageByMemberIdQuery(
   firebaseApp,
   messagesPath
 );
+const saveMessageCommand = new SaveMessageCommand(firebaseApp, messagesPath);
 
 export const createAccountRouter = () => {
   const router = createRouter();
@@ -27,6 +29,23 @@ export const createAccountRouter = () => {
     };
 
     return res.send(messageResponse);
+  });
+
+  router.put('/message', authenticate, async (req, res) => {
+    const memberId = req.user?.id;
+
+    if (!memberId) {
+      return res.sendStatus(401);
+    }
+
+    const { content } = req.body;
+    const message = {
+      content,
+    };
+
+    await saveMessageCommand.execute(memberId, message);
+
+    return res.sendStatus(204);
   });
 
   return router;
