@@ -6,6 +6,7 @@ import Space from '../components/Space/Space';
 import LoadingErrorEmptyDataLayout from '../components/LoadingErrorEmptyDataLayout/LoadingErrorEmptyDataLayout';
 import SpaceLoading from '../components/SpaceLoading/SpaceLoading';
 import SpaceError from '../components/SpaceError/SpaceError';
+import Head from 'next/head';
 
 const SpacePage: NextPage = () => {
   const {
@@ -16,6 +17,9 @@ const SpacePage: NextPage = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Home - Memspace</title>
+      </Head>
       <LoadingErrorEmptyDataLayout
         isLoading={membersLoading}
         loadingDisplay={<SpaceLoading />}
