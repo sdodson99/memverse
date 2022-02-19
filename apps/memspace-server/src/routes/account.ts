@@ -4,6 +4,7 @@ import { DatabasePaths } from '../configuration/database-paths';
 import { authenticate } from '../middleware/authenticate';
 import { MessageByMemberIdQuery } from '../queries/message-by-member-id';
 import { getFirebaseApp } from '../startup/firebase-app';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 const firebaseApp = getFirebaseApp();
 const messagesPath = DatabasePaths.MESSAGES;
@@ -32,22 +33,27 @@ export const createAccountRouter = () => {
     return res.send(messageResponse);
   });
 
-  router.put('/message', authenticate, async (req, res) => {
-    const memberId = req.user?.id;
+  router.put(
+    '/message',
+    authenticate,
+    celebrate({
+      [Segments.BODY]: Joi.object().keys({
+        content: Joi.string().required().max(100),
+      }),
+    }),
+    async (req, res) => {
+      const memberId = req.user?.id ?? '';
 
-    if (!memberId) {
-      return res.sendStatus(401);
+      const { content } = req.body;
+      const message = {
+        content,
+      };
+
+      await saveMessageCommand.execute(memberId, message);
+
+      return res.sendStatus(204);
     }
-
-    const { content } = req.body;
-    const message = {
-      content,
-    };
-
-    await saveMessageCommand.execute(memberId, message);
-
-    return res.sendStatus(204);
-  });
+  );
 
   return router;
 };
