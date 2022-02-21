@@ -2,9 +2,39 @@
   background: var(--color-space);
   padding: 1rem;
   color: white;
-  text-align: center;
 }
 
 .logo {
   max-height: 50px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.navItem {
+  padding: 0.5rem 1rem;
+  color: white;
+  transition: all 100ms;
+}
+
+.navItem:hover {
+  text-decoration: underline;
+}
+
+.loginButton {
+  padding: 0.5rem 1rem;
+  color: white;
+  border: 1px solid white;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: all 100ms;
+}
+
+.loginButton:hover {
+  color: var(--color-space);
+  background-color: white;
 }
