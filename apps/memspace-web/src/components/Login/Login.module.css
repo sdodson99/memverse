@@ -6,6 +6,13 @@
   font-weight: thin;
 }
 
-.loginButton {
+.loginButton,
+.loadingSpinner {
+  margin-top: 2rem;
+}
+
+.error {
+  font-size: 0.9rem;
+  color: darkred;
   margin-top: 1.5rem;
 }

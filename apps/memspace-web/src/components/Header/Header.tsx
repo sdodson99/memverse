@@ -27,7 +27,7 @@ const Header = ({}: HeaderProps) => {
 
           {!isLoggedIn && (
             <Link href="/login">
-              <a className={styles.loginButton}>Login</a>
+              <a className={styles.navItem}>Login</a>
             </Link>
           )}
 
