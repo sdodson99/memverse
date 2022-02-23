@@ -1,0 +1,26 @@
+.textInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.textInput label {
+  margin-bottom: 0.3rem;
+}
+
+.input {
+  padding: 0.4rem;
+  font-size: inherit;
+  border: 1px solid darkgray;
+  border-radius: 3px;
+}
+
+.errorInput {
+  outline-color: darkred;
+  border-color: darkred;
+}
+
+.errorMessage {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: darkred;
+}
