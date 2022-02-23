@@ -1,0 +1,18 @@
+.youTubeLoginButton {
+  border-radius: 10px;
+  border: 2px solid red;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  transition: 100ms all;
+}
+
+.youTubeLoginButton:hover {
+  background-color: red;
+  color: white;
+}
+
+.logo {
+  margin-left: 0.4rem;
+  height: 25px;
+}
