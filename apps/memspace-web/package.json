@@ -16,7 +16,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cover": "jest --coverage",
-    "generate": "npx generate-react-cli component"
+    "export": "next export",
+    "generate": "npx generate-react-cli component",
+    "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
     "@psychobolt/react-paperjs": "^1.0.3",
