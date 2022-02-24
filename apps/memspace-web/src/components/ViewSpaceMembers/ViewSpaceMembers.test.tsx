@@ -1,20 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import SpaceMembersSheet, { SpaceMembersSheetProps } from './SpaceMembersSheet';
+import ViewSpaceMembers from './ViewSpaceMembers';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
-describe('<SpaceMembersSheet />', () => {
-  let props: SpaceMembersSheetProps;
-
+describe('<ViewSpaceMembers />', () => {
   beforeEach(() => {
-    props = {
-      open: true,
-    };
-
     mockUseSpaceMembersContext.mockReturnValue({
       spaceMembers: [{ id: '1' }, { id: '2' }],
     });
@@ -25,15 +19,15 @@ describe('<SpaceMembersSheet />', () => {
   });
 
   it('should mount', () => {
-    render(<SpaceMembersSheet {...props} />);
+    render(<ViewSpaceMembers />);
 
-    const spaceMembersSheet = screen.getByTestId('SpaceMembersSheet');
+    const viewSpaceMembers = screen.getByTestId('ViewSpaceMembers');
 
-    expect(spaceMembersSheet).toBeInTheDocument();
+    expect(viewSpaceMembers).toBeInTheDocument();
   });
 
   it('should render members listing', () => {
-    render(<SpaceMembersSheet {...props} />);
+    render(<ViewSpaceMembers />);
 
     const membersListing = screen.getByTestId('SpaceMemberListing');
 

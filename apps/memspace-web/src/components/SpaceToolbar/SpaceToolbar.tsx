@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styles from './SpaceToolbar.module.css';
-import SpaceMembersSheet from '../SpaceMembersSheet/SpaceMembersSheet';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
-import UpdateSpaceMemberMessageSheet from '../UpdateSpaceMemberMessageSheet/UpdateSpaceMemberMessageSheet';
+import { BottomSheet } from 'react-spring-bottom-sheet';
+import ViewSpaceMembers from '../ViewSpaceMembers/ViewSpaceMembers';
+import UpdateSpaceMemberMessage from '../UpdateSpaceMemberMessage/UpdateSpaceMemberMessage';
 
 type SpaceToolbarProps = {};
 
@@ -38,14 +39,28 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
           )}
         </div>
       </div>
-      <SpaceMembersSheet
+      <BottomSheet
         open={currentSheet === 'VIEW_MEMBERS'}
+        header="Members"
+        maxHeight={500}
         onDismiss={handleSheetDismiss}
-      />
-      <UpdateSpaceMemberMessageSheet
+        className={styles.sheet}
+      >
+        <div className={styles.sheetContent}>
+          <ViewSpaceMembers />
+        </div>
+      </BottomSheet>
+      <BottomSheet
         open={currentSheet === 'UPDATE_MEMBER_MESSAGE'}
+        header="Message"
+        maxHeight={500}
         onDismiss={handleSheetDismiss}
-      />
+        className={styles.sheet}
+      >
+        <div className={styles.sheetContent}>
+          <UpdateSpaceMemberMessage />
+        </div>
+      </BottomSheet>
     </div>
   );
 };
