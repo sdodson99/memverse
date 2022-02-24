@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import UpdateSpaceMemberMessage from './UpdateSpaceMemberMessage';
 import { useMemberMessage } from '../../hooks/members/use-member-message';
@@ -43,5 +43,39 @@ describe('<UpdateSpaceMemberMessage />', () => {
     const initializeMessageTextInput = screen.getByDisplayValue(message);
 
     expect(initializeMessageTextInput).toBeInTheDocument();
+  });
+
+  describe('with message changed', () => {
+    let updateButton: HTMLInputElement;
+    let messageTextInput: HTMLElement;
+
+    beforeEach(() => {
+      mockUseMemberMessage.mockReturnValue({ message: 'hello world' });
+      render(<UpdateSpaceMemberMessage />);
+      updateButton = screen.getByText('Update') as HTMLInputElement;
+      messageTextInput = screen.getByDisplayValue('hello world');
+
+      fireEvent.change(messageTextInput, {
+        target: {
+          value: 'other',
+        },
+      });
+    });
+
+    it('should enable submit button', () => {
+      expect(updateButton.disabled).toBeFalsy();
+    });
+
+    it('should disable submit button when message reverted', () => {
+      expect(updateButton.disabled).toBeFalsy();
+
+      fireEvent.change(messageTextInput, {
+        target: {
+          value: 'hello world',
+        },
+      });
+
+      expect(updateButton.disabled).toBeTruthy();
+    });
   });
 });

@@ -8,25 +8,30 @@ import { useMemberMessage } from '../../hooks/members/use-member-message';
 type UpdateSpaceMemberMessageProps = {};
 
 const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
-  const { message, loading, error } = useMemberMessage();
+  const { message, loading, error: loadError } = useMemberMessage();
 
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    watch,
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
+  const currentMessage = watch('message');
 
   useEffect(() => {
-    if (!loading && !error) {
+    if (!loading && !loadError) {
       setValue('message', message);
     }
-  }, [message, loading, error, setValue]);
+  }, [message, loading, loadError, setValue]);
 
   const onSubmit = () => {};
+
+  const messageDirty = message !== currentMessage;
+  const canSubmit = !isSubmitting && messageDirty;
 
   return (
     <div
@@ -55,7 +60,20 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
               required: 'Required',
             })}
           />
-          <button className={styles.submitButton}>Update</button>
+          <div className={styles.submitRow}>
+            <button className={styles.submitButton} disabled={!canSubmit}>
+              Update
+            </button>
+
+            {isSubmitting && (
+              <div className={styles.submittingSpinner}>
+                <LoadingSpinner size={35} strokeWidth={3} color="black" />
+              </div>
+            )}
+          </div>
+          <div className={styles.errorMessage}>
+            Failed to update message. Please try again later.
+          </div>
         </form>
       )}
     </div>
