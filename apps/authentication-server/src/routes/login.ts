@@ -23,7 +23,7 @@ const isYouTubeMemberQuery = new ChannelOwnerIsYouTubeMemberQuery(
 );
 const accessTokenGenerator = new AccessTokenGenerator(
   accessTokenConfig.secret_key,
-  accessTokenConfig.expires_in
+  parseInt(accessTokenConfig.expires_in)
 );
 
 const logger = functions.logger;
