@@ -5,7 +5,10 @@ export type TextInputProps = {
   name: string;
   label: string;
   errorMessage?: string;
-};
+} & React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>;
 
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   function InnerTextInput(
@@ -28,6 +31,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
 
         <input
           id={name}
+          data-testid={`${name}TextInput`}
           ref={ref}
           name={name}
           className={calculateInputClassName()}

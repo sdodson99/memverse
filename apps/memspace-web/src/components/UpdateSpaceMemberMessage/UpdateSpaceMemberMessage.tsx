@@ -1,14 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import TextInput from '../TextInput/TextInput';
 import styles from './UpdateSpaceMemberMessage.module.css';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMemberMessage } from '../../hooks/members/use-member-message';
+import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
 
 type UpdateSpaceMemberMessageProps = {};
 
+type UpdateSpaceMemberMessageFieldVaues = {
+  message: string;
+};
+
 const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
   const { message, loading, error: loadError } = useMemberMessage();
+  const { execute: executeUpdateMemberMessage, error: submitError } =
+    useUpdateMemberMessage();
+
+  const [savedMessage, setSavedMessage] = useState<string>();
 
   const {
     register,
@@ -16,21 +25,34 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
     setValue,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<UpdateSpaceMemberMessageFieldVaues>({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
   const currentMessage = watch('message');
 
   useEffect(() => {
-    if (!loading && !loadError) {
+    if (!loading && !loadError && message) {
       setValue('message', message);
+      setSavedMessage(message);
     }
   }, [message, loading, loadError, setValue]);
 
-  const onSubmit = () => {};
+  const onSubmit: SubmitHandler<UpdateSpaceMemberMessageFieldVaues> = async (
+    data
+  ) => {
+    const { message } = data;
 
-  const messageDirty = message !== currentMessage;
+    const { error } = await executeUpdateMemberMessage(message);
+
+    if (error) {
+      return;
+    }
+
+    setSavedMessage(message);
+  };
+
+  const messageDirty = savedMessage !== currentMessage;
   const canSubmit = !isSubmitting && messageDirty;
 
   return (
@@ -56,6 +78,7 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
             label="Message"
             errorMessage={errors.message?.message}
             maxLength={100}
+            autoComplete="off"
             {...register('message', {
               required: 'Required',
             })}
@@ -71,9 +94,11 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
               </div>
             )}
           </div>
-          <div className={styles.errorMessage}>
-            Failed to update message. Please try again later.
-          </div>
+          {submitError && (
+            <div className={styles.errorMessage}>
+              Failed to update message. Please try again later.
+            </div>
+          )}
         </form>
       )}
     </div>
