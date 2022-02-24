@@ -5,7 +5,9 @@ type SpaceErrorProps = {};
 
 const SpaceError = ({}: SpaceErrorProps) => (
   <div className={styles.spaceError} data-testid="SpaceError">
-    Failed to load members. Please refresh to try again.
+    <div className="container">
+      Failed to load members. Please refresh to try again.
+    </div>
   </div>
 );
 
