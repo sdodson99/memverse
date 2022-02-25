@@ -11,7 +11,11 @@ const SpaceMemberListing = ({ members }: SpaceMemberListingProps) => {
   const memberListingItems = members.map((m) => {
     return (
       <div key={m.id} className={styles.spaceMemberListingItem}>
-        <SpaceMemberListingItem username={m.username} photoUrl={m.photoUrl} />
+        <SpaceMemberListingItem
+          username={m.username}
+          photoUrl={m.photoUrl}
+          message={m.message}
+        />
       </div>
     );
   });

@@ -32,4 +32,13 @@ describe('<SpaceMemberListingItem />', () => {
     expect(username).toBeInTheDocument();
     expect(avatar).toBeInTheDocument();
   });
+
+  it('should render message when user has message', () => {
+    props.message = 'hello world';
+    render(<SpaceMemberListingItem {...props} />);
+
+    const message = screen.getByText(props.message);
+
+    expect(message).toBeInTheDocument();
+  });
 });

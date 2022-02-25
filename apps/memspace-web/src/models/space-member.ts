@@ -74,6 +74,14 @@ export class SpaceMember {
     return this._photoUrl;
   }
 
+  get message() {
+    return this._message;
+  }
+
+  set message(value: string) {
+    this._message = value;
+  }
+
   get loaded() {
     return this._loaded;
   }

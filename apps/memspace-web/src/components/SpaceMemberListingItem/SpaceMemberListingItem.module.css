@@ -7,6 +7,14 @@
   max-width: 100px;
 }
 
-.username {
+.content {
   margin-left: 1rem;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.message {
+  margin-top: 0.1rem;
 }
