@@ -153,4 +153,19 @@ describe('useSpaceMembersContext', () => {
       expect(mockSpaceMemberInitializePosition).toBeCalledTimes(2);
     });
   });
+
+  describe('updateSpaceMemberMessage', () => {
+    it('should only update space member message', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.updateSpaceMemberMessage('1', 'new message');
+      });
+
+      expect(result.current.spaceMembers[0].message).toBe('new message');
+    });
+  });
 });

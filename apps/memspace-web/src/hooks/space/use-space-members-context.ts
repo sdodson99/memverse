@@ -19,8 +19,11 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     setSpaceMembers(nextSpaceMembers);
   }, [members]);
 
-  const loadSpaceMember = (member: SpaceMember) => {
-    const spaceMemberIndex = spaceMembers.findIndex((m) => m.id === member.id);
+  const withSpaceMember = (
+    memberId: string,
+    callback: (member: SpaceMember) => void
+  ) => {
+    const spaceMemberIndex = spaceMembers.findIndex((m) => m.id === memberId);
 
     if (spaceMemberIndex === -1) {
       return;
@@ -28,13 +31,23 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
 
     const clonedSpaceMember = spaceMembers[spaceMemberIndex].clone();
 
-    clonedSpaceMember.load();
+    callback(clonedSpaceMember);
 
     setSpaceMembers([
       ...spaceMembers.slice(0, spaceMemberIndex),
       clonedSpaceMember,
       ...spaceMembers.slice(spaceMemberIndex + 1),
     ]);
+  };
+
+  const loadSpaceMember = (member: SpaceMember) => {
+    withSpaceMember(member.id, (m) => m.load());
+  };
+
+  const updateSpaceMemberMessage = (memberId: string, message: string) => {
+    withSpaceMember(memberId, (m) => {
+      m.message = message;
+    });
   };
 
   const updateSpaceMembers = (
@@ -65,6 +78,7 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     spaceMembers,
     loadSpaceMember,
     updateSpaceMembers,
+    updateSpaceMemberMessage,
   };
 };
 
