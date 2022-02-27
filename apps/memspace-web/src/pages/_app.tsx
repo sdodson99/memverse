@@ -7,6 +7,7 @@ import { AccessTokenProvider } from '../hooks/authentication/use-access-token-co
 import Head from 'next/head';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
+import { AccountProvider } from '../hooks/authentication/use-account-context';
 
 const googleClientConfig = {
   client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -34,10 +35,12 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <GApiProvider clientConfig={googleClientConfig}>
       <AccessTokenProvider>
-        <Head>
-          <title>Memspace</title>
-        </Head>
-        <Component {...pageProps} />
+        <AccountProvider>
+          <Head>
+            <title>Memspace</title>
+          </Head>
+          <Component {...pageProps} />
+        </AccountProvider>
       </AccessTokenProvider>
     </GApiProvider>
   );

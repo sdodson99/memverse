@@ -17,12 +17,16 @@ const saveMessageCommand = new SaveMessageCommand(firebaseApp, messagesPath);
 export const createAccountRouter = () => {
   const router = createRouter();
 
-  router.get('/message', authenticate, async (req, res) => {
-    const memberId = req.user?.id;
+  router.get('/', authenticate, async (req, res) => {
+    const memberId = req.user?.id ?? '';
 
-    if (!memberId) {
-      return res.sendStatus(401);
-    }
+    return res.send({
+      id: memberId,
+    });
+  });
+
+  router.get('/message', authenticate, async (req, res) => {
+    const memberId = req.user?.id ?? '';
 
     const message = await messageByMemberIdQuery.execute(memberId);
 
