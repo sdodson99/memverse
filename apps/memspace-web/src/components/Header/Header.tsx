@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { useLogout } from '../../hooks/authentication/use-logout';
+import Container from '../Container/Container';
 import styles from './Header.module.css';
 
 type HeaderProps = {};
@@ -13,7 +14,7 @@ const Header = ({}: HeaderProps) => {
 
   return (
     <div className={styles.header} data-testid="Header">
-      <div className="container">
+      <Container>
         <div className={styles.content}>
           <Link href="/" passHref>
             <a>
@@ -37,7 +38,7 @@ const Header = ({}: HeaderProps) => {
             </button>
           )}
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

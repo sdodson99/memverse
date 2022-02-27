@@ -1,4 +1,5 @@
 import React from 'react';
+import Container from '../Container/Container';
 import Layout from '../Layout/Layout';
 import PageHeader from '../PageHeader/PageHeader';
 import styles from './PageLayout.module.css';
@@ -11,12 +12,12 @@ export type PageLayoutProps = {
 const PageLayout = ({ title, children }: PageLayoutProps) => (
   <div className={styles.pageLayout} data-testid="PageLayout">
     <Layout>
-      <div className="container">
+      <Container>
         <div className={styles.header}>
           <PageHeader>{title}</PageHeader>
         </div>
         <div className={styles.main}>{children}</div>
-      </div>
+      </Container>
     </Layout>
   </div>
 );

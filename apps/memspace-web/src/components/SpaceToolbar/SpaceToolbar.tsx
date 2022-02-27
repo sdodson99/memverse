@@ -4,6 +4,7 @@ import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import ViewSpaceMembers from '../ViewSpaceMembers/ViewSpaceMembers';
 import UpdateSpaceMemberMessage from '../UpdateSpaceMemberMessage/UpdateSpaceMemberMessage';
+import Container from '../Container/Container';
 
 type SpaceToolbarProps = {};
 
@@ -18,7 +19,7 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
 
   return (
     <div className={styles.spaceToolbar} data-testid="SpaceToolbar">
-      <div className="container">
+      <Container>
         <div className={styles.spaceToolbarContent}>
           <button
             className={styles.toolbarItem}
@@ -38,7 +39,7 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
             </button>
           )}
         </div>
-      </div>
+      </Container>
       <BottomSheet
         open={currentSheet === 'VIEW_MEMBERS'}
         header="Members"
