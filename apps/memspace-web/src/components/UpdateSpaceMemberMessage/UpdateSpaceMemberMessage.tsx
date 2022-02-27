@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import TextInput from '../TextInput/TextInput';
 import styles from './UpdateSpaceMemberMessage.module.css';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMemberMessage } from '../../hooks/members/use-member-message';
 import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
+import { useAccountContext } from '../../hooks/authentication/use-account-context';
+import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 
 type UpdateSpaceMemberMessageProps = {};
 
@@ -14,27 +16,26 @@ type UpdateSpaceMemberMessageFieldVaues = {
 
 const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
   const { message, loading, error: loadError } = useMemberMessage();
+  const { account } = useAccountContext();
+
   const { execute: executeUpdateMemberMessage, error: submitError } =
     useUpdateMemberMessage();
-
-  const [savedMessage, setSavedMessage] = useState<string>();
+  const { updateSpaceMemberMessage } = useSpaceMembersContext();
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<UpdateSpaceMemberMessageFieldVaues>({
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
-  const currentMessage = watch('message');
 
   useEffect(() => {
     if (!loading && !loadError && message) {
       setValue('message', message);
-      setSavedMessage(message);
     }
   }, [message, loading, loadError, setValue]);
 
@@ -49,11 +50,14 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
       return;
     }
 
-    setSavedMessage(message);
+    if (account) {
+      updateSpaceMemberMessage(account.id, message);
+    }
+
+    reset({}, { keepValues: true });
   };
 
-  const messageDirty = savedMessage !== currentMessage;
-  const canSubmit = !isSubmitting && messageDirty;
+  const canSubmit = !isSubmitting && isDirty;
 
   return (
     <div

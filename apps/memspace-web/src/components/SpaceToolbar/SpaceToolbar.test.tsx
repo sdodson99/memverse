@@ -5,6 +5,7 @@ import SpaceToolbar from './SpaceToolbar';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { AccessTokenProvider } from '../../hooks/authentication/use-access-token-context';
+import { useAccountContext } from '../../hooks/authentication/use-account-context';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
@@ -12,13 +13,18 @@ const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 jest.mock('../../hooks/authentication/use-is-logged-in');
 const mockUseIsLoggedIn = useIsLoggedIn as jest.Mock;
 
+jest.mock('../../hooks/authentication/use-account-context');
+const mockUseAccountContext = useAccountContext as jest.Mock;
+
 describe('<SpaceToolbar />', () => {
   beforeEach(() => {
     mockUseSpaceMembersContext.mockReturnValue({ spaceMembers: [] });
+    mockUseAccountContext.mockReturnValue({});
   });
 
   afterEach(() => {
     mockUseSpaceMembersContext.mockReset();
+    mockUseAccountContext.mockReset();
     mockUseIsLoggedIn.mockReset();
   });
 

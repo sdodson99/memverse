@@ -1,9 +1,17 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import UpdateSpaceMemberMessage from './UpdateSpaceMemberMessage';
 import { useMemberMessage } from '../../hooks/members/use-member-message';
 import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
+import { useAccountContext } from '../../hooks/authentication/use-account-context';
+import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 
 jest.mock('../../hooks/members/use-member-message');
 const mockUseMemberMessage = useMemberMessage as jest.Mock;
@@ -11,8 +19,16 @@ const mockUseMemberMessage = useMemberMessage as jest.Mock;
 jest.mock('../../hooks/members/use-update-member-message');
 const mockUseUpdateMemberMessage = useUpdateMemberMessage as jest.Mock;
 
+jest.mock('../../hooks/authentication/use-account-context');
+const mockUseAccountContext = useAccountContext as jest.Mock;
+
+jest.mock('../../hooks/space/use-space-members-context');
+const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
+
 describe('<UpdateSpaceMemberMessage />', () => {
   beforeEach(() => {
+    mockUseAccountContext.mockReturnValue({});
+    mockUseSpaceMembersContext.mockReturnValue({});
     mockUseMemberMessage.mockReturnValue({});
     mockUseUpdateMemberMessage.mockReturnValue({});
   });
@@ -20,6 +36,8 @@ describe('<UpdateSpaceMemberMessage />', () => {
   afterEach(() => {
     mockUseMemberMessage.mockReset();
     mockUseUpdateMemberMessage.mockReset();
+    mockUseSpaceMembersContext.mockReset();
+    mockUseAccountContext.mockReset();
   });
 
   it('should mount', () => {
@@ -62,67 +80,45 @@ describe('<UpdateSpaceMemberMessage />', () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  describe('with message changed', () => {
-    let updateButton: HTMLInputElement;
-    let messageTextInput: HTMLElement;
-
-    beforeEach(() => {
-      mockUseMemberMessage.mockReturnValue({ message: 'hello world' });
-      render(<UpdateSpaceMemberMessage />);
-      updateButton = screen.getByText('Update') as HTMLInputElement;
-      messageTextInput = screen.getByDisplayValue('hello world');
-
-      fireEvent.change(messageTextInput, {
-        target: {
-          value: 'other',
-        },
-      });
-    });
-
-    it('should enable submit button', () => {
-      expect(updateButton.disabled).toBeFalsy();
-    });
-
-    it('should disable submit button when message reverted', () => {
-      expect(updateButton.disabled).toBeFalsy();
-
-      fireEvent.change(messageTextInput, {
-        target: {
-          value: 'hello world',
-        },
-      });
-
-      expect(updateButton.disabled).toBeTruthy();
-    });
-  });
-
   describe('on submit', () => {
     let updateButton: HTMLInputElement;
     let mockExecuteUpdateMemberMessage: jest.Mock;
+    let mockUpdateSpaceMemberMessage: jest.Mock;
 
     let message: string;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+      mockUpdateSpaceMemberMessage = jest.fn();
+      mockUseSpaceMembersContext.mockReturnValue({
+        updateSpaceMemberMessage: mockUpdateSpaceMemberMessage,
+      });
       mockExecuteUpdateMemberMessage = jest.fn();
       mockUseUpdateMemberMessage.mockReturnValue({
         execute: mockExecuteUpdateMemberMessage,
+      });
+      mockUseAccountContext.mockReturnValue({
+        account: {
+          id: '123',
+        },
       });
       render(<UpdateSpaceMemberMessage />);
       updateButton = screen.getByText('Update') as HTMLInputElement;
 
       const messageTextInput = screen.getByTestId('messageTextInput');
       message = 'message';
-      fireEvent.change(messageTextInput, {
-        target: {
-          value: message,
-        },
+      await act(async () => {
+        fireEvent.change(messageTextInput, {
+          target: {
+            value: message,
+          },
+        });
       });
     });
 
     it('should execute update for message', async () => {
       mockExecuteUpdateMemberMessage.mockReturnValue({});
 
-      fireEvent.click(updateButton);
+      fireEvent.submit(updateButton);
 
       await waitFor(() => {
         expect(mockExecuteUpdateMemberMessage).toBeCalledWith(message);
@@ -132,20 +128,30 @@ describe('<UpdateSpaceMemberMessage />', () => {
     it('should disable submit button when successful', async () => {
       mockExecuteUpdateMemberMessage.mockReturnValue({});
 
-      fireEvent.click(updateButton);
+      fireEvent.submit(updateButton);
 
       await waitFor(() => {
         expect(updateButton.disabled).toBeTruthy();
       });
     });
 
-    it('should enable submit button when successful', async () => {
+    it('should enable submit button when unsuccessful', async () => {
       mockExecuteUpdateMemberMessage.mockReturnValue({ error: new Error() });
 
-      fireEvent.click(updateButton);
+      fireEvent.submit(updateButton);
 
       await waitFor(() => {
         expect(updateButton.disabled).toBeFalsy();
+      });
+    });
+
+    it('should update space member message when successful', async () => {
+      mockExecuteUpdateMemberMessage.mockReturnValue({});
+
+      fireEvent.submit(updateButton);
+
+      await waitFor(() => {
+        expect(mockUpdateSpaceMemberMessage).toBeCalledWith('123', 'message');
       });
     });
   });
