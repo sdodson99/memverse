@@ -1,12 +1,12 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import Layout from '../components/Layout/Layout';
 import { useMembers } from '../hooks/members/use-members';
 import Space from '../components/Space/Space';
 import LoadingErrorEmptyDataLayout from '../components/LoadingErrorEmptyDataLayout/LoadingErrorEmptyDataLayout';
 import SpaceLoading from '../components/SpaceLoading/SpaceLoading';
 import SpaceError from '../components/SpaceError/SpaceError';
 import Head from 'next/head';
+import SpaceLayout from '../components/SpaceLayout/SpaceLayout';
 
 const SpacePage: NextPage = () => {
   const {
@@ -16,7 +16,7 @@ const SpacePage: NextPage = () => {
   } = useMembers();
 
   return (
-    <Layout>
+    <SpaceLayout>
       <Head>
         <title>Home - Memspace</title>
       </Head>
@@ -27,7 +27,7 @@ const SpacePage: NextPage = () => {
         errorDisplay={<SpaceError />}
         dataDisplay={<Space members={members} />}
       />
-    </Layout>
+    </SpaceLayout>
   );
 };
 

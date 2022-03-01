@@ -1,15 +1,11 @@
 .layout {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
+}
+
+.page {
+  min-height: 100vh;
 }
 
 .main {
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }

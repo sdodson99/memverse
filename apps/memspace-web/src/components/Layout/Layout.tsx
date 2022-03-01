@@ -9,8 +9,10 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => (
   <div className={styles.layout} data-testid="Layout">
-    <Header />
-    <main className={styles.main}>{children}</main>
+    <div className={styles.page}>
+      <Header />
+      <main className={styles.main}>{children}</main>
+    </div>
     <Footer />
   </div>
 );
