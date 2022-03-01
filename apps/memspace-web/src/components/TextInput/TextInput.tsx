@@ -1,4 +1,5 @@
 import React from 'react';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './TextInput.module.css';
 
 export type TextInputProps = {
@@ -40,7 +41,9 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
         />
 
         {errorMessage && (
-          <div className={styles.errorMessage}>{errorMessage}</div>
+          <div className={styles.errorMessage}>
+            <ErrorMessage>{errorMessage}</ErrorMessage>
+          </div>
         )}
       </div>
     );

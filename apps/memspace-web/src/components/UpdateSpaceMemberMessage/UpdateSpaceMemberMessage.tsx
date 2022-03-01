@@ -7,6 +7,7 @@ import { useMemberMessage } from '../../hooks/members/use-member-message';
 import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
 import { useAccountContext } from '../../hooks/authentication/use-account-context';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 type UpdateSpaceMemberMessageProps = {};
 
@@ -98,9 +99,12 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
               </div>
             )}
           </div>
+
           {submitError && (
             <div className={styles.errorMessage}>
-              Failed to update message. Please try again later.
+              <ErrorMessage>
+                Failed to update message. Please try again later.
+              </ErrorMessage>
             </div>
           )}
         </form>

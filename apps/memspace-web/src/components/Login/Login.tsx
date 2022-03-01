@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useLogin } from '../../hooks/authentication/use-login';
 import { useYouTubeLogin } from '../../hooks/authentication/use-youtube-login';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import YouTubeLoginButton from '../YouTubeLoginButton/YouTubeLoginButton';
 import styles from './Login.module.css';
@@ -56,15 +57,17 @@ const Login = ({}: LoginProps) => {
 
           {hasLoginError && (
             <div className={styles.error} data-testid="LoginErrorMessage">
-              Failed to login. Please ensure you are a{' '}
-              <a
-                href="https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg/join"
-                target="_blank"
-                rel="noreferrer"
-              >
-                SingletonSean YouTube member
-              </a>{' '}
-              or try again later.
+              <ErrorMessage>
+                Failed to login. Please ensure you are a{' '}
+                <a
+                  href="https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg/join"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  SingletonSean YouTube member
+                </a>{' '}
+                or try again later.
+              </ErrorMessage>
             </div>
           )}
         </div>
