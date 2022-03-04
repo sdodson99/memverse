@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { useLogout } from '../../hooks/authentication/use-logout';
+import ActiveLink from '../ActiveLink/ActiveLink';
 import Container from '../Container/Container';
 import styles from './Header.module.css';
 
@@ -26,17 +27,31 @@ const Header = ({}: HeaderProps) => {
             </a>
           </Link>
 
-          {!isLoggedIn && (
-            <Link href="/login">
-              <a className={styles.navItem}>Login</a>
-            </Link>
-          )}
+          <nav>
+            <ActiveLink
+              href="/"
+              className={styles.navItem}
+              activeClassName={styles.active}
+            >
+              Home
+            </ActiveLink>
 
-          {isLoggedIn && (
-            <button className={styles.navItem} onClick={logout}>
-              Logout
-            </button>
-          )}
+            {!isLoggedIn && (
+              <ActiveLink
+                href="/login"
+                className={styles.navItem}
+                activeClassName={styles.active}
+              >
+                Login
+              </ActiveLink>
+            )}
+
+            {isLoggedIn && (
+              <button className={styles.navItem} onClick={logout}>
+                Logout
+              </button>
+            )}
+          </nav>
         </div>
       </Container>
     </div>
