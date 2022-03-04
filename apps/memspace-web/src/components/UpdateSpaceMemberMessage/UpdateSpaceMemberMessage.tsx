@@ -8,6 +8,7 @@ import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-me
 import { useAccountContext } from '../../hooks/authentication/use-account-context';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import Button from '../Button/Button';
 
 type UpdateSpaceMemberMessageProps = {};
 
@@ -89,9 +90,7 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
             })}
           />
           <div className={styles.submitRow}>
-            <button className={styles.submitButton} disabled={!canSubmit}>
-              Update
-            </button>
+            <Button disabled={!canSubmit}>Update</Button>
 
             {isSubmitting && (
               <div className={styles.submittingSpinner}>
