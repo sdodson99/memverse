@@ -3,7 +3,7 @@ import * as functions from 'firebase-functions';
 import * as jwt from 'jsonwebtoken';
 
 const firebaseConfig = functions.config();
-const accessTokenSecretKey = firebaseConfig.access_token.secret_key;
+const accessTokenSecretKey = firebaseConfig?.access_token?.secret_key;
 
 export const authenticate: RequestHandler = (req, res, next) => {
   const bearerAccessToken = req.headers.authorization;
