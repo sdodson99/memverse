@@ -1,0 +1,46 @@
+name: Build YouTube Member Verifier
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'packages/youtube-member-verifier/**'
+  pull_request:
+    branches:
+      - '*'
+    paths:
+      - 'packages/youtube-member-verifier/**'
+
+env:
+  PROJECT_PATH: 'packages/youtube-member-verifier'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: 'Setup Node'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 'Install packages'
+        run: 'npm ci'
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: 'Lint'
+        run: 'npm run lint'
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: 'Build'
+        run: 'npm run build'
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: 'Test'
+        run: 'npm run test:ci'
+        working-directory: ${{ env.PROJECT_PATH }}
