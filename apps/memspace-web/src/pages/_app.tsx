@@ -8,6 +8,7 @@ import Head from 'next/head';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { AccountProvider } from '../hooks/authentication/use-account-context';
+import { MantineProvider } from '@mantine/core';
 
 const googleClientConfig = {
   client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -36,10 +37,12 @@ function App({ Component, pageProps }: AppProps) {
     <GApiProvider clientConfig={googleClientConfig}>
       <AccessTokenProvider>
         <AccountProvider>
-          <Head>
-            <title>Memspace</title>
-          </Head>
-          <Component {...pageProps} />
+          <MantineProvider>
+            <Head>
+              <title>Memspace</title>
+            </Head>
+            <Component {...pageProps} />
+          </MantineProvider>
         </AccountProvider>
       </AccessTokenProvider>
     </GApiProvider>
