@@ -11,7 +11,7 @@ export class SpaceMember {
   private _directionRadians: number;
   private _speedPixelsPerSecond: number;
   private _paused: boolean;
-  private _selected: boolean;
+  private _showUsername: boolean;
   private _height: number;
   private _width: number;
   private _x: number;
@@ -29,7 +29,7 @@ export class SpaceMember {
     this._directionRadians = 0;
     this._speedPixelsPerSecond = 0;
     this._paused = false;
-    this._selected = false;
+    this._showUsername = false;
     this._height = 0;
     this._width = 0;
     this._x = 0;
@@ -88,6 +88,14 @@ export class SpaceMember {
 
   get paused() {
     return this._paused;
+  }
+
+  get showUsername() {
+    return this._showUsername;
+  }
+
+  set showUsername(value: boolean) {
+    this._showUsername = value;
   }
 
   get positionInitialized() {
@@ -204,7 +212,7 @@ export class SpaceMember {
     clonedSpaceMember._directionRadians = this._directionRadians;
     clonedSpaceMember._speedPixelsPerSecond = this._speedPixelsPerSecond;
     clonedSpaceMember._paused = this._paused;
-    clonedSpaceMember._selected = this._selected;
+    clonedSpaceMember._showUsername = this._showUsername;
     clonedSpaceMember._height = this._height;
     clonedSpaceMember._width = this._width;
     clonedSpaceMember._x = this._x;

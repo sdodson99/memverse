@@ -1,6 +1,11 @@
 import React from 'react';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
-import { PaperContainer, Raster } from '@psychobolt/react-paperjs';
+import {
+  PaperContainer,
+  Raster,
+  PointText,
+  Layer,
+} from '@psychobolt/react-paperjs';
 
 type OnFrameEvent = {
   delta: number;
@@ -17,15 +22,27 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
   } = useSpaceMembersContext();
 
   const memberRasters = members.map((m) => (
-    <Raster
+    <Layer
       key={m.id}
-      size={{ height: m.height, width: m.width }}
-      position={{ x: m.x, y: m.y }}
-      source={m.photoUrl}
       opacity={m.loaded ? 1 : 0} // Only visible once loaded
-      onLoad={() => loadSpaceMember(m)}
-      onClick={() => toggleSpaceMemberPaused(m)}
-    />
+    >
+      <Raster
+        size={{ height: m.height, width: m.width }}
+        position={{ x: m.x, y: m.y }}
+        source={m.photoUrl}
+        onLoad={() => loadSpaceMember(m)}
+        onClick={() => toggleSpaceMemberPaused(m)}
+      />
+      {m.showUsername && (
+        <PointText
+          position={{ x: m.x, y: m.y - 35 }}
+          strokeColor="white"
+          justification="center"
+        >
+          {m.username}
+        </PointText>
+      )}
+    </Layer>
   ));
 
   return (
