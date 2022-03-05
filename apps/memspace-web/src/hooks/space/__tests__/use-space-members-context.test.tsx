@@ -59,10 +59,17 @@ describe('useSpaceMembersContext', () => {
       const spaceMember = {
         ...m,
         positionInitialized: false,
+        paused: false,
         load: mockSpaceMemberLoad,
         update: mockSpaceMemberUpdate,
-        pause: mockSpaceMemberPause,
-        unpause: mockSpaceMemberUnpause,
+        pause: () => {
+          spaceMember.paused = true;
+          mockSpaceMemberPause();
+        },
+        unpause: () => {
+          spaceMember.paused = false;
+          mockSpaceMemberUnpause();
+        },
         initializePosition: () => {
           spaceMember.positionInitialized = true;
           mockSpaceMemberInitializePosition();
@@ -176,29 +183,31 @@ describe('useSpaceMembersContext', () => {
   });
 
   describe('pauseSpaceMember', () => {
-    it('should pause space member', () => {
+    it('should pause space member when unpaused', () => {
       const { result } = renderHook(
         () => useSpaceMembersContext(),
         renderOptions
       );
 
       act(() => {
-        result.current.pauseSpaceMember(result.current.spaceMembers[0]);
+        result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
       });
 
       expect(mockSpaceMemberPause).toBeCalledTimes(1);
     });
-  });
 
-  describe('unpauseSpaceMember', () => {
-    it('should unpause space member', () => {
+    it('should unpause space member when paused', () => {
       const { result } = renderHook(
         () => useSpaceMembersContext(),
         renderOptions
       );
 
       act(() => {
-        result.current.unpauseSpaceMember(result.current.spaceMembers[0]);
+        result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
+      });
+
+      act(() => {
+        result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
       });
 
       expect(mockSpaceMemberUnpause).toBeCalledTimes(1);

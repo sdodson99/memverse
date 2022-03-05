@@ -12,6 +12,7 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
   const {
     spaceMembers: members,
     loadSpaceMember,
+    toggleSpaceMemberPaused,
     updateSpaceMembers,
   } = useSpaceMembersContext();
 
@@ -23,6 +24,7 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
       source={m.photoUrl}
       opacity={m.loaded ? 1 : 0} // Only visible once loaded
       onLoad={() => loadSpaceMember(m)}
+      onClick={() => toggleSpaceMemberPaused(m)}
     />
   ));
 

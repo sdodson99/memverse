@@ -44,12 +44,14 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     withSpaceMember(member.id, (m) => m.load());
   };
 
-  const pauseSpaceMember = (member: SpaceMember) => {
-    withSpaceMember(member.id, (m) => m.pause());
-  };
-
-  const unpauseSpaceMember = (member: SpaceMember) => {
-    withSpaceMember(member.id, (m) => m.unpause());
+  const toggleSpaceMemberPaused = (member: SpaceMember) => {
+    withSpaceMember(member.id, (m) => {
+      if (m.paused) {
+        m.unpause();
+      } else {
+        m.pause();
+      }
+    });
   };
 
   const updateSpaceMemberMessage = (memberId: string, message: string) => {
@@ -85,8 +87,7 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   return {
     spaceMembers,
     loadSpaceMember,
-    pauseSpaceMember,
-    unpauseSpaceMember,
+    toggleSpaceMemberPaused,
     updateSpaceMembers,
     updateSpaceMemberMessage,
   };
