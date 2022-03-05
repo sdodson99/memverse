@@ -213,4 +213,23 @@ describe('useSpaceMembersContext', () => {
       expect(mockSpaceMemberUnpause).toBeCalledTimes(1);
     });
   });
+
+  describe('setShowSpaceMemberDetails', () => {
+    it('should set show username and show message to target value', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.setShowSpaceMemberDetails(
+          result.current.spaceMembers[0],
+          true
+        );
+      });
+
+      expect(result.current.spaceMembers[0].showUsername).toBeTruthy();
+      expect(result.current.spaceMembers[0].showMessage).toBeTruthy();
+    });
+  });
 });

@@ -54,6 +54,13 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     });
   };
 
+  const setShowSpaceMemberDetails = (member: SpaceMember, show: boolean) => {
+    withSpaceMember(member.id, (m) => {
+      m.showUsername = show;
+      m.showMessage = show;
+    });
+  };
+
   const updateSpaceMemberMessage = (memberId: string, message: string) => {
     withSpaceMember(memberId, (m) => {
       m.message = message;
@@ -88,6 +95,7 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     spaceMembers,
     loadSpaceMember,
     toggleSpaceMemberPaused,
+    setShowSpaceMemberDetails,
     updateSpaceMembers,
     updateSpaceMemberMessage,
   };

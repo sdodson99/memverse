@@ -18,6 +18,7 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
     spaceMembers: members,
     loadSpaceMember,
     toggleSpaceMemberPaused,
+    setShowSpaceMemberDetails,
     updateSpaceMembers,
   } = useSpaceMembersContext();
 
@@ -39,7 +40,9 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
             fillColor="white"
             justification="center"
             content={m.username}
-          />
+          >
+            {m.username}
+          </PointText>
         )}
         {showMessage && (
           <PointText
@@ -48,7 +51,9 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
             fillColor="white"
             justification="center"
             content={m.message}
-          />
+          >
+            {m.message}
+          </PointText>
         )}
         <Raster
           size={{ height: m.height, width: m.width }}
@@ -56,6 +61,8 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
           source={m.photoUrl}
           onLoad={() => loadSpaceMember(m)}
           onClick={() => toggleSpaceMemberPaused(m)}
+          onMouseEnter={() => setShowSpaceMemberDetails(m, true)}
+          onMouseLeave={() => setShowSpaceMemberDetails(m, false)}
         />
       </Layer>
     );

@@ -29,9 +29,8 @@ const Login = ({}: LoginProps) => {
       await router.push('/');
     } catch (error) {
       setHasLoginError(true);
+      setIsLoggingIn(false);
     }
-
-    setIsLoggingIn(false);
   };
 
   return (
