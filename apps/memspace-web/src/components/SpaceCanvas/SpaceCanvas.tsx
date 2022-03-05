@@ -38,9 +38,8 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
             strokeColor="white"
             fillColor="white"
             justification="center"
-          >
-            {m.username}
-          </PointText>
+            content={m.username}
+          />
         )}
         {showMessage && (
           <PointText
@@ -48,9 +47,8 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
             strokeColor="white"
             fillColor="white"
             justification="center"
-          >
-            {m.message}
-          </PointText>
+            content={m.message}
+          />
         )}
         <Raster
           size={{ height: m.height, width: m.width }}
