@@ -143,4 +143,18 @@ describe('SpaceMember', () => {
       expect(clonedMember.id).toBe(member.id);
     });
   });
+
+  describe('paused', () => {
+    it('should return true when paused', () => {
+      member.pause();
+
+      expect(member.paused).toBeTruthy();
+    });
+
+    it('should return false when not paused', () => {
+      member.unpause();
+
+      expect(member.paused).toBeFalsy();
+    });
+  });
 });

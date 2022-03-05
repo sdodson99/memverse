@@ -22,6 +22,8 @@ describe('useSpaceMembersContext', () => {
   let mockSpaceMemberLoad: jest.Mock;
   let mockSpaceMemberUpdate: jest.Mock;
   let mockSpaceMemberInitializePosition: jest.Mock;
+  let mockSpaceMemberPause: jest.Mock;
+  let mockSpaceMemberUnpause: jest.Mock;
 
   beforeEach(() => {
     members = [
@@ -50,6 +52,8 @@ describe('useSpaceMembersContext', () => {
     mockSpaceMemberLoad = jest.fn();
     mockSpaceMemberUpdate = jest.fn();
     mockSpaceMemberInitializePosition = jest.fn();
+    mockSpaceMemberPause = jest.fn();
+    mockSpaceMemberUnpause = jest.fn();
 
     mockCreateSpaceMember.mockImplementation((m: Member) => {
       const spaceMember = {
@@ -57,6 +61,8 @@ describe('useSpaceMembersContext', () => {
         positionInitialized: false,
         load: mockSpaceMemberLoad,
         update: mockSpaceMemberUpdate,
+        pause: mockSpaceMemberPause,
+        unpause: mockSpaceMemberUnpause,
         initializePosition: () => {
           spaceMember.positionInitialized = true;
           mockSpaceMemberInitializePosition();
@@ -166,6 +172,36 @@ describe('useSpaceMembersContext', () => {
       });
 
       expect(result.current.spaceMembers[0].message).toBe('new message');
+    });
+  });
+
+  describe('pauseSpaceMember', () => {
+    it('should pause space member', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.pauseSpaceMember(result.current.spaceMembers[0]);
+      });
+
+      expect(mockSpaceMemberPause).toBeCalledTimes(1);
+    });
+  });
+
+  describe('unpauseSpaceMember', () => {
+    it('should unpause space member', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.unpauseSpaceMember(result.current.spaceMembers[0]);
+      });
+
+      expect(mockSpaceMemberUnpause).toBeCalledTimes(1);
     });
   });
 });

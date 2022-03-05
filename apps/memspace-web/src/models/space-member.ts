@@ -86,6 +86,10 @@ export class SpaceMember {
     return this._loaded;
   }
 
+  get paused() {
+    return this._paused;
+  }
+
   get positionInitialized() {
     return this._positionInitialized;
   }
