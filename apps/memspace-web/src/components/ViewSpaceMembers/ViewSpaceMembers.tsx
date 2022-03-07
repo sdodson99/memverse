@@ -1,14 +1,18 @@
 import React from 'react';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
+import { SpaceMember } from '../../models/space-member';
 import SpaceMemberListing from '../SpaceMemberListing/SpaceMemberListing';
 import styles from './ViewSpaceMembers.module.css';
 
 type ViewSpaceMembersProps = {};
 
 const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
-  const { spaceMembers } = useSpaceMembersContext();
+  const { spaceMembers, toggleSpaceMemberPaused } = useSpaceMembersContext();
 
   const membersCount = spaceMembers.length;
+
+  const handleTogglePause = (member: SpaceMember) =>
+    toggleSpaceMemberPaused(member);
 
   return (
     <div className={styles.viewSpaceMembers} data-testid="ViewSpaceMembers">
@@ -17,7 +21,11 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
         supporting the SingletonSean YouTube channel.
       </div>
       <div className={styles.listing}>
-        <SpaceMemberListing members={spaceMembers} />
+        <SpaceMemberListing
+          members={spaceMembers}
+          onPause={handleTogglePause}
+          onUnpause={handleTogglePause}
+        />
       </div>
     </div>
   );

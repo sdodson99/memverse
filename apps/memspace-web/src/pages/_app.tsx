@@ -1,5 +1,7 @@
 import '../styles/globals.css';
 import 'react-spring-bottom-sheet/dist/style.css';
+import '@szhsin/react-menu/dist/index.css';
+import '@szhsin/react-menu/dist/transitions/slide.css';
 import React, { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import { GApiProvider } from 'react-gapi-auth2';

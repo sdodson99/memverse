@@ -41,4 +41,30 @@ describe('<SpaceMemberListingItem />', () => {
 
     expect(message).toBeInTheDocument();
   });
+
+  it('should raise onPause when pause button clicked', () => {
+    props.paused = false;
+    props.onPause = jest.fn();
+    render(<SpaceMemberListingItem {...props} />);
+    const menuButton = screen.getByTestId('MenuButton');
+    menuButton.click();
+
+    const pauseButton = screen.getByText('Pause');
+    pauseButton.click();
+
+    expect(props.onPause).toBeCalled();
+  });
+
+  it('should raise onUnpause when unpause button clicked', () => {
+    props.paused = true;
+    props.onUnpause = jest.fn();
+    render(<SpaceMemberListingItem {...props} />);
+    const menuButton = screen.getByTestId('MenuButton');
+    menuButton.click();
+
+    const unpauseButton = screen.getByText('Unpause');
+    unpauseButton.click();
+
+    expect(props.onUnpause).toBeCalled();
+  });
 });

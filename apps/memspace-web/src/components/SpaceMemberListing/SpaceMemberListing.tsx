@@ -5,9 +5,15 @@ import styles from './SpaceMemberListing.module.css';
 
 type SpaceMemberListingProps = {
   members: SpaceMember[];
+  onPause?: (member: SpaceMember) => void;
+  onUnpause?: (member: SpaceMember) => void;
 };
 
-const SpaceMemberListing = ({ members }: SpaceMemberListingProps) => {
+const SpaceMemberListing = ({
+  members,
+  onPause,
+  onUnpause,
+}: SpaceMemberListingProps) => {
   const memberListingItems = members.map((m) => {
     return (
       <div key={m.id} className={styles.spaceMemberListingItem}>
@@ -15,6 +21,9 @@ const SpaceMemberListing = ({ members }: SpaceMemberListingProps) => {
           username={m.username}
           photoUrl={m.photoUrl}
           message={m.message}
+          paused={m.paused}
+          onPause={() => onPause?.(m)}
+          onUnpause={() => onUnpause?.(m)}
         />
       </div>
     );

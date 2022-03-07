@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@psychobolt/react-paperjs": "^1.0.3",
+    "@szhsin/react-menu": "^3.0.0",
     "axios": "^0.24.0",
     "constate": "^3.3.0",
     "firebase": "^9.6.6",

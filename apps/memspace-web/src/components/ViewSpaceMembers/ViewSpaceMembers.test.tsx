@@ -8,9 +8,13 @@ jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
 describe('<ViewSpaceMembers />', () => {
+  let mockToggleSpaceMemberPaused: jest.Mock;
+
   beforeEach(() => {
+    mockToggleSpaceMemberPaused = jest.fn();
     mockUseSpaceMembersContext.mockReturnValue({
       spaceMembers: [{ id: '1' }, { id: '2' }],
+      toggleSpaceMemberPaused: mockToggleSpaceMemberPaused,
     });
   });
 
@@ -32,5 +36,16 @@ describe('<ViewSpaceMembers />', () => {
     const membersListing = screen.getByTestId('SpaceMemberListing');
 
     expect(membersListing).toBeInTheDocument();
+  });
+
+  it('should toggle pause when space member paused', () => {
+    render(<ViewSpaceMembers />);
+    const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
+    firstMenuButton.click();
+
+    const pauseButton = screen.getByText('Pause');
+    pauseButton.click();
+
+    expect(mockToggleSpaceMemberPaused).toBeCalledWith({ id: '1' });
   });
 });
