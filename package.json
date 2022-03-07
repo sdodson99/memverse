@@ -1,8 +1,9 @@
 {
-  "name": "memverse",
+  "name": "root",
   "private": true,
   "scripts": {
-    "install": "lerna bootstrap",
+    "install": "lerna exec -- npm install",
+    "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
     "fix": "lerna run fix"
   },

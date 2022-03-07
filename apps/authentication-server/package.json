@@ -1,7 +1,7 @@
 {
   "name": "authentication-server",
   "version": "1.0.0",
-  "description": "Server for authentication Memverse users.",
+  "description": "Server for authenticating Memverse users.",
   "engines": {
     "node": "14"
   },

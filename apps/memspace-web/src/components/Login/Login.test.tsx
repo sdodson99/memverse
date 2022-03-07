@@ -61,10 +61,6 @@ describe('<Login />', () => {
 
         const loginButton = screen.getByTestId('YouTubeLoginButton');
         loginButton.click();
-
-        await waitForElementToBeRemoved(() =>
-          screen.queryByTestId('LoadingSpinner')
-        );
       });
 
       it('should login with YouTube access token', () => {
