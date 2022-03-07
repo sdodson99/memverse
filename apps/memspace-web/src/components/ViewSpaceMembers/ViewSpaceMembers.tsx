@@ -7,12 +7,18 @@ import styles from './ViewSpaceMembers.module.css';
 type ViewSpaceMembersProps = {};
 
 const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
-  const { spaceMembers, toggleSpaceMemberPaused } = useSpaceMembersContext();
+  const { spaceMembers, toggleSpaceMemberPaused, setShowSpaceMemberDetails } =
+    useSpaceMembersContext();
 
   const membersCount = spaceMembers.length;
 
   const handleTogglePause = (member: SpaceMember) =>
     toggleSpaceMemberPaused(member);
+
+  const handleShowDetails = (member: SpaceMember) =>
+    setShowSpaceMemberDetails(member, true);
+  const handleHideDetails = (member: SpaceMember) =>
+    setShowSpaceMemberDetails(member, false);
 
   return (
     <div className={styles.viewSpaceMembers} data-testid="ViewSpaceMembers">
@@ -25,6 +31,8 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
           members={spaceMembers}
           onPause={handleTogglePause}
           onUnpause={handleTogglePause}
+          onShowDetails={handleShowDetails}
+          onHideDetails={handleHideDetails}
         />
       </div>
     </div>

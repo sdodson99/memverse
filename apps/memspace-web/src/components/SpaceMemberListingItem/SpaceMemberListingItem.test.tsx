@@ -42,29 +42,57 @@ describe('<SpaceMemberListingItem />', () => {
     expect(message).toBeInTheDocument();
   });
 
-  it('should raise onPause when pause button clicked', () => {
-    props.paused = false;
-    props.onPause = jest.fn();
-    render(<SpaceMemberListingItem {...props} />);
-    const menuButton = screen.getByTestId('MenuButton');
-    menuButton.click();
+  describe('menu', () => {
+    it('should raise onPause when pause button clicked', () => {
+      props.paused = false;
+      props.onPause = jest.fn();
+      render(<SpaceMemberListingItem {...props} />);
+      const menuButton = screen.getByTestId('MenuButton');
+      menuButton.click();
 
-    const pauseButton = screen.getByText('Pause');
-    pauseButton.click();
+      const pauseButton = screen.getByText('Pause');
+      pauseButton.click();
 
-    expect(props.onPause).toBeCalled();
-  });
+      expect(props.onPause).toBeCalled();
+    });
 
-  it('should raise onUnpause when unpause button clicked', () => {
-    props.paused = true;
-    props.onUnpause = jest.fn();
-    render(<SpaceMemberListingItem {...props} />);
-    const menuButton = screen.getByTestId('MenuButton');
-    menuButton.click();
+    it('should raise onUnpause when unpause button clicked', () => {
+      props.paused = true;
+      props.onUnpause = jest.fn();
+      render(<SpaceMemberListingItem {...props} />);
+      const menuButton = screen.getByTestId('MenuButton');
+      menuButton.click();
 
-    const unpauseButton = screen.getByText('Unpause');
-    unpauseButton.click();
+      const unpauseButton = screen.getByText('Unpause');
+      unpauseButton.click();
 
-    expect(props.onUnpause).toBeCalled();
+      expect(props.onUnpause).toBeCalled();
+    });
+
+    it('should raise onShowDetails when show details button clicked', () => {
+      props.isShowingDetails = false;
+      props.onShowDetails = jest.fn();
+      render(<SpaceMemberListingItem {...props} />);
+      const menuButton = screen.getByTestId('MenuButton');
+      menuButton.click();
+
+      const showDetailsButton = screen.getByText('Show Details');
+      showDetailsButton.click();
+
+      expect(props.onShowDetails).toBeCalled();
+    });
+
+    it('should raise onHideDetails when hide details button clicked', () => {
+      props.isShowingDetails = true;
+      props.onHideDetails = jest.fn();
+      render(<SpaceMemberListingItem {...props} />);
+      const menuButton = screen.getByTestId('MenuButton');
+      menuButton.click();
+
+      const hideDetailsButton = screen.getByText('Hide Details');
+      hideDetailsButton.click();
+
+      expect(props.onHideDetails).toBeCalled();
+    });
   });
 });

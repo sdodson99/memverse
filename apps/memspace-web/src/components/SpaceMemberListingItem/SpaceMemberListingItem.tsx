@@ -9,6 +9,9 @@ export type SpaceMemberListingItemProps = {
   paused?: boolean;
   onPause?: () => void;
   onUnpause?: () => void;
+  isShowingDetails?: boolean;
+  onShowDetails?: () => void;
+  onHideDetails?: () => void;
 };
 
 const SpaceMemberListingItem = ({
@@ -18,6 +21,9 @@ const SpaceMemberListingItem = ({
   paused,
   onPause,
   onUnpause,
+  isShowingDetails,
+  onShowDetails,
+  onHideDetails,
 }: SpaceMemberListingItemProps) => (
   <div
     className={styles.spaceMemberListingItem}
@@ -31,6 +37,13 @@ const SpaceMemberListingItem = ({
     <Menu menuButton={<MenuButton data-testid="MenuButton">···</MenuButton>}>
       {!paused && <MenuItem onClick={() => onPause?.()}>Pause</MenuItem>}
       {paused && <MenuItem onClick={() => onUnpause?.()}>Unpause</MenuItem>}
+
+      {!isShowingDetails && (
+        <MenuItem onClick={() => onShowDetails?.()}>Show Details</MenuItem>
+      )}
+      {isShowingDetails && (
+        <MenuItem onClick={() => onHideDetails?.()}>Hide Details</MenuItem>
+      )}
     </Menu>
   </div>
 );

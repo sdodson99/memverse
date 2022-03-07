@@ -7,12 +7,16 @@ type SpaceMemberListingProps = {
   members: SpaceMember[];
   onPause?: (member: SpaceMember) => void;
   onUnpause?: (member: SpaceMember) => void;
+  onShowDetails?: (member: SpaceMember) => void;
+  onHideDetails?: (member: SpaceMember) => void;
 };
 
 const SpaceMemberListing = ({
   members,
   onPause,
   onUnpause,
+  onShowDetails,
+  onHideDetails,
 }: SpaceMemberListingProps) => {
   const memberListingItems = members.map((m) => {
     return (
@@ -24,6 +28,9 @@ const SpaceMemberListing = ({
           paused={m.paused}
           onPause={() => onPause?.(m)}
           onUnpause={() => onUnpause?.(m)}
+          isShowingDetails={m.showUsername || m.showMessage}
+          onShowDetails={() => onShowDetails?.(m)}
+          onHideDetails={() => onHideDetails?.(m)}
         />
       </div>
     );
