@@ -42,7 +42,7 @@ export const createAccountRouter = () => {
     authenticate,
     celebrate({
       [Segments.BODY]: Joi.object().keys({
-        content: Joi.string().required().max(100),
+        content: Joi.string().allow('', null).max(100),
       }),
     }),
     async (req, res) => {

@@ -85,9 +85,7 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
             errorMessage={errors.message?.message}
             maxLength={100}
             autoComplete="off"
-            {...register('message', {
-              required: 'Required',
-            })}
+            {...register('message')}
           />
           <div className={styles.submitRow}>
             <Button disabled={!canSubmit}>Update</Button>
