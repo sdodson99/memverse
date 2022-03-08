@@ -19,6 +19,13 @@ const mockUseYouTubeLogin = useYouTubeLogin as jest.Mock;
 const mockUseRouter = useRouter as jest.Mock;
 
 describe('<Login />', () => {
+  let mockYouTubeLogin: jest.Mock;
+
+  beforeEach(() => {
+    mockYouTubeLogin = jest.fn();
+    mockUseYouTubeLogin.mockReturnValue({ login: mockYouTubeLogin });
+  });
+
   afterEach(() => {
     mockUseLogin.mockReset();
     mockUseYouTubeLogin.mockReset();
@@ -34,13 +41,9 @@ describe('<Login />', () => {
   });
 
   describe('on login click', () => {
-    let mockYouTubeLogin: jest.Mock;
     let mockLogin: jest.Mock;
 
     beforeEach(() => {
-      mockYouTubeLogin = jest.fn();
-      mockUseYouTubeLogin.mockReturnValue(mockYouTubeLogin);
-
       mockLogin = jest.fn();
       mockUseLogin.mockReturnValue(mockLogin);
     });
@@ -92,6 +95,26 @@ describe('<Login />', () => {
 
         expect(errorMessage).toBeInTheDocument();
       });
+    });
+  });
+
+  describe('YouTube login initializing', () => {
+    it('should render login button when not initializing', () => {
+      mockUseYouTubeLogin.mockReturnValue({ isInitializing: false });
+      render(<Login />);
+
+      const loginButton = screen.queryByTestId('YouTubeLoginButton');
+
+      expect(loginButton).toBeInTheDocument();
+    });
+
+    it('should not render login button when initializing', () => {
+      mockUseYouTubeLogin.mockReturnValue({ isInitializing: true });
+      render(<Login />);
+
+      const loginButton = screen.queryByTestId('YouTubeLoginButton');
+
+      expect(loginButton).not.toBeInTheDocument();
     });
   });
 });

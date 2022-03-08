@@ -5,9 +5,8 @@ jest.mock('react-gapi-auth2');
 const mockUseGoogleAuth = useGoogleAuth as jest.Mock;
 
 describe('useYouTubeLogin', () => {
-  let youTubeLogin: () => Promise<string>;
-
   let mockGetAuthResponse: jest.Mock;
+  let mockGoogleAuth: any;
 
   let accessToken: string;
 
@@ -15,36 +14,56 @@ describe('useYouTubeLogin', () => {
     accessToken = '123';
 
     mockGetAuthResponse = jest.fn();
-    mockUseGoogleAuth.mockReturnValue({
+
+    mockGoogleAuth = {
       googleAuth: {
         signIn: () => ({
           getAuthResponse: mockGetAuthResponse,
         }),
       },
-    });
-
-    youTubeLogin = useYouTubeLogin();
+    };
+    mockUseGoogleAuth.mockReturnValue(mockGoogleAuth);
   });
 
   afterEach(() => {
     mockUseGoogleAuth.mockReset();
   });
 
-  it('should return access token when successful', async () => {
-    mockGetAuthResponse.mockReturnValue({
-      access_token: accessToken,
+  describe('login', () => {
+    it('should return access token when successful', async () => {
+      mockGetAuthResponse.mockReturnValue({
+        access_token: accessToken,
+      });
+      const { login } = useYouTubeLogin();
+
+      const actualAccessToken = await login();
+
+      expect(actualAccessToken).toBe(accessToken);
     });
 
-    const actualAccessToken = await youTubeLogin();
+    it('should throw error when no access token returned', async () => {
+      mockGetAuthResponse.mockReturnValue({
+        access_token: null,
+      });
+      const { login } = useYouTubeLogin();
 
-    expect(actualAccessToken).toBe(accessToken);
+      await expect(async () => await login()).rejects.toThrow();
+    });
   });
 
-  it('should throw error when no access token returned', async () => {
-    mockGetAuthResponse.mockReturnValue({
-      access_token: null,
+  describe('isInitializing', () => {
+    it('should return true when initializing', () => {
+      mockGoogleAuth.googleAuth = null;
+
+      const { isInitializing } = useYouTubeLogin();
+
+      expect(isInitializing).toBeTruthy();
     });
 
-    await expect(async () => await youTubeLogin()).rejects.toThrow();
+    it('should return false when initialized', () => {
+      const { isInitializing } = useYouTubeLogin();
+
+      expect(isInitializing).toBeFalsy();
+    });
   });
 });

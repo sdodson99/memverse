@@ -13,7 +13,8 @@ const Login = ({}: LoginProps) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [hasLoginError, setHasLoginError] = useState(false);
 
-  const youTubeLogin = useYouTubeLogin();
+  const { login: youTubeLogin, isInitializing: isYouTubeLoginInitializing } =
+    useYouTubeLogin();
   const login = useLogin();
   const router = useRouter();
 
@@ -48,7 +49,7 @@ const Login = ({}: LoginProps) => {
         in order to successfully login.
       </div>
 
-      {!isLoggingIn && (
+      {!isLoggingIn && !isYouTubeLoginInitializing && (
         <div>
           <div className={styles.loginButton}>
             <YouTubeLoginButton onClick={handleLoginClick} />
@@ -72,7 +73,7 @@ const Login = ({}: LoginProps) => {
         </div>
       )}
 
-      {isLoggingIn && (
+      {(isLoggingIn || isYouTubeLoginInitializing) && (
         <div className={styles.loadingSpinner}>
           <LoadingSpinner size={75} />
         </div>

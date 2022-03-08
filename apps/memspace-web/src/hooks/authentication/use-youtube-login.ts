@@ -16,5 +16,7 @@ export const useYouTubeLogin = () => {
     return accessToken;
   };
 
-  return youTubeLogin;
+  const isInitializing = auth.googleAuth === null;
+
+  return { login: youTubeLogin, isInitializing };
 };
