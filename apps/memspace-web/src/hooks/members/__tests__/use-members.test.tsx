@@ -1,5 +1,7 @@
-import { renderHook } from '@testing-library/react-hooks';
+import React from 'react';
+import { renderHook, WrapperComponent } from '@testing-library/react-hooks';
 import { useMembers } from '../use-members';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 import { waitFor } from '@testing-library/react';
 import { when } from 'jest-when';
@@ -8,8 +10,28 @@ jest.mock('axios');
 const mockAxiosGet = axios.get as jest.Mock;
 
 describe('useMembers', () => {
+  let wrapper: WrapperComponent<unknown>;
+
   beforeEach(() => {
     mockAxiosGet.mockReturnValue({ data: [] });
+
+    wrapper = function Wrapper({ children }) {
+      return (
+        <QueryClientProvider
+          client={
+            new QueryClient({
+              defaultOptions: {
+                queries: {
+                  retry: false,
+                },
+              },
+            })
+          }
+        >
+          {children}
+        </QueryClientProvider>
+      );
+    };
   });
 
   afterEach(() => {
@@ -22,7 +44,7 @@ describe('useMembers', () => {
       .calledWith(`${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/members`)
       .mockReturnValue({ data: expectedMembers });
 
-    const { result } = renderHook(() => useMembers());
+    const { result } = renderHook(() => useMembers(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.members).toEqual(expectedMembers);
@@ -39,7 +61,7 @@ describe('useMembers', () => {
         throw error;
       });
 
-    const { result } = renderHook(() => useMembers());
+    const { result } = renderHook(() => useMembers(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.error).toBe(error);
@@ -49,7 +71,7 @@ describe('useMembers', () => {
   });
 
   it('should transition loading states', async () => {
-    const { result } = renderHook(() => useMembers());
+    const { result } = renderHook(() => useMembers(), { wrapper });
 
     expect(result.current.loading).toBeTruthy();
     await waitFor(() => {
