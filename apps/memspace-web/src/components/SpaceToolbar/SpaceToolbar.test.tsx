@@ -6,6 +6,7 @@ import { useSpaceMembersContext } from '../../hooks/space/use-space-members-cont
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { AccessTokenProvider } from '../../hooks/authentication/use-access-token-context';
 import { useAccountContext } from '../../hooks/authentication/use-account-context';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
@@ -52,7 +53,17 @@ describe('<SpaceToolbar />', () => {
     });
 
     it('should open update message sheet when update message button clicked', () => {
-      render(<SpaceToolbar />, { wrapper: AccessTokenProvider });
+      render(<SpaceToolbar />, {
+        wrapper: ({ children }) => {
+          return (
+            <AccessTokenProvider>
+              <QueryClientProvider client={new QueryClient()}>
+                {children}
+              </QueryClientProvider>
+            </AccessTokenProvider>
+          );
+        },
+      });
       const updateMessageButton = screen.getByText('✏️');
 
       updateMessageButton.click();
