@@ -1,4 +1,6 @@
-import { renderHook } from '@testing-library/react-hooks';
+import React from 'react';
+import { renderHook, WrapperComponent } from '@testing-library/react-hooks';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { useAccessTokenContext } from '../../authentication/use-access-token-context';
 import { useMemberMessage } from '../use-member-message';
 import axios from 'axios';
@@ -13,10 +15,29 @@ const mockAxiosGet = axios.get as jest.Mock;
 
 describe('useMemberMessage', () => {
   let token: string;
+  let wrapper: WrapperComponent<unknown>;
 
   beforeEach(() => {
     token = '123';
     mockUseAccessTokenContext.mockReturnValue({ token });
+
+    wrapper = function Wrapper({ children }) {
+      return (
+        <QueryClientProvider
+          client={
+            new QueryClient({
+              defaultOptions: {
+                queries: {
+                  retry: false,
+                },
+              },
+            })
+          }
+        >
+          {children}
+        </QueryClientProvider>
+      );
+    };
   });
 
   afterEach(() => {
@@ -37,7 +58,7 @@ describe('useMemberMessage', () => {
       )
       .mockReturnValue({ data: { content: expectedMessage } });
 
-    const { result } = renderHook(() => useMemberMessage());
+    const { result } = renderHook(() => useMemberMessage(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.message).toBe(expectedMessage);
@@ -56,7 +77,7 @@ describe('useMemberMessage', () => {
       )
       .mockReturnValue({ data: {} });
 
-    const { result } = renderHook(() => useMemberMessage());
+    const { result } = renderHook(() => useMemberMessage(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.message).toBe('');
@@ -78,7 +99,7 @@ describe('useMemberMessage', () => {
         throw expectedError;
       });
 
-    const { result } = renderHook(() => useMemberMessage());
+    const { result } = renderHook(() => useMemberMessage(), { wrapper });
 
     await waitFor(() => {
       expect(result.current.error).toBe(expectedError);
