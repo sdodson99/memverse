@@ -53,7 +53,10 @@ describe('<ViewSpaceMembers />', () => {
     const pauseButton = screen.getByText('Pause');
     pauseButton.click();
 
-    expect(mockToggleSpaceMemberPaused).toBeCalledWith({ id: '1' });
+    expect(mockToggleSpaceMemberPaused).toBeCalledWith({
+      id: '1',
+      username: 'user1',
+    });
   });
 
   it('should show details when space member details requested to be shown', () => {
@@ -64,7 +67,10 @@ describe('<ViewSpaceMembers />', () => {
     const showDetailsButton = screen.getByText('Show Details');
     showDetailsButton.click();
 
-    expect(mockSetShowSpaceMemberDetails).toBeCalledWith({ id: '1' }, true);
+    expect(mockSetShowSpaceMemberDetails).toBeCalledWith(
+      { id: '1', username: 'user1' },
+      true
+    );
   });
 
   describe('with filtering', () => {
