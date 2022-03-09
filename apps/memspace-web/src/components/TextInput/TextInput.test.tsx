@@ -4,12 +4,18 @@ import '@testing-library/jest-dom/extend-expect';
 import TextInput, { TextInputProps } from './TextInput';
 
 describe('<TextInput />', () => {
-  let props: TextInputProps;
+  let props: Pick<
+    TextInputProps,
+    | 'label'
+    | 'errorMessage'
+    | 'key'
+    | keyof React.InputHTMLAttributes<HTMLInputElement>
+  > &
+    React.RefAttributes<HTMLInputElement>;
 
   beforeEach(() => {
     props = {
       name: 'name',
-      label: 'label',
     };
   });
 
@@ -28,5 +34,14 @@ describe('<TextInput />', () => {
     const error = screen.getByText('Error message');
 
     expect(error).toBeInTheDocument();
+  });
+
+  it('should render label when label provided', () => {
+    props.label = 'Label';
+    render(<TextInput {...props} />);
+
+    const label = screen.getByText('Label');
+
+    expect(label).toBeInTheDocument();
   });
 });

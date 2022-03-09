@@ -4,7 +4,7 @@ import styles from './TextInput.module.css';
 
 export type TextInputProps = {
   name: string;
-  label: string;
+  label?: string;
   errorMessage?: string;
 } & React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -28,7 +28,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
 
     return (
       <div className={styles.textInput} data-testid="TextInput">
-        <label htmlFor={name}>{label}</label>
+        {label && <label htmlFor={name}>{label}</label>}
 
         <input
           id={name}

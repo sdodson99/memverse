@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ViewSpaceMembers from './ViewSpaceMembers';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
@@ -16,7 +16,10 @@ describe('<ViewSpaceMembers />', () => {
     mockSetShowSpaceMemberDetails = jest.fn();
 
     mockUseSpaceMembersContext.mockReturnValue({
-      spaceMembers: [{ id: '1' }, { id: '2' }],
+      spaceMembers: [
+        { id: '1', username: 'user1' },
+        { id: '2', username: 'user2' },
+      ],
       toggleSpaceMemberPaused: mockToggleSpaceMemberPaused,
       setShowSpaceMemberDetails: mockSetShowSpaceMemberDetails,
     });
@@ -62,5 +65,39 @@ describe('<ViewSpaceMembers />', () => {
     showDetailsButton.click();
 
     expect(mockSetShowSpaceMemberDetails).toBeCalledWith({ id: '1' }, true);
+  });
+
+  describe('with filtering', () => {
+    it('should only render members that pass filter', () => {
+      render(<ViewSpaceMembers />);
+      const filterInput = screen.getByPlaceholderText('Filter members');
+
+      fireEvent.change(filterInput, {
+        target: {
+          value: 'user1',
+        },
+      });
+      const user1 = screen.queryByText('user1');
+      const user2 = screen.queryByText('user2');
+
+      expect(user1).toBeInTheDocument();
+      expect(user2).not.toBeInTheDocument();
+    });
+
+    it('should render fallback message when all members filtered', () => {
+      render(<ViewSpaceMembers />);
+      const filterInput = screen.getByPlaceholderText('Filter members');
+
+      fireEvent.change(filterInput, {
+        target: {
+          value: 'random filter',
+        },
+      });
+      const fallbackMessage = screen.queryByText(
+        "No members found that match the filter 'random filter'."
+      );
+
+      expect(fallbackMessage).toBeInTheDocument();
+    });
   });
 });

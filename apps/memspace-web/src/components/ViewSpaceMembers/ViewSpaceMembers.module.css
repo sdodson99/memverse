@@ -1,6 +1,7 @@
 .viewSpaceMembers {
 }
 
-.listing {
-  margin-top: 1rem;
+.listing,
+.filter {
+  margin-top: 1.5rem;
 }
