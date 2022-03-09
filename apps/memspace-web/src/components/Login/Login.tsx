@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useLogin } from '../../hooks/authentication/use-login';
+import { NonMemberError, useLogin } from '../../hooks/authentication/use-login';
 import { useYouTubeLogin } from '../../hooks/authentication/use-youtube-login';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
@@ -9,9 +9,11 @@ import styles from './Login.module.css';
 
 type LoginProps = {};
 
+type LoginError = 'NON_MEMBER' | 'UNKNOWN';
+
 const Login = ({}: LoginProps) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [hasLoginError, setHasLoginError] = useState(false);
+  const [loginError, setLoginError] = useState<LoginError>();
 
   const { login: youTubeLogin, isInitializing: isYouTubeLoginInitializing } =
     useYouTubeLogin();
@@ -19,7 +21,7 @@ const Login = ({}: LoginProps) => {
   const router = useRouter();
 
   const handleLoginClick = async () => {
-    setHasLoginError(false);
+    setLoginError(undefined);
     setIsLoggingIn(true);
 
     try {
@@ -29,8 +31,13 @@ const Login = ({}: LoginProps) => {
 
       await router.push('/');
     } catch (error) {
-      setHasLoginError(true);
       setIsLoggingIn(false);
+
+      if (error instanceof NonMemberError) {
+        setLoginError('NON_MEMBER');
+      } else {
+        setLoginError('UNKNOWN');
+      }
     }
   };
 
@@ -55,18 +62,32 @@ const Login = ({}: LoginProps) => {
             <YouTubeLoginButton onClick={handleLoginClick} />
           </div>
 
-          {hasLoginError && (
-            <div className={styles.error} data-testid="LoginErrorMessage">
+          {loginError === 'NON_MEMBER' && (
+            <div
+              className={styles.error}
+              data-testid="NonMemberLoginErrorMessage"
+            >
               <ErrorMessage>
-                Failed to login. Please ensure you are a{' '}
+                You are not a SingletonSean YouTube member.{' '}
                 <a
                   href="https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg/join"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  SingletonSean YouTube member
+                  Become a member
                 </a>{' '}
-                or try again later.
+                in order to login.
+              </ErrorMessage>
+            </div>
+          )}
+
+          {loginError === 'UNKNOWN' && (
+            <div
+              className={styles.error}
+              data-testid="UnknownLoginErrorMessage"
+            >
+              <ErrorMessage>
+                Failed to login. Please try again later.
               </ErrorMessage>
             </div>
           )}

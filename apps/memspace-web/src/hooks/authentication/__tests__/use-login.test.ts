@@ -1,5 +1,5 @@
 import { useAccessTokenContext } from '../use-access-token-context';
-import { useLogin } from '../use-login';
+import { NonMemberError, useLogin } from '../use-login';
 import axios from 'axios';
 import { when } from 'jest-when';
 
@@ -8,6 +8,7 @@ const mockUseAccessTokenContext = useAccessTokenContext as jest.Mock;
 
 jest.mock('axios');
 const mockAxiosPost = axios.post as jest.Mock;
+const mockIsAxiosError = axios.isAxiosError as unknown as jest.Mock;
 
 describe('useLogin', () => {
   let mockSetAccessToken: jest.Mock;
@@ -23,6 +24,7 @@ describe('useLogin', () => {
   afterEach(() => {
     mockUseAccessTokenContext.mockReset();
     mockAxiosPost.mockReset();
+    mockIsAxiosError.mockReset();
   });
 
   describe('login', () => {
@@ -65,6 +67,28 @@ describe('useLogin', () => {
       const login = useLogin();
 
       await expect(login(token)).rejects.toThrow();
+    });
+
+    it('should throw NonMemberError if request fails with 403 status code', async () => {
+      mockIsAxiosError.mockReturnValue(true);
+      when(mockAxiosPost)
+        .calledWith(
+          `${process.env.NEXT_PUBLIC_AUTHENTICATION_SERVER_BASE_URL}/login`,
+          {
+            accessToken: token,
+          }
+        )
+        .mockImplementation(() => {
+          // eslint-disable-next-line no-throw-literal
+          throw {
+            response: {
+              status: 403,
+            },
+          };
+        });
+      const login = useLogin();
+
+      await expect(login(token)).rejects.toThrow(NonMemberError);
     });
   });
 });

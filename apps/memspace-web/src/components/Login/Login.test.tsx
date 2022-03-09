@@ -6,7 +6,7 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Login from './Login';
-import { useLogin } from '../../hooks/authentication/use-login';
+import { NonMemberError, useLogin } from '../../hooks/authentication/use-login';
 import { useYouTubeLogin } from '../../hooks/authentication/use-youtube-login';
 import { useRouter } from 'next/router';
 
@@ -76,11 +76,7 @@ describe('<Login />', () => {
     });
 
     describe('with failed login', () => {
-      beforeEach(async () => {
-        mockLogin.mockImplementation(() => {
-          throw new Error();
-        });
-
+      const login = async () => {
         render(<Login />);
         const loginButton = screen.getByTestId('YouTubeLoginButton');
         loginButton.click();
@@ -88,10 +84,26 @@ describe('<Login />', () => {
         await waitForElementToBeRemoved(() =>
           screen.queryByTestId('LoadingSpinner')
         );
+      };
+
+      it('should display error message for NonMemberError', async () => {
+        mockLogin.mockImplementation(() => {
+          throw new NonMemberError();
+        });
+        await login();
+
+        const errorMessage = screen.getByTestId('NonMemberLoginErrorMessage');
+
+        expect(errorMessage).toBeInTheDocument();
       });
 
-      it('should display error message', () => {
-        const errorMessage = screen.getByTestId('LoginErrorMessage');
+      it('should display error message for unknown error', async () => {
+        mockLogin.mockImplementation(() => {
+          throw new Error();
+        });
+        await login();
+
+        const errorMessage = screen.getByTestId('UnknownLoginErrorMessage');
 
         expect(errorMessage).toBeInTheDocument();
       });
