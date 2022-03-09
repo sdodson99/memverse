@@ -54,7 +54,7 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
       <BottomSheet
         open={currentSheet === 'UPDATE_MEMBER_MESSAGE'}
         header="Message"
-        snapPoints={({ maxHeight }) => maxHeight * 0.4}
+        maxHeight={500}
         onDismiss={handleSheetDismiss}
         className={styles.sheet}
       >

@@ -44,17 +44,16 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
             {m.username}
           </PointText>
         )}
-        {showMessage && (
-          <PointText
-            position={{ x: m.x, y: m.y - 35 }}
-            strokeColor="white"
-            fillColor="white"
-            justification="center"
-            content={m.message}
-          >
-            {m.message}
-          </PointText>
-        )}
+        <PointText
+          position={{ x: m.x, y: m.y - 35 }}
+          strokeColor="white"
+          fillColor="white"
+          justification="center"
+          content={m.message}
+          opacity={m.showMessage ? 1 : 0} // Use opacity instead of conditional rendering to fix message update crash.
+        >
+          {m.message}
+        </PointText>
         <Raster
           size={{ height: m.height, width: m.width }}
           position={{ x: m.x, y: m.y }}
