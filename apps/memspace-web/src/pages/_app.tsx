@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { AccountProvider } from '../hooks/authentication/use-account-context';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const googleClientConfig = {
   client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
@@ -28,6 +29,8 @@ const firebaseConfig = {
   measurementId: 'G-R4HBRGPMS3',
 };
 
+const queryClient = new QueryClient();
+
 function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     initializeApp(firebaseConfig);
@@ -37,12 +40,14 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <GApiProvider clientConfig={googleClientConfig}>
       <AccessTokenProvider>
-        <AccountProvider>
-          <Head>
-            <title>Memspace</title>
-          </Head>
-          <Component {...pageProps} />
-        </AccountProvider>
+        <QueryClientProvider client={queryClient}>
+          <AccountProvider>
+            <Head>
+              <title>Memspace</title>
+            </Head>
+            <Component {...pageProps} />
+          </AccountProvider>
+        </QueryClientProvider>
       </AccessTokenProvider>
     </GApiProvider>
   );
