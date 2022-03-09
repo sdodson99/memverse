@@ -1,7 +1,9 @@
+import React from 'react';
 import { waitFor } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, WrapperComponent } from '@testing-library/react-hooks';
 import { useAccessTokenContext } from '../use-access-token-context';
 import { AccountProvider, useAccountContext } from '../use-account-context';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { useIsLoggedIn } from '../use-is-logged-in';
 import axios from 'axios';
 import { when } from 'jest-when';
@@ -15,6 +17,7 @@ const mockAxiosGet = axios.get as jest.Mock;
 
 describe('useAccount', () => {
   let token: string;
+  let wrapper: WrapperComponent<unknown>;
 
   beforeEach(() => {
     token = 'token';
@@ -22,6 +25,23 @@ describe('useAccount', () => {
       token,
     });
     mockUseIsLoggedIn.mockReturnValue(false);
+    wrapper = function Wrapper({ children }) {
+      return (
+        <QueryClientProvider
+          client={
+            new QueryClient({
+              defaultOptions: {
+                queries: {
+                  retry: false,
+                },
+              },
+            })
+          }
+        >
+          <AccountProvider>{children}</AccountProvider>
+        </QueryClientProvider>
+      );
+    };
   });
 
   afterEach(() => {
@@ -32,7 +52,7 @@ describe('useAccount', () => {
 
   it('should return null account when not logged in', async () => {
     const { result } = renderHook(() => useAccountContext(), {
-      wrapper: AccountProvider,
+      wrapper,
     });
 
     await waitFor(() => {
@@ -57,7 +77,7 @@ describe('useAccount', () => {
       .mockReturnValue({ data: expected });
 
     const { result } = renderHook(() => useAccountContext(), {
-      wrapper: AccountProvider,
+      wrapper,
     });
 
     await waitFor(() => {
@@ -82,7 +102,7 @@ describe('useAccount', () => {
       });
 
     const { result } = renderHook(() => useAccountContext(), {
-      wrapper: AccountProvider,
+      wrapper,
     });
 
     await waitFor(() => {

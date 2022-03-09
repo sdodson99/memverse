@@ -11,6 +11,7 @@ module.exports = {
   setupFilesAfterEnv: [
     '<rootDir>/src/test-utils/setup-match-media.ts',
     '<rootDir>/src/test-utils/setup-router.ts',
+    '<rootDir>/src/test-utils/setup-react-query.ts',
   ],
   testEnvironment: 'jest-environment-jsdom',
   clearMocks: true,

@@ -1,48 +1,34 @@
-import { useEffect, useState } from 'react';
 import { Account } from '../../models/account';
 import { useAccessTokenContext } from './use-access-token-context';
 import { useIsLoggedIn } from './use-is-logged-in';
 import axios from 'axios';
 import constate from 'constate';
+import { useQuery } from 'react-query';
 
 const useAccount = () => {
-  const [account, setAccount] = useState<Account | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
   const { token } = useAccessTokenContext();
   const isLoggedIn = useIsLoggedIn();
 
-  useEffect(() => {
+  const {
+    data: account,
+    error,
+    isLoading: loading,
+  } = useQuery(['account', { token, isLoggedIn }], async () => {
     if (!isLoggedIn) {
-      return setAccount(null);
+      return null;
     }
 
-    async function fetchAccount() {
-      setLoading(true);
-      setError(null);
-      setAccount(null);
-
-      try {
-        const { data } = await axios.get<Account>(
-          `${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/account`,
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setAccount(data);
-      } catch (error: any) {
-        setError(error);
+    const { data } = await axios.get<Account>(
+      `${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/account`,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      setLoading(false);
-    }
-
-    fetchAccount();
-  }, [token, isLoggedIn]);
+    return data;
+  });
 
   return {
     account,
