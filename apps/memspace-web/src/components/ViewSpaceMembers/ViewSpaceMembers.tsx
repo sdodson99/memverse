@@ -43,6 +43,7 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
           placeholder="Filter members"
           value={filter}
           onChange={handleFilterChange}
+          autoComplete="off"
         />
       </div>
 
