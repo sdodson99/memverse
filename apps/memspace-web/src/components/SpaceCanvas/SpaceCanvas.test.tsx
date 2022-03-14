@@ -7,15 +7,17 @@ import { useSpaceMembersContext } from '../../hooks/space/use-space-members-cont
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
+jest.mock('@psychobolt/react-paperjs');
+
 describe('<SpaceCanvas />', () => {
   beforeEach(() => {
-    mockUseSpaceMembersContext.mockReturnValue({ spaceMembers: [] });
+    mockUseSpaceMembersContext.mockReturnValue({ spaceMembers: [{ id: '1' }] });
   });
 
   it('should mount', () => {
     render(<SpaceCanvas />);
 
-    const spaceCanvas = screen.getByTestId('SpaceCanvas');
+    const spaceCanvas = screen.getByTestId('PaperContainer');
 
     expect(spaceCanvas).toBeInTheDocument();
   });
