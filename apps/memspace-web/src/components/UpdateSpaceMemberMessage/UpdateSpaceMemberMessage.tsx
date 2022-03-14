@@ -29,7 +29,7 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
     handleSubmit,
     setValue,
     reset,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting, isDirty, isSubmitted },
   } = useForm<UpdateSpaceMemberMessageFieldVaues>({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -56,10 +56,11 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
       updateSpaceMemberMessage(account.id, message);
     }
 
-    reset({}, { keepValues: true });
+    reset({}, { keepValues: true, keepIsSubmitted: true });
   };
 
   const canSubmit = !isSubmitting && isDirty;
+  const showSubmitResult = isSubmitted && !isSubmitting;
 
   return (
     <div
@@ -97,12 +98,21 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
             )}
           </div>
 
-          {submitError && (
-            <div className={styles.errorMessage}>
-              <ErrorMessage>
-                Failed to update message. Please try again later.
-              </ErrorMessage>
-            </div>
+          {showSubmitResult && (
+            <>
+              {submitError && (
+                <div className={styles.errorMessage}>
+                  <ErrorMessage>
+                    Failed to update message. Please try again later.
+                  </ErrorMessage>
+                </div>
+              )}
+              {!submitError && (
+                <div className={styles.successMessage}>
+                  Successfully updated message.
+                </div>
+              )}
+            </>
           )}
         </form>
       )}

@@ -13,6 +13,12 @@
   margin-left: 1rem;
 }
 
-.errorMessage {
+.errorMessage,
+.successMessage {
   margin-top: 1.5rem;
+}
+
+.successMessage {
+  font-size: 0.8rem;
+  color: green;
 }

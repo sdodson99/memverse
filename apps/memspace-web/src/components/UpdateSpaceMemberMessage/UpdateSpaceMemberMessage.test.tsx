@@ -69,17 +69,6 @@ describe('<UpdateSpaceMemberMessage />', () => {
     expect(initializeMessageTextInput).toBeInTheDocument();
   });
 
-  it('should render error message when submit fails', () => {
-    mockUseUpdateMemberMessage.mockReturnValue({ error: new Error() });
-    render(<UpdateSpaceMemberMessage />);
-
-    const errorMessage = screen.getByText(
-      'Failed to update message. Please try again later.'
-    );
-
-    expect(errorMessage).toBeInTheDocument();
-  });
-
   describe('on submit', () => {
     let updateButton: HTMLInputElement;
     let mockExecuteUpdateMemberMessage: jest.Mock;
@@ -145,6 +134,18 @@ describe('<UpdateSpaceMemberMessage />', () => {
       });
     });
 
+    it('should render error message when unsuccessful', async () => {
+      mockUseUpdateMemberMessage.mockReturnValue({ error: new Error() });
+      mockExecuteUpdateMemberMessage.mockReturnValue({ error: new Error() });
+      fireEvent.submit(updateButton);
+
+      const errorMessage = await screen.findByText(
+        'Failed to update message. Please try again later.'
+      );
+
+      expect(errorMessage).toBeInTheDocument();
+    });
+
     it('should update space member message when successful', async () => {
       mockExecuteUpdateMemberMessage.mockReturnValue({});
 
@@ -153,6 +154,17 @@ describe('<UpdateSpaceMemberMessage />', () => {
       await waitFor(() => {
         expect(mockUpdateSpaceMemberMessage).toBeCalledWith('123', 'message');
       });
+    });
+
+    it('should render success message when successful', async () => {
+      mockExecuteUpdateMemberMessage.mockReturnValue({});
+      fireEvent.submit(updateButton);
+
+      const successMessage = await screen.findByText(
+        'Successfully updated message.'
+      );
+
+      expect(successMessage).toBeInTheDocument();
     });
   });
 });
