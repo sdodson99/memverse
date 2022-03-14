@@ -10,6 +10,8 @@ type UseSpaceMembersProps = {
   members: Member[];
 };
 
+type SpaceMemberAction = (member: SpaceMember) => void;
+
 const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   const [spaceMembers, setSpaceMembers] = useState<SpaceMember[]>([]);
 
@@ -19,10 +21,7 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     setSpaceMembers(nextSpaceMembers);
   }, [members]);
 
-  const withSpaceMember = (
-    memberId: string,
-    callback: (member: SpaceMember) => void
-  ) => {
+  const withSpaceMember = (memberId: string, callback: SpaceMemberAction) => {
     const spaceMemberIndex = spaceMembers.findIndex((m) => m.id === memberId);
 
     if (spaceMemberIndex === -1) {
@@ -67,23 +66,11 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     });
   };
 
-  const updateSpaceMembers = (
-    timeElapsedSeconds: number,
-    bounds: paper.Rectangle
-  ) => {
+  const withAllSpaceMembers = (callback: SpaceMemberAction) => {
     const nextSpaceMembers = spaceMembers.map((m) => {
       const clone = m.clone();
 
-      if (!clone.positionInitialized) {
-        const { left, right, top, bottom } = bounds;
-
-        const initialX = generateRandom(left, right);
-        const initialY = generateRandom(top, bottom);
-
-        clone.initializePosition(initialX, initialY);
-      }
-
-      clone.update(timeElapsedSeconds, bounds);
+      callback(clone);
 
       return clone;
     });
@@ -91,11 +78,37 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     setSpaceMembers(nextSpaceMembers);
   };
 
+  const updateSpaceMembers = (
+    timeElapsedSeconds: number,
+    bounds: paper.Rectangle
+  ) => {
+    withAllSpaceMembers((member) => {
+      if (!member.positionInitialized) {
+        const { left, right, top, bottom } = bounds;
+
+        const initialX = generateRandom(left, right);
+        const initialY = generateRandom(top, bottom);
+
+        member.initializePosition(initialX, initialY);
+      }
+
+      member.update(timeElapsedSeconds, bounds);
+    });
+  };
+
+  const setSpaceMembersSize = (diameter: number) => {
+    withAllSpaceMembers((member) => {
+      member.height = diameter;
+      member.width = diameter;
+    });
+  };
+
   return {
     spaceMembers,
     loadSpaceMember,
     toggleSpaceMemberPaused,
     setShowSpaceMemberDetails,
+    setSpaceMembersSize,
     updateSpaceMembers,
     updateSpaceMemberMessage,
   };

@@ -232,4 +232,21 @@ describe('useSpaceMembersContext', () => {
       expect(result.current.spaceMembers[0].showMessage).toBeTruthy();
     });
   });
+
+  describe('setSpaceMembersSize', () => {
+    it('should set space member width and height', () => {
+      const size = 10;
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.setSpaceMembersSize(size);
+      });
+
+      expect(result.current.spaceMembers[0].width).toBe(size);
+      expect(result.current.spaceMembers[0].height).toBe(size);
+    });
+  });
 });
