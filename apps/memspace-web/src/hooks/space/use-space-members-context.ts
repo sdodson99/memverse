@@ -22,21 +22,25 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   }, [members]);
 
   const withSpaceMember = (memberId: string, callback: SpaceMemberAction) => {
-    const spaceMemberIndex = spaceMembers.findIndex((m) => m.id === memberId);
+    setSpaceMembers((prev) => {
+      const spaceMemberIndex = prev.findIndex((m) => m.id === memberId);
 
-    if (spaceMemberIndex === -1) {
-      return;
-    }
+      if (spaceMemberIndex === -1) {
+        return prev;
+      }
 
-    const clonedSpaceMember = spaceMembers[spaceMemberIndex].clone();
+      const clonedSpaceMember = prev[spaceMemberIndex].clone();
 
-    callback(clonedSpaceMember);
+      callback(clonedSpaceMember);
 
-    setSpaceMembers([
-      ...spaceMembers.slice(0, spaceMemberIndex),
-      clonedSpaceMember,
-      ...spaceMembers.slice(spaceMemberIndex + 1),
-    ]);
+      const nextSpaceMembers = [
+        ...prev.slice(0, spaceMemberIndex),
+        clonedSpaceMember,
+        ...prev.slice(spaceMemberIndex + 1),
+      ];
+
+      return nextSpaceMembers;
+    });
   };
 
   const loadSpaceMember = (member: SpaceMember) => {
@@ -67,15 +71,17 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   };
 
   const withAllSpaceMembers = (callback: SpaceMemberAction) => {
-    const nextSpaceMembers = spaceMembers.map((m) => {
-      const clone = m.clone();
+    setSpaceMembers((prev) => {
+      const nextSpaceMembers = prev.map((m) => {
+        const clone = m.clone();
 
-      callback(clone);
+        callback(clone);
 
-      return clone;
+        return clone;
+      });
+
+      return nextSpaceMembers;
     });
-
-    setSpaceMembers(nextSpaceMembers);
   };
 
   const updateSpaceMembers = (
