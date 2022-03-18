@@ -9,9 +9,9 @@ module.exports = {
   },
   setupFiles: ['jest-canvas-mock'],
   setupFilesAfterEnv: [
-    '<rootDir>/src/test-utils/setup-match-media.ts',
-    '<rootDir>/src/test-utils/setup-router.ts',
-    '<rootDir>/src/test-utils/setup-react-query.ts',
+    '<rootDir>/src/test-utils/setup/setup-match-media.ts',
+    '<rootDir>/src/test-utils/setup/setup-router.ts',
+    '<rootDir>/src/test-utils/setup/setup-react-query.ts',
   ],
   testEnvironment: 'jest-environment-jsdom',
   clearMocks: true,
