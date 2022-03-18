@@ -4,6 +4,7 @@ declare module '@psychobolt/react-paperjs' {
       width: number;
       height: number;
     };
+    image: HTMLImageElement;
     scale: (horizontal: number, vertical: number) => void;
   }
   export class PointText extends React.Component<any, any> {}

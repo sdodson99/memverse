@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Raster, PointText, Layer } from '@psychobolt/react-paperjs';
 import { useSpaceMemberScaling } from '../../hooks/space/use-space-member-scaling';
+import { useSpaceMemberAvatar } from '../../hooks/space/use-space-member-avatar';
 
 export type SpaceMemberProps = {
   username: string;
@@ -37,6 +38,7 @@ const SpaceMember = ({
 }: SpaceMemberProps) => {
   const rasterRef = useRef<Raster | null>(null);
 
+  useSpaceMemberAvatar(rasterRef, photoUrl);
   useSpaceMemberScaling(rasterRef, { height, width }, { skipScaling: !loaded });
 
   const renderMessage = message && showMessage;
@@ -77,7 +79,6 @@ const SpaceMember = ({
       </PointText>
       <Raster
         ref={rasterRef}
-        source={photoUrl}
         position={{ x, y }}
         onLoad={onLoad}
         onClick={onClick}

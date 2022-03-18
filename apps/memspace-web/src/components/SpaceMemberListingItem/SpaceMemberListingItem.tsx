@@ -29,7 +29,12 @@ const SpaceMemberListingItem = ({
     className={styles.spaceMemberListingItem}
     data-testid="SpaceMemberListingItem"
   >
-    <img className={styles.avatar} src={photoUrl} alt={`${username} Avatar`} />
+    <img
+      className={styles.avatar}
+      src={photoUrl}
+      alt={`${username} Avatar`}
+      referrerPolicy="no-referrer"
+    />
     <div className={styles.content}>
       <div className={styles.username}>{username}</div>
       {message && <div className={styles.message}>{message}</div>}
