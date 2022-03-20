@@ -1,12 +1,12 @@
-name: Deploy YouTube Member Verifier
+name: Deploy YouTube Member Querier
 
 on:
   push:
     branches:
-      - 'release/youtube-member-verifier'
+      - 'release/youtube-member-querier'
 
 env:
-  PROJECT_PATH: 'packages/youtube-member-verifier'
+  PROJECT_PATH: 'packages/youtube-member-querier'
 
 jobs:
   deploy:

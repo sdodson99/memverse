@@ -1,19 +1,19 @@
-name: Build YouTube Member Verifier
+name: Build YouTube Member Querier
 
 on:
   push:
     branches:
       - 'master'
     paths:
-      - 'packages/youtube-member-verifier/**'
+      - 'packages/youtube-member-querier/**'
   pull_request:
     branches:
       - '*'
     paths:
-      - 'packages/youtube-member-verifier/**'
+      - 'packages/youtube-member-querier/**'
 
 env:
-  PROJECT_PATH: 'packages/youtube-member-verifier'
+  PROJECT_PATH: 'packages/youtube-member-querier'
 
 jobs:
   build:
