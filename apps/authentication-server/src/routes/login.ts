@@ -1,26 +1,23 @@
 import * as functions from 'firebase-functions';
 import { Router as createRouter } from 'express';
-import { createIsYouTubeMemberQuery } from 'youtube-member-verifier';
+import { YouTubeMembersQuery } from 'youtube-member-querier';
 import { YouTubeChannelQuery } from '../queries/youtube-channel';
 import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
-import { ChannelOwnerIsYouTubeMemberQuery } from '../queries/is-youtube-member';
+import { IsYouTubeMemberQuery } from '../queries/is-youtube-member';
 
 const firebaseConfig = functions.config();
 const youTubeStudioConfig = firebaseConfig.youtube_studio;
 const accessTokenConfig = firebaseConfig.access_token;
 
 const youTubeChannelQuery = new YouTubeChannelQuery();
-const baseIsYouTubeMemberQuery = createIsYouTubeMemberQuery({
+const youTubeMembersQuery = new YouTubeMembersQuery({
   apiKey: youTubeStudioConfig.api_key,
   channelId: youTubeStudioConfig.channel_id,
   onBehalfOfUser: youTubeStudioConfig.user_behalf_id,
   cookieHeader: youTubeStudioConfig.cookie_header,
   authorizationHeader: youTubeStudioConfig.authorization_header,
 });
-const isYouTubeMemberQuery = new ChannelOwnerIsYouTubeMemberQuery(
-  youTubeStudioConfig.channel_id,
-  baseIsYouTubeMemberQuery
-);
+const isYouTubeMemberQuery = new IsYouTubeMemberQuery(youTubeMembersQuery);
 const accessTokenGenerator = new AccessTokenGenerator(
   accessTokenConfig.secret_key,
   parseInt(accessTokenConfig.expires_in)

@@ -1,1 +1,1 @@
-export * from './channel-owner-is-youtube-member-query';
+export * from './is-youtube-member-query';
