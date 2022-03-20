@@ -83,6 +83,34 @@ describe('YouTubeMembersQuery', () => {
     ]);
   });
 
+  it('should filter YouTube channel members with no channel ID', async () => {
+    when(mockAxiosPost)
+      .calledWith(requestEndpoint, requestBody, requestOptions)
+      .mockReturnValue({
+        data: {
+          sponsorsData: {
+            sponsors: [
+              {
+                externalChannelId: '1',
+              },
+              {
+                externalChannelId: undefined,
+              },
+              {},
+            ],
+          },
+        },
+      });
+
+    const members = await query.execute();
+
+    expect(members).toEqual([
+      {
+        channelId: '1',
+      },
+    ]);
+  });
+
   it('should return empty array when unsuccessful', async () => {
     when(mockAxiosPost)
       .calledWith(requestEndpoint, requestBody, requestOptions)
