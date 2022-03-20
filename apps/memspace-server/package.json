@@ -34,7 +34,7 @@
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
     "jsonwebtoken": "^8.5.1",
-    "youtube-member-verifier": "^1.1.0"
+    "youtube-member-querier": "^1.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.16.5",

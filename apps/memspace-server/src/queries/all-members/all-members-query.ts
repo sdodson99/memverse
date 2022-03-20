@@ -1,4 +1,4 @@
-import { YouTubeMembersQuery } from 'youtube-member-verifier';
+import { YouTubeMembersQuery } from 'youtube-member-querier';
 import { Member } from '../../models/member';
 import { ManyMessagesByMemberIdsQuery } from '../many-messages-by-member-ids';
 
