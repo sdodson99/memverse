@@ -31,7 +31,6 @@ describe('AllMembersQuery', () => {
       {
         channelId: '2',
       },
-      {},
     ]);
     mockManyMessagesByMemberIdsQueryExecute.mockReturnValue({});
   });
@@ -55,11 +54,5 @@ describe('AllMembersQuery', () => {
         message: '',
       },
     ]);
-  });
-
-  it('should filter out members without channel IDs', async () => {
-    const members = await query.execute();
-
-    expect(members).toHaveLength(2);
   });
 });
