@@ -15,4 +15,5 @@ module.exports = {
       statements: 25,
     },
   },
+  setupFilesAfterEnv: ['<rootDir>/src/test-utils/firebase-setup.ts'],
 };
