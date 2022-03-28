@@ -19,12 +19,6 @@ describe('useSpaceMembersContext', () => {
   let members: Member[];
   let renderOptions: RenderHookOptions<any>;
 
-  let mockSpaceMemberLoad: jest.Mock;
-  let mockSpaceMemberUpdate: jest.Mock;
-  let mockSpaceMemberInitializePosition: jest.Mock;
-  let mockSpaceMemberPause: jest.Mock;
-  let mockSpaceMemberUnpause: jest.Mock;
-
   beforeEach(() => {
     members = [
       {
@@ -49,36 +43,9 @@ describe('useSpaceMembersContext', () => {
       ),
     };
 
-    mockSpaceMemberLoad = jest.fn();
-    mockSpaceMemberUpdate = jest.fn();
-    mockSpaceMemberInitializePosition = jest.fn();
-    mockSpaceMemberPause = jest.fn();
-    mockSpaceMemberUnpause = jest.fn();
-
-    mockCreateSpaceMember.mockImplementation((m: Member) => {
-      const spaceMember = {
-        ...m,
-        positionInitialized: false,
-        paused: false,
-        load: mockSpaceMemberLoad,
-        update: mockSpaceMemberUpdate,
-        pause: () => {
-          spaceMember.paused = true;
-          mockSpaceMemberPause();
-        },
-        unpause: () => {
-          spaceMember.paused = false;
-          mockSpaceMemberUnpause();
-        },
-        initializePosition: () => {
-          spaceMember.positionInitialized = true;
-          mockSpaceMemberInitializePosition();
-        },
-        clone: () => spaceMember,
-      };
-
-      return spaceMember;
-    });
+    mockCreateSpaceMember.mockImplementation(
+      (m: Member) => new SpaceMember(m.id, m.username, m.photoUrl, m.message)
+    );
   });
 
   afterEach(() => {
@@ -105,7 +72,7 @@ describe('useSpaceMembersContext', () => {
         result.current.loadSpaceMember(result.current.spaceMembers[0]);
       });
 
-      expect(mockSpaceMemberLoad).toBeCalledTimes(1);
+      expect(result.current.spaceMembers[0].loaded).toBeTruthy();
     });
 
     it('should abort if space member does not exist', () => {
@@ -118,7 +85,8 @@ describe('useSpaceMembersContext', () => {
         result.current.loadSpaceMember(new SpaceMember('a', 'a', 'a', 'a'));
       });
 
-      expect(mockSpaceMemberLoad).toBeCalledTimes(0);
+      expect(result.current.spaceMembers[0].loaded).toBeFalsy();
+      expect(result.current.spaceMembers[1].loaded).toBeFalsy();
     });
   });
 
@@ -146,7 +114,10 @@ describe('useSpaceMembersContext', () => {
         result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
       });
 
-      expect(mockSpaceMemberUpdate).toBeCalledTimes(2);
+      expect(result.current.spaceMembers[0].x).not.toBe(0);
+      expect(result.current.spaceMembers[0].y).not.toBe(0);
+      expect(result.current.spaceMembers[1].x).not.toBe(0);
+      expect(result.current.spaceMembers[1].y).not.toBe(0);
     });
 
     it("should only initialize each space member's position once", () => {
@@ -163,7 +134,8 @@ describe('useSpaceMembersContext', () => {
         result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
       });
 
-      expect(mockSpaceMemberInitializePosition).toBeCalledTimes(2);
+      expect(result.current.spaceMembers[0].positionInitialized).toBeTruthy();
+      expect(result.current.spaceMembers[1].positionInitialized).toBeTruthy();
     });
   });
 
@@ -182,7 +154,7 @@ describe('useSpaceMembersContext', () => {
     });
   });
 
-  describe('pauseSpaceMember', () => {
+  describe('toggleSpaceMemberPaused', () => {
     it('should pause space member when unpaused', () => {
       const { result } = renderHook(
         () => useSpaceMembersContext(),
@@ -193,7 +165,7 @@ describe('useSpaceMembersContext', () => {
         result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
       });
 
-      expect(mockSpaceMemberPause).toBeCalledTimes(1);
+      expect(result.current.spaceMembers[0].paused).toBeTruthy();
     });
 
     it('should unpause space member when paused', () => {
@@ -210,7 +182,7 @@ describe('useSpaceMembersContext', () => {
         result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
       });
 
-      expect(mockSpaceMemberUnpause).toBeCalledTimes(1);
+      expect(result.current.spaceMembers[0].paused).toBeFalsy();
     });
   });
 

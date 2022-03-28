@@ -10,7 +10,7 @@ const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 describe('useSpaceMemberCanvasResize', () => {
   let mockSetSpaceMembersSize: jest.Mock;
   let mockPaperContainerCanvas: HTMLCanvasElement;
-  let mockSpaceMembers: SpaceMember[];
+  let spaceMembers: SpaceMember[];
 
   let paperContainerRef: React.MutableRefObject<PaperContainer | null>;
 
@@ -27,10 +27,10 @@ describe('useSpaceMemberCanvasResize', () => {
       },
     } as React.MutableRefObject<PaperContainer | null>;
 
-    mockSpaceMembers = [{} as SpaceMember];
+    spaceMembers = [new SpaceMember('1', 'username', 'photoUrl', 'message')];
     mockSetSpaceMembersSize = jest.fn();
     mockUseSpaceMembersContext.mockReturnValue({
-      spaceMembers: mockSpaceMembers,
+      spaceMembers: spaceMembers,
       setSpaceMembersSize: mockSetSpaceMembersSize,
     });
   });
@@ -46,8 +46,8 @@ describe('useSpaceMemberCanvasResize', () => {
   });
 
   it('should not set space member size if desired size has not changed', () => {
-    mockSpaceMembers[0].height = 30;
-    mockSpaceMembers[0].width = 30;
+    spaceMembers[0].height = 30;
+    spaceMembers[0].width = 30;
 
     renderHook(() => useSpaceMemberCanvasResize(paperContainerRef));
 
