@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import LoginPage from '../login';
+import LoginPage from '../login.page';
 import { renderApp } from '../../test-utils/render-app';
 
 describe('<LoginPage />', () => {

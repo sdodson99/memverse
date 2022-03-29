@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import SpacePage from '../';
+import SpacePage from '../index.page';
 import { renderApp } from '../../test-utils/render-app';
 import { useMembers } from '../../hooks/members/use-members';
 
