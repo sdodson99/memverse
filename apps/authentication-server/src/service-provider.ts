@@ -13,7 +13,6 @@ export const createServiceProvider = (): ServiceProvider => {
   const firebaseConfig = functions.config();
   const youTubeStudioConfig = firebaseConfig.youtube_studio;
   const accessTokenConfig = firebaseConfig.access_token;
-
   const logger = functions.logger;
 
   const youTubeChannelQuery = new YouTubeChannelQuery();

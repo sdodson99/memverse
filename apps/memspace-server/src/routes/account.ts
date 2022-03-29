@@ -1,42 +1,23 @@
 import { Router as createRouter } from 'express';
-import { SaveMessageCommand } from '../commands/save-message';
-import { DatabasePaths } from '../configuration/database-paths';
 import { authenticate } from '../middleware/authenticate';
-import { MessageByMemberIdQuery } from '../queries/message-by-member-id';
-import { getFirebaseApp } from '../startup/firebase-app';
 import { celebrate, Segments, Joi } from 'celebrate';
+import { ServiceProvider } from '../service-provider';
 
-const firebaseApp = getFirebaseApp();
-const messagesPath = DatabasePaths.MESSAGES;
-const messageByMemberIdQuery = new MessageByMemberIdQuery(
-  firebaseApp,
-  messagesPath
-);
-const saveMessageCommand = new SaveMessageCommand(firebaseApp, messagesPath);
-
-export const createAccountRouter = () => {
+export const createAccountRouter = (serviceProvider: ServiceProvider) => {
   const router = createRouter();
 
-  router.get('/', authenticate, async (req, res) => {
-    const memberId = req.user?.id ?? '';
+  const getAccountHandler = serviceProvider.resolveGetAccountHandler();
+  const getAccountMessageHandler =
+    serviceProvider.resolveGetAccountMessageHandler();
+  const updateAccountMessageHandler =
+    serviceProvider.resolveUpdateAccountMessageHandler();
 
-    return res.send({
-      id: memberId,
-    });
-  });
-
-  router.get('/message', authenticate, async (req, res) => {
-    const memberId = req.user?.id ?? '';
-
-    const message = await messageByMemberIdQuery.execute(memberId);
-
-    const messageResponse = {
-      content: message?.content ?? '',
-    };
-
-    return res.send(messageResponse);
-  });
-
+  router.get('/', authenticate, (req, res) =>
+    getAccountHandler.handle(req, res)
+  );
+  router.get('/message', authenticate, async (req, res) =>
+    getAccountMessageHandler.handle(req, res)
+  );
   router.put(
     '/message',
     authenticate,
@@ -45,18 +26,7 @@ export const createAccountRouter = () => {
         content: Joi.string().allow('', null).max(100),
       }),
     }),
-    async (req, res) => {
-      const memberId = req.user?.id ?? '';
-
-      const { content } = req.body;
-      const message = {
-        content,
-      };
-
-      await saveMessageCommand.execute(memberId, message);
-
-      return res.sendStatus(204);
-    }
+    (req, res) => updateAccountMessageHandler.handle(req, res)
   );
 
   return router;

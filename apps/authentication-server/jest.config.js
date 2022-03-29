@@ -9,10 +9,10 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage/',
   coverageThreshold: {
     global: {
-      branches: 25,
-      functions: 25,
-      lines: 25,
-      statements: 25,
+      branches: 75,
+      functions: 75,
+      lines: 75,
+      statements: 75,
     },
   },
   setupFilesAfterEnv: ['<rootDir>/src/test-utils/firebase-setup.ts'],

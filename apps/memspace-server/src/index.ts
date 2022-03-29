@@ -4,12 +4,15 @@ import * as cors from 'cors';
 import { createMembersRouter } from './routes/members';
 import { createAccountRouter } from './routes/account';
 import { errors } from 'celebrate';
+import { createServiceProvider } from './service-provider';
 
 const app = express();
 app.use(cors());
 
-app.use('/members', createMembersRouter());
-app.use('/account', createAccountRouter());
+const serviceProvider = createServiceProvider();
+
+app.use('/members', createMembersRouter(serviceProvider));
+app.use('/account', createAccountRouter(serviceProvider));
 
 app.use(errors());
 
