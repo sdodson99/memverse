@@ -4,7 +4,10 @@
 module.exports = {
   testEnvironment: 'node',
   clearMocks: true,
-  testMatch: ['<rootDir>/src/**/*.test.[jt]s?(x)'],
+  testMatch: [
+    '<rootDir>/src/**/*.test.[jt]s?(x)',
+    '<rootDir>/test/integration/**/*.test.[jt]s?(x)',
+  ],
   collectCoverageFrom: ['<rootDir>/src/**/*.[jt]s?(x)'],
   coverageDirectory: '<rootDir>/coverage/',
   coverageThreshold: {
