@@ -5,6 +5,7 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import ViewSpaceMembers from '../ViewSpaceMembers/ViewSpaceMembers';
 import UpdateSpaceMemberMessage from '../UpdateSpaceMemberMessage/UpdateSpaceMemberMessage';
 import Container from '../Container/Container';
+import ReactTooltip from 'react-tooltip';
 
 type SpaceToolbarProps = {};
 
@@ -25,18 +26,24 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
             className={styles.toolbarItem}
             onClick={() => setCurrentSheet('VIEW_MEMBERS')}
             aria-label="View members"
+            data-tip="View Members"
           >
             🔎
           </button>
+          <ReactTooltip effect="solid" place="top" type="light" />
 
           {isLoggedIn && (
-            <button
-              className={styles.toolbarItem}
-              onClick={() => setCurrentSheet('UPDATE_MEMBER_MESSAGE')}
-              aria-label="Update message"
-            >
-              ✏️
-            </button>
+            <>
+              <button
+                className={styles.toolbarItem}
+                onClick={() => setCurrentSheet('UPDATE_MEMBER_MESSAGE')}
+                aria-label="Update message"
+                data-tip="Update Message"
+              >
+                ✏️
+              </button>
+              <ReactTooltip effect="solid" place="top" type="light" />
+            </>
           )}
         </div>
       </Container>
