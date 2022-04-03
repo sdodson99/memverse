@@ -4,19 +4,12 @@ import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import React, { useEffect } from 'react';
 import type { AppProps } from 'next/app';
-import { GApiProvider } from 'react-gapi-auth2';
 import { AccessTokenProvider } from '../hooks/authentication/use-access-token-context';
 import Head from 'next/head';
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { AccountProvider } from '../hooks/authentication/use-account-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
-const googleClientConfig = {
-  client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-  apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-  scope: 'https://www.googleapis.com/auth/youtube.readonly',
-};
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDxXUSxSLuzKFuEhACAGtuvYZC-nTf70l0',
@@ -38,18 +31,16 @@ function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <GApiProvider clientConfig={googleClientConfig}>
-      <AccessTokenProvider>
-        <QueryClientProvider client={queryClient}>
-          <AccountProvider>
-            <Head>
-              <title>Memspace</title>
-            </Head>
-            <Component {...pageProps} />
-          </AccountProvider>
-        </QueryClientProvider>
-      </AccessTokenProvider>
-    </GApiProvider>
+    <AccessTokenProvider>
+      <QueryClientProvider client={queryClient}>
+        <AccountProvider>
+          <Head>
+            <title>Memspace</title>
+          </Head>
+          <Component {...pageProps} />
+        </AccountProvider>
+      </QueryClientProvider>
+    </AccessTokenProvider>
   );
 }
 
