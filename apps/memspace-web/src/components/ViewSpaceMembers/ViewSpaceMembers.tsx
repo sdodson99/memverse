@@ -25,10 +25,20 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setFilter(event.target.value);
 
-  const filteredSpaceMembers = spaceMembers.filter((m) =>
-    m.username?.toLowerCase().includes(filter.toLowerCase())
-  );
-  const hasSpaceMembers = filteredSpaceMembers.length > 0;
+  const transformedSpaceMembers = spaceMembers
+    .filter((m) => m.username?.toLowerCase().includes(filter.toLowerCase()))
+    .sort((a, b) => {
+      if (!a.message) {
+        return 1;
+      }
+
+      if (!b.message) {
+        return -1;
+      }
+
+      return 0;
+    });
+  const hasSpaceMembers = transformedSpaceMembers.length > 0;
 
   return (
     <div className={styles.viewSpaceMembers} data-testid="ViewSpaceMembers">
@@ -43,14 +53,13 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
           placeholder="Filter members"
           value={filter}
           onChange={handleFilterChange}
-          autoComplete="off"
         />
       </div>
 
       <div className={styles.listing}>
         {hasSpaceMembers && (
           <SpaceMemberListing
-            members={filteredSpaceMembers}
+            members={transformedSpaceMembers}
             onPause={handleTogglePause}
             onUnpause={handleTogglePause}
             onShowDetails={handleShowDetails}

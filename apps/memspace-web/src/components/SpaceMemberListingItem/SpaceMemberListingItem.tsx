@@ -36,7 +36,12 @@ const SpaceMemberListingItem = ({
       referrerPolicy="no-referrer"
     />
     <div className={styles.content}>
-      <div className={styles.username}>{username}</div>
+      <div
+        className={styles.username}
+        data-testid="SpaceMemberListingItemUsername"
+      >
+        {username}
+      </div>
       {message && <div className={styles.message}>{message}</div>}
     </div>
     <Menu menuButton={<MenuButton data-testid="MenuButton">···</MenuButton>}>

@@ -73,6 +73,25 @@ describe('<ViewSpaceMembers />', () => {
     );
   });
 
+  it('should order space members by message', () => {
+    mockUseSpaceMembersContext.mockReturnValue({
+      spaceMembers: [
+        { id: '1', username: 'user1', message: 'def' },
+        { id: '2', username: 'user2' },
+        { id: '3', username: 'user3', message: 'abc' },
+      ],
+    });
+    render(<ViewSpaceMembers />);
+
+    const spaceMemberListingItemUsernames = screen.getAllByTestId(
+      'SpaceMemberListingItemUsername'
+    );
+
+    expect(spaceMemberListingItemUsernames[0].textContent).toBe('user1');
+    expect(spaceMemberListingItemUsernames[1].textContent).toBe('user3');
+    expect(spaceMemberListingItemUsernames[2].textContent).toBe('user2');
+  });
+
   describe('with filtering', () => {
     it('should only render members that pass filter', () => {
       render(<ViewSpaceMembers />);
