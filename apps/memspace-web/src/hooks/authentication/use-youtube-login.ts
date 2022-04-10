@@ -1,15 +1,29 @@
-export const useYouTubeLogin = () => {
-  const youTubeLogin = async () => {
-    const accessToken = '';
+import { useGoogleIdentityServicesContext } from './use-google-identity-services-context';
 
-    if (!accessToken) {
-      throw new Error('No access token returned from Google Auth.');
+export const useYouTubeLogin = () => {
+  const { client, initialized } = useGoogleIdentityServicesContext();
+
+  const youTubeLogin = async () => {
+    if (!client) {
+      throw new Error('Client not initialized.');
     }
 
-    return accessToken;
+    return new Promise<string>((resolve, reject) => {
+      client.callback = (response) => {
+        if (!response.access_token) {
+          return reject(
+            new Error('No access token returned from Google Auth.')
+          );
+        }
+
+        return resolve(response.access_token);
+      };
+
+      client.requestAccessToken();
+    });
   };
 
-  const isInitializing = true;
+  const isInitializing = !initialized;
 
   return { login: youTubeLogin, isInitializing };
 };

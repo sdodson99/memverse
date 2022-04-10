@@ -12,7 +12,6 @@ module.exports = {
     '<rootDir>/src/test-utils/setup/setup-match-media.ts',
     '<rootDir>/src/test-utils/setup/setup-router.ts',
     '<rootDir>/src/test-utils/setup/setup-react-query.ts',
-    '<rootDir>/src/test-utils/setup/setup-gapi.ts',
   ],
   testEnvironment: 'jest-environment-jsdom',
   clearMocks: true,

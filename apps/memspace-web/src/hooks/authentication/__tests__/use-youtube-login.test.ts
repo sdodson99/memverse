@@ -1,39 +1,35 @@
 import { useYouTubeLogin } from '../use-youtube-login';
-import { useGoogleAuth } from 'react-gapi-auth2';
+import { useGoogleIdentityServicesContext } from '../use-google-identity-services-context';
 
-jest.mock('react-gapi-auth2');
-const mockUseGoogleAuth = useGoogleAuth as jest.Mock;
+jest.mock('../use-google-identity-services-context');
+const mockUseGoogleIdentityServicesContext =
+  useGoogleIdentityServicesContext as jest.Mock;
 
 describe('useYouTubeLogin', () => {
-  let mockGetAuthResponse: jest.Mock;
-  let mockGoogleAuth: any;
-
   let accessToken: string;
+
+  let mockClient: GoogleTokenClient;
 
   beforeEach(() => {
     accessToken = '123';
-
-    mockGetAuthResponse = jest.fn();
-
-    mockGoogleAuth = {
-      googleAuth: {
-        signIn: () => ({
-          getAuthResponse: mockGetAuthResponse,
-        }),
-      },
+    mockClient = {
+      callback: (_: any) => {},
+      requestAccessToken: () => {},
     };
-    mockUseGoogleAuth.mockReturnValue(mockGoogleAuth);
+    mockUseGoogleIdentityServicesContext.mockReturnValue({
+      client: mockClient,
+    });
   });
 
   afterEach(() => {
-    mockUseGoogleAuth.mockReset();
+    mockUseGoogleIdentityServicesContext.mockReset();
   });
 
   describe('login', () => {
     it('should return access token when successful', async () => {
-      mockGetAuthResponse.mockReturnValue({
-        access_token: accessToken,
-      });
+      mockClient.requestAccessToken = () => {
+        mockClient.callback({ access_token: accessToken });
+      };
       const { login } = useYouTubeLogin();
 
       const actualAccessToken = await login();
@@ -42,9 +38,9 @@ describe('useYouTubeLogin', () => {
     });
 
     it('should throw error when no access token returned', async () => {
-      mockGetAuthResponse.mockReturnValue({
-        access_token: null,
-      });
+      mockClient.requestAccessToken = () => {
+        mockClient.callback({} as GoogleTokenClientCallbackResponse);
+      };
       const { login } = useYouTubeLogin();
 
       await expect(async () => await login()).rejects.toThrow();
@@ -53,7 +49,9 @@ describe('useYouTubeLogin', () => {
 
   describe('isInitializing', () => {
     it('should return true when initializing', () => {
-      mockGoogleAuth.googleAuth = null;
+      mockUseGoogleIdentityServicesContext.mockReturnValue({
+        initialized: false,
+      });
 
       const { isInitializing } = useYouTubeLogin();
 
@@ -61,6 +59,10 @@ describe('useYouTubeLogin', () => {
     });
 
     it('should return false when initialized', () => {
+      mockUseGoogleIdentityServicesContext.mockReturnValue({
+        initialized: true,
+      });
+
       const { isInitializing } = useYouTubeLogin();
 
       expect(isInitializing).toBeFalsy();
