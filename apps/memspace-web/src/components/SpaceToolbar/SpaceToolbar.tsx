@@ -50,7 +50,8 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
       <BottomSheet
         open={currentSheet === 'VIEW_MEMBERS'}
         header="Members"
-        snapPoints={({ maxHeight }) => maxHeight * 0.55}
+        defaultSnap={({ maxHeight }) => maxHeight * 0.75}
+        snapPoints={({ maxHeight }) => [maxHeight * 0.35, maxHeight * 0.75]}
         onDismiss={handleSheetDismiss}
         className={styles.sheet}
       >

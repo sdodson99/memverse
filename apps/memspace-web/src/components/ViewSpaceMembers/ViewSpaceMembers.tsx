@@ -51,6 +51,7 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
         <TextInput
           name="filter"
           placeholder="Filter members"
+          autoComplete="off"
           value={filter}
           onChange={handleFilterChange}
         />
