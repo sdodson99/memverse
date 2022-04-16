@@ -3,7 +3,7 @@ import 'react-spring-bottom-sheet/dist/style.css';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import React, { useEffect } from 'react';
-import type { AppProps } from 'next/app';
+import type { AppProps, NextWebVitalsMetric } from 'next/app';
 import { AccessTokenProvider } from '../hooks/authentication/use-access-token-context';
 import Head from 'next/head';
 import { initializeApp } from 'firebase/app';
@@ -42,6 +42,10 @@ function App({ Component, pageProps }: AppProps) {
       </QueryClientProvider>
     </AccessTokenProvider>
   );
+}
+
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  console.log(metric);
 }
 
 export default App;
