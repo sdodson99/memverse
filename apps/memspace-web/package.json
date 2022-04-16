@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint:eslint": "eslint ./src --ext=.tsx,.ts",
     "lint:prettier": "prettier --check ./src",
@@ -22,6 +23,7 @@
     "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^12.1.5",
     "@psychobolt/react-paperjs": "^1.0.3",
     "@szhsin/react-menu": "^3.0.0",
     "axios": "^0.24.0",
