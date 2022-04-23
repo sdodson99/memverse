@@ -90,7 +90,7 @@ describe('useSpaceMembersContext', () => {
     });
   });
 
-  describe('updateSpaceMembers', () => {
+  describe.skip('updateSpaceMembers', () => {
     let timeElapsedSeconds: number;
     let bounds: paper.Rectangle;
 

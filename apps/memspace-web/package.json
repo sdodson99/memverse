@@ -37,7 +37,8 @@
     "react-hook-form": "^7.27.1",
     "react-query": "^3.34.16",
     "react-spring-bottom-sheet": "^3.4.0",
-    "react-tooltip": "^4.2.21"
+    "react-tooltip": "^4.2.21",
+    "rxjs": "^7.5.5"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.5",

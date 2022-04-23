@@ -1,10 +1,11 @@
 import constate from 'constate';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Member } from '../../models/member';
 import { SpaceMember } from '../../models/space-member';
 import paper from 'paper';
 import { generateRandom } from '../../utilities/generate-random';
 import { createSpaceMember } from '../../models/space-member-factory';
+import { merge, Subject, throttleTime } from 'rxjs';
 
 type UseSpaceMembersProps = {
   members: Member[];
@@ -15,36 +16,60 @@ type SpaceMemberAction = (member: SpaceMember) => void;
 const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   const [spaceMembers, setSpaceMembers] = useState<SpaceMember[]>([]);
 
+  const spaceMembersStateRef = useRef<SpaceMember[]>([]);
+
+  const { current: spaceMembersResetSubject } = useRef(new Subject());
+  const { current: spaceMemberChangedSubject } = useRef(new Subject<string>());
+  const { current: spaceMemberUpdatedSubject } = useRef(new Subject<string>());
+
+  const { current: onSpaceMembersReset$ } = useRef(
+    spaceMembersResetSubject.asObservable()
+  );
+  const { current: onSpaceMemberChanged$ } = useRef(
+    spaceMemberChangedSubject.asObservable()
+  );
+  const { current: onSpaceMemberUpdated$ } = useRef(
+    spaceMemberUpdatedSubject.asObservable()
+  );
+
+  useEffect(() => {
+    const subscription = merge(
+      onSpaceMembersReset$,
+      onSpaceMemberChanged$,
+      // Throttle updates since they happen pretty much every tick.
+      onSpaceMemberUpdated$.pipe(throttleTime(1000))
+    ).subscribe(() => {
+      setSpaceMembers(spaceMembersStateRef.current.map((m) => m.clone()));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [onSpaceMembersReset$, onSpaceMemberChanged$, onSpaceMemberUpdated$]);
+
   useEffect(() => {
     const nextSpaceMembers = members.map((m) => createSpaceMember(m));
 
-    setSpaceMembers(nextSpaceMembers);
-  }, [members]);
+    spaceMembersStateRef.current = nextSpaceMembers;
+    spaceMembersResetSubject.next(null);
+  }, [members, spaceMembersResetSubject]);
 
   const withSpaceMember = (memberId: string, callback: SpaceMemberAction) => {
-    setSpaceMembers((prev) => {
-      const spaceMemberIndex = prev.findIndex((m) => m.id === memberId);
+    const spaceMember = spaceMembersStateRef.current.find(
+      (m) => m.id === memberId
+    );
 
-      if (spaceMemberIndex === -1) {
-        return prev;
-      }
+    if (!spaceMember) {
+      return;
+    }
 
-      const clonedSpaceMember = prev[spaceMemberIndex].clone();
-
-      callback(clonedSpaceMember);
-
-      const nextSpaceMembers = [
-        ...prev.slice(0, spaceMemberIndex),
-        clonedSpaceMember,
-        ...prev.slice(spaceMemberIndex + 1),
-      ];
-
-      return nextSpaceMembers;
-    });
+    callback(spaceMember);
   };
 
   const loadSpaceMember = (member: SpaceMember) => {
-    withSpaceMember(member.id, (m) => m.load());
+    withSpaceMember(member.id, (m) => {
+      m.load();
+
+      spaceMemberChangedSubject.next(member.id);
+    });
   };
 
   const toggleSpaceMemberPaused = (member: SpaceMember) => {
@@ -54,6 +79,8 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
       } else {
         m.pause();
       }
+
+      spaceMemberChangedSubject.next(member.id);
     });
   };
 
@@ -61,27 +88,21 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     withSpaceMember(member.id, (m) => {
       m.showUsername = show;
       m.showMessage = show;
+
+      spaceMemberChangedSubject.next(member.id);
     });
   };
 
   const updateSpaceMemberMessage = (memberId: string, message: string) => {
     withSpaceMember(memberId, (m) => {
       m.message = message;
+
+      spaceMemberChangedSubject.next(m.id);
     });
   };
 
   const withAllSpaceMembers = (callback: SpaceMemberAction) => {
-    setSpaceMembers((prev) => {
-      const nextSpaceMembers = prev.map((m) => {
-        const clone = m.clone();
-
-        callback(clone);
-
-        return clone;
-      });
-
-      return nextSpaceMembers;
-    });
+    spaceMembersStateRef.current.forEach((m) => callback(m));
   };
 
   const updateSpaceMembers = (
@@ -99,6 +120,8 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
       }
 
       member.update(timeElapsedSeconds, bounds);
+
+      spaceMemberUpdatedSubject.next(member.id);
     });
   };
 
@@ -106,6 +129,8 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     withAllSpaceMembers((member) => {
       member.height = diameter;
       member.width = diameter;
+
+      spaceMemberChangedSubject.next(member.id);
     });
   };
 
