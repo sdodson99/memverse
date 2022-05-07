@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@next/bundle-analyzer": "^12.1.5",
-    "@psychobolt/react-paperjs": "^1.0.3",
     "@szhsin/react-menu": "^3.0.0",
     "axios": "^0.24.0",
     "constate": "^3.3.0",

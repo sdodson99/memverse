@@ -58,7 +58,7 @@ describe('useSpaceMembersContext', () => {
       renderOptions
     );
 
-    expect(result.current.spaceMembers).toHaveLength(2);
+    expect(result.current.spaceMembersStateRef.current).toHaveLength(2);
   });
 
   describe('loadSpaceMember', () => {
@@ -69,10 +69,14 @@ describe('useSpaceMembersContext', () => {
       );
 
       act(() => {
-        result.current.loadSpaceMember(result.current.spaceMembers[0]);
+        result.current.loadSpaceMember(
+          result.current.spaceMembersStateRef.current[0]
+        );
       });
 
-      expect(result.current.spaceMembers[0].loaded).toBeTruthy();
+      expect(
+        result.current.spaceMembersStateRef.current[0].loaded
+      ).toBeTruthy();
     });
 
     it('should abort if space member does not exist', () => {
@@ -85,12 +89,12 @@ describe('useSpaceMembersContext', () => {
         result.current.loadSpaceMember(new SpaceMember('a', 'a', 'a', 'a'));
       });
 
-      expect(result.current.spaceMembers[0].loaded).toBeFalsy();
-      expect(result.current.spaceMembers[1].loaded).toBeFalsy();
+      expect(result.current.spaceMembersStateRef.current[0].loaded).toBeFalsy();
+      expect(result.current.spaceMembersStateRef.current[1].loaded).toBeFalsy();
     });
   });
 
-  describe.skip('updateSpaceMembers', () => {
+  describe('updateSpaceMembers', () => {
     let timeElapsedSeconds: number;
     let bounds: paper.Rectangle;
 
@@ -114,10 +118,10 @@ describe('useSpaceMembersContext', () => {
         result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
       });
 
-      expect(result.current.spaceMembers[0].x).not.toBe(0);
-      expect(result.current.spaceMembers[0].y).not.toBe(0);
-      expect(result.current.spaceMembers[1].x).not.toBe(0);
-      expect(result.current.spaceMembers[1].y).not.toBe(0);
+      expect(result.current.spaceMembersStateRef.current[0].x).not.toBe(0);
+      expect(result.current.spaceMembersStateRef.current[0].y).not.toBe(0);
+      expect(result.current.spaceMembersStateRef.current[1].x).not.toBe(0);
+      expect(result.current.spaceMembersStateRef.current[1].y).not.toBe(0);
     });
 
     it("should only initialize each space member's position once", () => {
@@ -134,8 +138,12 @@ describe('useSpaceMembersContext', () => {
         result.current.updateSpaceMembers(timeElapsedSeconds, bounds);
       });
 
-      expect(result.current.spaceMembers[0].positionInitialized).toBeTruthy();
-      expect(result.current.spaceMembers[1].positionInitialized).toBeTruthy();
+      expect(
+        result.current.spaceMembersStateRef.current[0].positionInitialized
+      ).toBeTruthy();
+      expect(
+        result.current.spaceMembersStateRef.current[1].positionInitialized
+      ).toBeTruthy();
     });
   });
 
@@ -150,7 +158,9 @@ describe('useSpaceMembersContext', () => {
         result.current.updateSpaceMemberMessage('1', 'new message');
       });
 
-      expect(result.current.spaceMembers[0].message).toBe('new message');
+      expect(result.current.spaceMembersStateRef.current[0].message).toBe(
+        'new message'
+      );
     });
   });
 
@@ -162,10 +172,14 @@ describe('useSpaceMembersContext', () => {
       );
 
       act(() => {
-        result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
+        result.current.toggleSpaceMemberPaused(
+          result.current.spaceMembersStateRef.current[0]
+        );
       });
 
-      expect(result.current.spaceMembers[0].paused).toBeTruthy();
+      expect(
+        result.current.spaceMembersStateRef.current[0].paused
+      ).toBeTruthy();
     });
 
     it('should unpause space member when paused', () => {
@@ -175,14 +189,18 @@ describe('useSpaceMembersContext', () => {
       );
 
       act(() => {
-        result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
+        result.current.toggleSpaceMemberPaused(
+          result.current.spaceMembersStateRef.current[0]
+        );
       });
 
       act(() => {
-        result.current.toggleSpaceMemberPaused(result.current.spaceMembers[0]);
+        result.current.toggleSpaceMemberPaused(
+          result.current.spaceMembersStateRef.current[0]
+        );
       });
 
-      expect(result.current.spaceMembers[0].paused).toBeFalsy();
+      expect(result.current.spaceMembersStateRef.current[0].paused).toBeFalsy();
     });
   });
 
@@ -195,13 +213,17 @@ describe('useSpaceMembersContext', () => {
 
       act(() => {
         result.current.setShowSpaceMemberDetails(
-          result.current.spaceMembers[0],
+          result.current.spaceMembersStateRef.current[0],
           true
         );
       });
 
-      expect(result.current.spaceMembers[0].showUsername).toBeTruthy();
-      expect(result.current.spaceMembers[0].showMessage).toBeTruthy();
+      expect(
+        result.current.spaceMembersStateRef.current[0].showUsername
+      ).toBeTruthy();
+      expect(
+        result.current.spaceMembersStateRef.current[0].showMessage
+      ).toBeTruthy();
     });
   });
 
@@ -217,8 +239,8 @@ describe('useSpaceMembersContext', () => {
         result.current.setSpaceMembersSize(size);
       });
 
-      expect(result.current.spaceMembers[0].width).toBe(size);
-      expect(result.current.spaceMembers[0].height).toBe(size);
+      expect(result.current.spaceMembersStateRef.current[0].width).toBe(size);
+      expect(result.current.spaceMembersStateRef.current[0].height).toBe(size);
     });
   });
 });

@@ -1,8 +1,8 @@
+import paper from 'paper';
 import constate from 'constate';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Member } from '../../models/member';
 import { SpaceMember } from '../../models/space-member';
-import paper from 'paper';
 import { generateRandom } from '../../utilities/generate-random';
 import { createSpaceMember } from '../../models/space-member-factory';
 import { merge, Subject, throttleTime } from 'rxjs';
@@ -14,8 +14,6 @@ type UseSpaceMembersProps = {
 type SpaceMemberAction = (member: SpaceMember) => void;
 
 const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
-  const [spaceMembers, setSpaceMembers] = useState<SpaceMember[]>([]);
-
   const spaceMembersStateRef = useRef<SpaceMember[]>([]);
 
   const { current: spaceMembersResetSubject } = useRef(new Subject());
@@ -39,7 +37,7 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
       // Throttle updates since they happen pretty much every tick.
       onSpaceMemberUpdated$.pipe(throttleTime(1000))
     ).subscribe(() => {
-      setSpaceMembers(spaceMembersStateRef.current.map((m) => m.clone()));
+      // setSpaceMembers(spaceMembersStateRef.current.map((m) => m.clone()));
     });
 
     return () => subscription.unsubscribe();
@@ -135,13 +133,17 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   };
 
   return {
-    spaceMembers,
+    spaceMembers: [],
+    spaceMembersStateRef,
     loadSpaceMember,
     toggleSpaceMemberPaused,
     setShowSpaceMemberDetails,
     setSpaceMembersSize,
     updateSpaceMembers,
     updateSpaceMemberMessage,
+    onSpaceMembersReset$,
+    onSpaceMemberChanged$,
+    onSpaceMemberUpdated$,
   };
 };
 

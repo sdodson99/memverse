@@ -2,22 +2,17 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import SpaceCanvas from './SpaceCanvas';
-import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
-
-jest.mock('../../hooks/space/use-space-members-context');
-const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
-
-jest.mock('@psychobolt/react-paperjs');
+import { SpaceMembersProvider } from '../../hooks/space/use-space-members-context';
 
 describe('<SpaceCanvas />', () => {
-  beforeEach(() => {
-    mockUseSpaceMembersContext.mockReturnValue({ spaceMembers: [{ id: '1' }] });
-  });
-
   it('should mount', () => {
-    render(<SpaceCanvas />);
+    render(<SpaceCanvas />, {
+      wrapper: ({ children }) => (
+        <SpaceMembersProvider members={[]}>{children}</SpaceMembersProvider>
+      ),
+    });
 
-    const spaceCanvas = screen.getByTestId('PaperContainer');
+    const spaceCanvas = screen.getByTestId('SpaceCanvas');
 
     expect(spaceCanvas).toBeInTheDocument();
   });
