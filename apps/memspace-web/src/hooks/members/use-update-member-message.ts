@@ -4,7 +4,7 @@ import { useAccessTokenContext } from '../authentication/use-access-token-contex
 
 export const useUpdateMemberMessage = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<unknown>(null);
 
   const { token } = useAccessTokenContext();
 
@@ -28,7 +28,7 @@ export const useUpdateMemberMessage = () => {
       return {
         error: null,
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       setError(error);
 
       return {

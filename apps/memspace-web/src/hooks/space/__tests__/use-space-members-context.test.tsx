@@ -17,7 +17,7 @@ const mockCreateSpaceMember = createSpaceMember as jest.Mock;
 
 describe('useSpaceMembersContext', () => {
   let members: Member[];
-  let renderOptions: RenderHookOptions<any>;
+  let renderOptions: RenderHookOptions<unknown>;
 
   beforeEach(() => {
     members = [

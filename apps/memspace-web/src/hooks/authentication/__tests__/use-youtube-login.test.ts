@@ -13,8 +13,8 @@ describe('useYouTubeLogin', () => {
   beforeEach(() => {
     accessToken = '123';
     mockClient = {
-      callback: (_: any) => {},
-      requestAccessToken: () => {},
+      callback: jest.fn(),
+      requestAccessToken: jest.fn(),
     };
     mockUseGoogleIdentityServicesContext.mockReturnValue({
       client: mockClient,
