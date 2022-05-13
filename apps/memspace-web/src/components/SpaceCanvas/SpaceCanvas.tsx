@@ -139,24 +139,31 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
       }
 
       const { raster, root, message, username } = memberRaster;
+      const { width, height, loaded, x, y } = member;
 
-      raster.position = new paper.Point(member.x, member.y);
-      raster.opacity = member.loaded ? 1 : 0;
-
-      const { width, height, loaded } = member;
+      raster.position = new paper.Point(x, y);
+      if (!raster.size.height || !raster.size.width) {
+        raster.size.height = height;
+        raster.size.width = width;
+      }
 
       if (width && height) {
         // Use bounds to get the raster size after other scaling
         const rasterWidth = raster.bounds.width;
         const rasterHeight = raster.bounds.height;
 
-        if (!rasterWidth || !rasterHeight) return;
+        if (rasterWidth && rasterHeight) {
+          const horizontalScale = width / rasterWidth;
+          const verticalScale = height / rasterHeight;
 
-        const horizontalScale = width / rasterWidth;
-        const verticalScale = height / rasterHeight;
+          // console.log(`${width} | ${rasterWidth} | ${memberId}`);
 
-        // Use scaling instead of resizing to preserve image precision
-        raster.scale(horizontalScale, verticalScale);
+          // Use scaling instead of resizing to preserve image precision
+          raster.scale(horizontalScale, verticalScale);
+        } else {
+          raster.size.height = height;
+          raster.size.width = width;
+        }
       }
 
       root.opacity = loaded ? 1 : 0;
@@ -201,7 +208,7 @@ const SpaceCanvas = ({}: SpaceCanvasProps) => {
     });
 
     return () => subscription.unsubscribe();
-  }, [onSpaceMembersReset$, spaceMembersStateRef, resetSpaceMembers]);
+  }, [onSpaceMembersReset$, resetSpaceMembers]);
 
   useEffect(() => {
     const subscription = merge(

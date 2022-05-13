@@ -5,7 +5,7 @@ import { Member } from '../../models/member';
 import { SpaceMember } from '../../models/space-member';
 import { generateRandom } from '../../utilities/generate-random';
 import { createSpaceMember } from '../../models/space-member-factory';
-import { merge, Subject, throttleTime } from 'rxjs';
+import { Subject } from 'rxjs';
 
 type UseSpaceMembersProps = {
   members: Member[];
@@ -29,19 +29,6 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   const { current: onSpaceMemberUpdated$ } = useRef(
     spaceMemberUpdatedSubject.asObservable()
   );
-
-  useEffect(() => {
-    const subscription = merge(
-      onSpaceMembersReset$,
-      onSpaceMemberChanged$,
-      // Throttle updates since they happen pretty much every tick.
-      onSpaceMemberUpdated$.pipe(throttleTime(1000))
-    ).subscribe(() => {
-      // setSpaceMembers(spaceMembersStateRef.current.map((m) => m.clone()));
-    });
-
-    return () => subscription.unsubscribe();
-  }, [onSpaceMembersReset$, onSpaceMemberChanged$, onSpaceMemberUpdated$]);
 
   useEffect(() => {
     const nextSpaceMembers = members.map((m) => createSpaceMember(m));
@@ -133,7 +120,6 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
   };
 
   return {
-    spaceMembers: [],
     spaceMembersStateRef,
     loadSpaceMember,
     toggleSpaceMemberPaused,

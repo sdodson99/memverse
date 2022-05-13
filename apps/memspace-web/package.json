@@ -37,7 +37,7 @@
     "react-query": "^3.34.16",
     "react-spring-bottom-sheet": "^3.4.0",
     "react-tooltip": "^4.2.21",
-    "recoil": "^0.7.3-alpha.1",
+    "recoil": "^0.7.2",
     "rxjs": "^7.5.5"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
+import { useThrottledSpaceMembersContext } from '../../hooks/space/use-throttled-space-members-context';
 import { SpaceMember } from '../../models/space-member';
 import SpaceMemberListing from '../SpaceMemberListing/SpaceMemberListing';
 import TextInput from '../TextInput/TextInput';
@@ -9,7 +9,7 @@ type ViewSpaceMembersProps = {};
 
 const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
   const { spaceMembers, toggleSpaceMemberPaused, setShowSpaceMemberDetails } =
-    useSpaceMembersContext();
+    useThrottledSpaceMembersContext();
   const [filter, setFilter] = useState('');
 
   const membersCount = spaceMembers.length;

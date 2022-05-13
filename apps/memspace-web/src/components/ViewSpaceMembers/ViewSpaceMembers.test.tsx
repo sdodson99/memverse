@@ -1,8 +1,9 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ViewSpaceMembers from './ViewSpaceMembers';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
+import { renderApp } from '../../test-utils/render-app';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
@@ -30,7 +31,7 @@ describe('<ViewSpaceMembers />', () => {
   });
 
   it('should mount', () => {
-    render(<ViewSpaceMembers />);
+    renderApp(<ViewSpaceMembers />);
 
     const viewSpaceMembers = screen.getByTestId('ViewSpaceMembers');
 
@@ -38,7 +39,7 @@ describe('<ViewSpaceMembers />', () => {
   });
 
   it('should render members listing', () => {
-    render(<ViewSpaceMembers />);
+    renderApp(<ViewSpaceMembers />);
 
     const membersListing = screen.getByTestId('SpaceMemberListing');
 
@@ -46,7 +47,7 @@ describe('<ViewSpaceMembers />', () => {
   });
 
   it('should toggle pause when space member paused', () => {
-    render(<ViewSpaceMembers />);
+    renderApp(<ViewSpaceMembers />);
     const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
     firstMenuButton.click();
 
@@ -60,7 +61,7 @@ describe('<ViewSpaceMembers />', () => {
   });
 
   it('should show details when space member details requested to be shown', () => {
-    render(<ViewSpaceMembers />);
+    renderApp(<ViewSpaceMembers />);
     const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
     firstMenuButton.click();
 
@@ -81,7 +82,7 @@ describe('<ViewSpaceMembers />', () => {
         { id: '3', username: 'user3', message: 'abc' },
       ],
     });
-    render(<ViewSpaceMembers />);
+    renderApp(<ViewSpaceMembers />);
 
     const spaceMemberListingItemUsernames = screen.getAllByTestId(
       'SpaceMemberListingItemUsername'
@@ -94,7 +95,7 @@ describe('<ViewSpaceMembers />', () => {
 
   describe('with filtering', () => {
     it('should only render members that pass filter', () => {
-      render(<ViewSpaceMembers />);
+      renderApp(<ViewSpaceMembers />);
       const filterInput = screen.getByPlaceholderText('Filter members');
 
       fireEvent.change(filterInput, {
@@ -110,7 +111,7 @@ describe('<ViewSpaceMembers />', () => {
     });
 
     it('should render fallback message when all members filtered', () => {
-      render(<ViewSpaceMembers />);
+      renderApp(<ViewSpaceMembers />);
       const filterInput = screen.getByPlaceholderText('Filter members');
 
       fireEvent.change(filterInput, {

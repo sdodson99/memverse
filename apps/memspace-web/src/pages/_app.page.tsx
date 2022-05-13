@@ -10,6 +10,7 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { AccountProvider } from '../hooks/authentication/use-account-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDxXUSxSLuzKFuEhACAGtuvYZC-nTf70l0',
@@ -31,16 +32,18 @@ function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <AccessTokenProvider>
-      <QueryClientProvider client={queryClient}>
-        <AccountProvider>
-          <Head>
-            <title>Memspace</title>
-          </Head>
-          <Component {...pageProps} />
-        </AccountProvider>
-      </QueryClientProvider>
-    </AccessTokenProvider>
+    <RecoilRoot>
+      <AccessTokenProvider>
+        <QueryClientProvider client={queryClient}>
+          <AccountProvider>
+            <Head>
+              <title>Memspace</title>
+            </Head>
+            <Component {...pageProps} />
+          </AccountProvider>
+        </QueryClientProvider>
+      </AccessTokenProvider>
+    </RecoilRoot>
   );
 }
 
