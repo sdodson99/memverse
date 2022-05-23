@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Login from './Login';
 import { NonMemberError, useLogin } from '../../hooks/authentication/use-login';
@@ -63,7 +59,9 @@ describe('<Login />', () => {
         render(<Login />);
 
         const loginButton = screen.getByTestId('YouTubeLoginButton');
-        loginButton.click();
+        await act(async () => {
+          loginButton.click();
+        });
       });
 
       it('should login with YouTube access token', () => {
@@ -79,11 +77,10 @@ describe('<Login />', () => {
       const login = async () => {
         render(<Login />);
         const loginButton = screen.getByTestId('YouTubeLoginButton');
-        loginButton.click();
 
-        await waitForElementToBeRemoved(() =>
-          screen.queryByTestId('LoadingSpinner')
-        );
+        await act(async () => {
+          loginButton.click();
+        });
       };
 
       it('should display error message for NonMemberError', async () => {

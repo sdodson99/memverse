@@ -22,10 +22,11 @@ const Login = ({}: LoginProps) => {
 
   const handleLoginClick = async () => {
     setLoginError(undefined);
-    setIsLoggingIn(true);
 
     try {
       const accessToken = await youTubeLogin();
+
+      setIsLoggingIn(true);
 
       await login(accessToken);
 
