@@ -26,6 +26,7 @@ describe('SpaceMemberRaster', () => {
   beforeEach(() => {
     rootLayer = {
       addChild: jest.fn(),
+      bringToFront: jest.fn(),
       remove: jest.fn(),
     } as unknown as paper.Layer;
     mockPaperLayer.mockReturnValue(rootLayer);
@@ -82,9 +83,9 @@ describe('SpaceMemberRaster', () => {
       spaceMemberRaster.onMouseLeave = () => 'onMouseLeave';
 
       expect(avatarRaster.onLoad).toBeDefined();
-      expect(avatarRaster.onClick).toBeDefined();
-      expect(avatarRaster.onMouseEnter).toBeDefined();
-      expect(avatarRaster.onMouseLeave).toBeDefined();
+      expect(rootLayer.onClick).toBeDefined();
+      expect(rootLayer.onMouseEnter).toBeDefined();
+      expect(rootLayer.onMouseLeave).toBeDefined();
     });
   });
 
@@ -275,6 +276,14 @@ describe('SpaceMemberRaster', () => {
 
         expect(messagePointText.position.y).toBe(-40);
       });
+    });
+  });
+
+  describe('bringToFront', () => {
+    it('should bring root layer to front', () => {
+      spaceMemberRaster.bringToFront();
+
+      expect(rootLayer.bringToFront).toBeCalled();
     });
   });
 

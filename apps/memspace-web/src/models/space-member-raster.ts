@@ -41,15 +41,15 @@ export class SpaceMemberRaster {
   }
 
   set onClick(value: Function) {
-    this._avatarRaster.onClick = value;
+    this._rootLayer.onClick = value;
   }
 
   set onMouseEnter(value: Function) {
-    this._avatarRaster.onMouseEnter = value;
+    this._rootLayer.onMouseEnter = value;
   }
 
   set onMouseLeave(value: Function) {
-    this._avatarRaster.onMouseLeave = value;
+    this._rootLayer.onMouseLeave = value;
   }
 
   set photoUrl(value: string) {
@@ -113,6 +113,10 @@ export class SpaceMemberRaster {
     );
     this._usernamePointText.content = member.username;
     this._usernamePointText.opacity = member.showUsername ? 1 : 0;
+  }
+
+  bringToFront() {
+    this._rootLayer.bringToFront();
   }
 
   remove() {
