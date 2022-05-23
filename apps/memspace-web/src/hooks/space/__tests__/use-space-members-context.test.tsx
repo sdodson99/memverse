@@ -11,9 +11,13 @@ import {
 } from '../use-space-members-context';
 import { SpaceMember } from '../../../models/space-member';
 import { createSpaceMember } from '../../../models/space-member-factory';
+import { generateRandom } from '../../../utilities/generate-random';
 
 jest.mock('../../../models/space-member-factory');
 const mockCreateSpaceMember = createSpaceMember as jest.Mock;
+
+jest.mock('../../../utilities/generate-random');
+const mockGenerateRandom = generateRandom as jest.Mock;
 
 describe('useSpaceMembersContext', () => {
   let members: Member[];
@@ -46,10 +50,13 @@ describe('useSpaceMembersContext', () => {
     mockCreateSpaceMember.mockImplementation(
       (m: Member) => new SpaceMember(m.id, m.username, m.photoUrl, m.message)
     );
+
+    mockGenerateRandom.mockImplementation((min, max) => (min + max) / 2);
   });
 
   afterEach(() => {
     mockCreateSpaceMember.mockReset();
+    mockGenerateRandom.mockReset();
   });
 
   it('should return mapped space members', () => {
@@ -144,6 +151,41 @@ describe('useSpaceMembersContext', () => {
       expect(
         result.current.spaceMembersStateRef.current[1].positionInitialized
       ).toBeTruthy();
+    });
+  });
+
+  describe('shuffleSpaceMembers', () => {
+    let bounds: paper.Rectangle;
+
+    beforeEach(() => {
+      bounds = {
+        top: 0,
+        left: 0,
+        bottom: 100,
+        right: 100,
+      } as paper.Rectangle;
+    });
+
+    it('should move space members to random positions', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.shuffleSpaceMembers(bounds);
+      });
+
+      expect(result.current.spaceMembersStateRef.current[0].x).toBe(50);
+      expect(result.current.spaceMembersStateRef.current[0].y).toBe(50);
+      expect(
+        result.current.spaceMembersStateRef.current[0].directionRadians
+      ).toBeCloseTo(Math.PI);
+      expect(result.current.spaceMembersStateRef.current[1].x).toBe(50);
+      expect(result.current.spaceMembersStateRef.current[1].y).toBe(50);
+      expect(
+        result.current.spaceMembersStateRef.current[1].directionRadians
+      ).toBeCloseTo(Math.PI);
     });
   });
 

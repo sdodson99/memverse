@@ -119,6 +119,22 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     });
   };
 
+  const shuffleSpaceMembers = (bounds: paper.Rectangle) => {
+    withAllSpaceMembers((member) => {
+      const { left, right, top, bottom } = bounds;
+
+      const x = generateRandom(left, right);
+      const y = generateRandom(top, bottom);
+      const directionRadians = generateRandom(0, 2 * Math.PI);
+
+      member.x = x;
+      member.y = y;
+      member.directionRadians = directionRadians;
+
+      spaceMemberUpdatedSubject.next(member.id);
+    });
+  };
+
   return {
     spaceMembersStateRef,
     loadSpaceMember,
@@ -127,6 +143,7 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     setSpaceMembersSize,
     updateSpaceMembers,
     updateSpaceMemberMessage,
+    shuffleSpaceMembers,
     onSpaceMembersReset$,
     onSpaceMemberChanged$,
     onSpaceMemberUpdated$,

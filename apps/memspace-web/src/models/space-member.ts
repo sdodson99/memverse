@@ -64,8 +64,16 @@ export class SpaceMember {
     return this._x;
   }
 
+  set x(value: number) {
+    this._x = value;
+  }
+
   get y() {
     return this._y;
+  }
+
+  set y(value: number) {
+    this._y = value;
   }
 
   get username() {
@@ -179,13 +187,20 @@ export class SpaceMember {
     const xPixelsTravelled = Math.cos(this.directionRadians) * pixelsTravelled;
     const yPixelsTravelled = Math.sin(this.directionRadians) * pixelsTravelled;
 
-    this.move(xPixelsTravelled, yPixelsTravelled, bounds);
+    this._x += xPixelsTravelled;
+    this._y += yPixelsTravelled;
+
+    this.fitBounds(bounds);
   }
 
-  private move(xPixels: number, yPixels: number, bounds: paper.Rectangle) {
-    this._x += xPixels;
-    this._y += yPixels;
+  moveTo(x: number, y: number, bounds: paper.Rectangle) {
+    this.x = x;
+    this.y = y;
 
+    this.fitBounds(bounds);
+  }
+
+  private fitBounds(bounds: paper.Rectangle) {
     const { top, left, bottom, right } = bounds;
     const halfWidth = this.width / 2;
     const halfHeight = this.height / 2;

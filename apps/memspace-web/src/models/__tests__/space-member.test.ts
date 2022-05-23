@@ -135,6 +135,36 @@ describe('SpaceMember', () => {
     });
   });
 
+  describe('moveTo', () => {
+    let bounds: paper.Rectangle;
+
+    beforeEach(() => {
+      bounds = {
+        top: 0,
+        left: 0,
+        bottom: 100,
+        right: 100,
+      } as paper.Rectangle;
+
+      member.height = 4;
+      member.width = 4;
+    });
+
+    it('should move member to position', () => {
+      member.moveTo(10, 20, bounds);
+
+      expect(member.x).toBe(10);
+      expect(member.y).toBe(20);
+    });
+
+    it('should fit to bounds', () => {
+      member.moveTo(1000, -1000, bounds);
+
+      expect(member.x).toBe(98);
+      expect(member.y).toBe(2);
+    });
+  });
+
   describe('clone', () => {
     it('should return new space member instance for member', () => {
       const clonedMember = member.clone();
