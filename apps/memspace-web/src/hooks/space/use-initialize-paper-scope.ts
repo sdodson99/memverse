@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import paper from 'paper';
 import { usePaperScope } from './use-paper-scope';
 
@@ -6,8 +6,7 @@ export const useInitializePaperScope = (
   canvasRef: RefObject<HTMLCanvasElement>
 ) => {
   const [scope, setScope] = usePaperScope();
-
-  const initialized = scope !== null;
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     if (initialized) {
@@ -25,6 +24,7 @@ export const useInitializePaperScope = (
     paperScope.setup(canvas);
 
     setScope(paperScope);
+    setInitialized(true);
   }, [canvasRef, initialized, setScope]);
 
   return {
