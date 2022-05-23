@@ -6,6 +6,7 @@ import { useSpaceMembersContext } from '../../hooks/space/use-space-members-cont
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { useAccountContext } from '../../hooks/authentication/use-account-context';
 import { renderApp } from '../../test-utils/render-app';
+import { usePaperScope } from '../../hooks/space/use-paper-scope';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
@@ -16,16 +17,28 @@ const mockUseIsLoggedIn = useIsLoggedIn as jest.Mock;
 jest.mock('../../hooks/authentication/use-account-context');
 const mockUseAccountContext = useAccountContext as jest.Mock;
 
+jest.mock('../../hooks/space/use-paper-scope');
+const mockUsePaperScope = usePaperScope as jest.Mock;
+
 describe('<SpaceToolbar />', () => {
+  let mockShuffleSpaceMembers: jest.Mock;
+
   beforeEach(() => {
-    mockUseSpaceMembersContext.mockReturnValue({ spaceMembers: [] });
+    mockShuffleSpaceMembers = jest.fn();
+    mockUseSpaceMembersContext.mockReturnValue({
+      spaceMembers: [],
+      shuffleSpaceMembers: mockShuffleSpaceMembers,
+    });
+
     mockUseAccountContext.mockReturnValue({});
+    mockUsePaperScope.mockReturnValue([]);
   });
 
   afterEach(() => {
     mockUseSpaceMembersContext.mockReset();
     mockUseAccountContext.mockReset();
     mockUseIsLoggedIn.mockReset();
+    mockUsePaperScope.mockReset();
   });
 
   it('should mount', () => {
@@ -44,6 +57,34 @@ describe('<SpaceToolbar />', () => {
     const viewSpaceMembers = screen.getByTestId('ViewSpaceMembers');
 
     expect(viewSpaceMembers).toBeInTheDocument();
+  });
+
+  describe('when shuffle members clicked', () => {
+    it('should shuffle members when paper scope available', () => {
+      const bounds = {};
+      mockUsePaperScope.mockReturnValue([
+        {
+          view: {
+            bounds,
+          },
+        },
+      ]);
+      renderApp(<SpaceToolbar />);
+      const shuffleMembersButton = screen.getByText('🔀');
+
+      shuffleMembersButton.click();
+
+      expect(mockShuffleSpaceMembers).toBeCalledWith(bounds);
+    });
+
+    it('should not shuffle members when paper scope not available', () => {
+      renderApp(<SpaceToolbar />);
+      const shuffleMembersButton = screen.getByText('🔀');
+
+      shuffleMembersButton.click();
+
+      expect(mockShuffleSpaceMembers).not.toBeCalled();
+    });
   });
 
   describe('when logged in', () => {

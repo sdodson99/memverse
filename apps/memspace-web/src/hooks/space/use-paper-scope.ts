@@ -1,30 +1,9 @@
-import { RefObject, useEffect, useState } from 'react';
-import paper from 'paper';
+import { atom, useRecoilState } from 'recoil';
 
-export const usePaperScope = (canvasRef: RefObject<HTMLCanvasElement>) => {
-  const [scope, setScope] = useState<paper.PaperScope | null>(null);
+const paperScopeState = atom<paper.PaperScope | null>({
+  key: 'PaperScope',
+  default: null,
+  dangerouslyAllowMutability: true, // Need to allow mutability to let paper execute updates.
+});
 
-  const initialized = scope !== null;
-
-  useEffect(() => {
-    if (initialized) {
-      return;
-    }
-
-    const canvas = canvasRef.current;
-
-    if (!canvas) {
-      return;
-    }
-
-    const paperScope = new paper.PaperScope();
-
-    paperScope.setup(canvas);
-
-    setScope(paperScope);
-  }, [canvasRef, initialized]);
-
-  return {
-    scope,
-  };
-};
+export const usePaperScope = () => useRecoilState(paperScopeState);

@@ -1,13 +1,16 @@
+import React from 'react';
 import paper from 'paper';
-import { renderHook } from '@testing-library/react-hooks';
-import { usePaperScope } from '../use-paper-scope';
+import { renderHook, WrapperComponent } from '@testing-library/react-hooks';
 import { MutableRefObject, RefObject } from 'react';
+import { useInitializePaperScope } from '../use-initialize-paper-scope';
+import { RecoilRoot } from 'recoil';
 
 jest.mock('paper');
 const mockPaperScope = paper.PaperScope as unknown as jest.Mock;
 
-describe('usePaperScope', () => {
+describe('useInitializePaperScope', () => {
   let mockPaperScopeSetup: jest.Mock;
+  let wrapper: WrapperComponent<unknown>;
 
   beforeEach(() => {
     mockPaperScopeSetup = jest.fn();
@@ -15,6 +18,10 @@ describe('usePaperScope', () => {
     mockPaperScope.mockReturnValue({
       setup: mockPaperScopeSetup,
     });
+
+    wrapper = function Wrapper({ children }) {
+      return <RecoilRoot>{children}</RecoilRoot>;
+    };
   });
 
   afterEach(() => {
@@ -31,14 +38,19 @@ describe('usePaperScope', () => {
     });
 
     it('should return initialized paper scope when canvas provided', () => {
-      const { result } = renderHook(() => usePaperScope(canvasRef));
+      const { result } = renderHook(() => useInitializePaperScope(canvasRef), {
+        wrapper,
+      });
 
       expect(mockPaperScopeSetup).toBeCalledWith(canvasRef.current);
       expect(result.current.scope).not.toBeNull();
     });
 
     it('should only initialize paper scope once', () => {
-      const { rerender } = renderHook(() => usePaperScope(canvasRef));
+      const { rerender } = renderHook(
+        () => useInitializePaperScope(canvasRef),
+        { wrapper }
+      );
 
       rerender();
 
@@ -47,8 +59,10 @@ describe('usePaperScope', () => {
   });
 
   it('should not return initialized paper scope when canvas not provided', () => {
-    const { result } = renderHook(() =>
-      usePaperScope({} as unknown as RefObject<HTMLCanvasElement>)
+    const { result } = renderHook(
+      () =>
+        useInitializePaperScope({} as unknown as RefObject<HTMLCanvasElement>),
+      { wrapper }
     );
 
     expect(mockPaperScopeSetup).not.toBeCalled();

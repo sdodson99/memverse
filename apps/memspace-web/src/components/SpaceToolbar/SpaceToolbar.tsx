@@ -6,6 +6,8 @@ import ViewSpaceMembers from '../ViewSpaceMembers/ViewSpaceMembers';
 import UpdateSpaceMemberMessage from '../UpdateSpaceMemberMessage/UpdateSpaceMemberMessage';
 import Container from '../Container/Container';
 import ReactTooltip from 'react-tooltip';
+import { useThrottledSpaceMembersContext } from '../../hooks/space/use-throttled-space-members-context';
+import { usePaperScope } from '../../hooks/space/use-paper-scope';
 
 type SpaceToolbarProps = {};
 
@@ -18,6 +20,18 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
 
   const handleSheetDismiss = () => setCurrentSheet(null);
 
+  const [paperScope] = usePaperScope();
+  const { shuffleSpaceMembers } = useThrottledSpaceMembersContext();
+  const handleShuffleMembers = () => {
+    const bounds = paperScope?.view?.bounds;
+
+    if (!bounds) {
+      return;
+    }
+
+    shuffleSpaceMembers(bounds);
+  };
+
   return (
     <div className={styles.spaceToolbar} data-testid="SpaceToolbar">
       <Container>
@@ -29,6 +43,16 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
             data-tip="View Members"
           >
             🔎
+          </button>
+          <ReactTooltip effect="solid" place="top" type="light" />
+
+          <button
+            className={styles.toolbarItem}
+            onClick={() => handleShuffleMembers()}
+            aria-label="Shuffle members"
+            data-tip="Shuffle Members"
+          >
+            🔀
           </button>
           <ReactTooltip effect="solid" place="top" type="light" />
 
