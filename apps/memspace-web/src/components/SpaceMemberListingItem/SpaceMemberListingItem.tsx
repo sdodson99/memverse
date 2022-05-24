@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './SpaceMemberListingItem.module.css';
-import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 
 export type SpaceMemberListingItemProps = {
   username: string;
@@ -44,16 +44,19 @@ const SpaceMemberListingItem = ({
       </div>
       {message && <div className={styles.message}>{message}</div>}
     </div>
-    <Menu menuButton={<MenuButton data-testid="MenuButton">···</MenuButton>}>
-      {!paused && <MenuItem onClick={() => onPause?.()}>Pause</MenuItem>}
-      {paused && <MenuItem onClick={() => onUnpause?.()}>Unpause</MenuItem>}
+    <Menu closeOnSelect={false}>
+      <MenuButton data-testid="MenuButton">...</MenuButton>
+      <MenuList>
+        {!paused && <MenuItem onClick={() => onPause?.()}>Pause</MenuItem>}
+        {paused && <MenuItem onClick={() => onUnpause?.()}>Unpause</MenuItem>}
 
-      {!isShowingDetails && (
-        <MenuItem onClick={() => onShowDetails?.()}>Show Details</MenuItem>
-      )}
-      {isShowingDetails && (
-        <MenuItem onClick={() => onHideDetails?.()}>Hide Details</MenuItem>
-      )}
+        {!isShowingDetails && (
+          <MenuItem onClick={() => onShowDetails?.()}>Show Details</MenuItem>
+        )}
+        {isShowingDetails && (
+          <MenuItem onClick={() => onHideDetails?.()}>Hide Details</MenuItem>
+        )}
+      </MenuList>
     </Menu>
   </div>
 );

@@ -5,9 +5,9 @@ import { BottomSheet } from 'react-spring-bottom-sheet';
 import ViewSpaceMembers from '../ViewSpaceMembers/ViewSpaceMembers';
 import UpdateSpaceMemberMessage from '../UpdateSpaceMemberMessage/UpdateSpaceMemberMessage';
 import Container from '../Container/Container';
-import ReactTooltip from 'react-tooltip';
 import { useThrottledSpaceMembersContext } from '../../hooks/space/use-throttled-space-members-context';
 import { usePaperScope } from '../../hooks/space/use-paper-scope';
+import { Tooltip } from '@chakra-ui/react';
 
 type SpaceToolbarProps = {};
 
@@ -36,37 +36,44 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
     <div className={styles.spaceToolbar} data-testid="SpaceToolbar">
       <Container>
         <div className={styles.spaceToolbarContent}>
-          <button
-            className={styles.toolbarItem}
-            onClick={() => setCurrentSheet('VIEW_MEMBERS')}
-            aria-label="View members"
-            data-tip="View Members"
-          >
-            🔎
-          </button>
-          <ReactTooltip effect="solid" place="top" type="light" />
+          <Tooltip hasArrow label="View Members" bg="gray.100" color="gray.900">
+            <button
+              className={styles.toolbarItem}
+              onClick={() => setCurrentSheet('VIEW_MEMBERS')}
+            >
+              🔎
+            </button>
+          </Tooltip>
 
-          <button
-            className={styles.toolbarItem}
-            onClick={() => handleShuffleMembers()}
-            aria-label="Shuffle members"
-            data-tip="Shuffle Members"
+          <Tooltip
+            hasArrow
+            label="Shuffle Members"
+            bg="gray.100"
+            color="gray.900"
           >
-            🔀
-          </button>
-          <ReactTooltip effect="solid" place="top" type="light" />
+            <button
+              className={styles.toolbarItem}
+              onClick={() => handleShuffleMembers()}
+            >
+              🔀
+            </button>
+          </Tooltip>
 
           {isLoggedIn && (
             <>
-              <button
-                className={styles.toolbarItem}
-                onClick={() => setCurrentSheet('UPDATE_MEMBER_MESSAGE')}
-                aria-label="Update message"
-                data-tip="Update Message"
+              <Tooltip
+                hasArrow
+                label="Update Members"
+                bg="gray.100"
+                color="gray.900"
               >
-                ✏️
-              </button>
-              <ReactTooltip effect="solid" place="top" type="light" />
+                <button
+                  className={styles.toolbarItem}
+                  onClick={() => setCurrentSheet('UPDATE_MEMBER_MESSAGE')}
+                >
+                  ✏️
+                </button>
+              </Tooltip>
             </>
           )}
         </div>

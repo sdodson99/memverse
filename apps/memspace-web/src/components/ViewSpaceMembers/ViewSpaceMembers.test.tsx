@@ -51,7 +51,7 @@ describe('<ViewSpaceMembers />', () => {
     const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
     firstMenuButton.click();
 
-    const pauseButton = screen.getByText('Pause');
+    const pauseButton = screen.getAllByText('Pause')[0];
     pauseButton.click();
 
     expect(mockToggleSpaceMemberPaused).toBeCalledWith({
@@ -65,7 +65,7 @@ describe('<ViewSpaceMembers />', () => {
     const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
     firstMenuButton.click();
 
-    const showDetailsButton = screen.getByText('Show Details');
+    const showDetailsButton = screen.getAllByText('Show Details')[0];
     showDetailsButton.click();
 
     expect(mockSetShowSpaceMemberDetails).toBeCalledWith(

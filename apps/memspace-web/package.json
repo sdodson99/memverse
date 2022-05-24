@@ -23,11 +23,14 @@
     "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.8.8",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@next/bundle-analyzer": "^12.1.5",
-    "@szhsin/react-menu": "^3.0.0",
     "axios": "^0.24.0",
     "constate": "^3.3.0",
     "firebase": "^9.6.6",
+    "framer-motion": "^6.3.3",
     "luxon": "^2.3.0",
     "next": "12.0.7",
     "paper": "^0.12.15",
@@ -36,7 +39,6 @@
     "react-hook-form": "^7.27.1",
     "react-query": "^3.34.16",
     "react-spring-bottom-sheet": "^3.4.0",
-    "react-tooltip": "^4.2.21",
     "recoil": "^0.7.2",
     "rxjs": "^7.5.5"
   },
