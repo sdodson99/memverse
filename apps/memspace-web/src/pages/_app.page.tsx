@@ -10,6 +10,7 @@ import { AccountProvider } from '../hooks/authentication/use-account-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 import { ChakraProvider } from '@chakra-ui/react';
+import { MockTagProvider } from '../hooks/use-mock-tag-context';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDxXUSxSLuzKFuEhACAGtuvYZC-nTf70l0',
@@ -31,20 +32,22 @@ function App({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <RecoilRoot>
-      <ChakraProvider>
-        <AccessTokenProvider>
-          <QueryClientProvider client={queryClient}>
-            <AccountProvider>
-              <Head>
-                <title>Memspace</title>
-              </Head>
-              <Component {...pageProps} />
-            </AccountProvider>
-          </QueryClientProvider>
-        </AccessTokenProvider>
-      </ChakraProvider>
-    </RecoilRoot>
+    <MockTagProvider>
+      <RecoilRoot>
+        <ChakraProvider>
+          <AccessTokenProvider>
+            <QueryClientProvider client={queryClient}>
+              <AccountProvider>
+                <Head>
+                  <title>Memspace</title>
+                </Head>
+                <Component {...pageProps} />
+              </AccountProvider>
+            </QueryClientProvider>
+          </AccessTokenProvider>
+        </ChakraProvider>
+      </RecoilRoot>
+    </MockTagProvider>
   );
 }
 
