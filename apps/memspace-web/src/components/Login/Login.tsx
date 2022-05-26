@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { NonMemberError, useLogin } from '../../hooks/authentication/use-login';
 import { useYouTubeLogin } from '../../hooks/authentication/use-youtube-login';
+import { useNavigate } from '../../hooks/use-navigate';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import YouTubeLoginButton from '../YouTubeLoginButton/YouTubeLoginButton';
@@ -18,7 +18,7 @@ const Login = ({}: LoginProps) => {
   const { login: youTubeLogin, isInitializing: isYouTubeLoginInitializing } =
     useYouTubeLogin();
   const login = useLogin();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleLoginClick = async () => {
     setLoginError(undefined);
@@ -30,7 +30,7 @@ const Login = ({}: LoginProps) => {
 
       await login(accessToken);
 
-      await router.push('/');
+      await navigate({ pathname: '/' });
     } catch (error) {
       setIsLoggingIn(false);
 

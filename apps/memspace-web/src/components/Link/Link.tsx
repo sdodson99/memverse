@@ -2,7 +2,7 @@ import React from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { useMockTagContext } from '../../hooks/use-mock-tag-context';
 import { UrlObject } from 'node:url';
-import { ParsedUrlQueryInput } from 'querystring';
+import { ParsedUrlQueryInput } from 'node:querystring';
 
 type LinkUrlObject = { query?: ParsedUrlQueryInput } & Omit<UrlObject, 'query'>;
 export type LinkProps = React.PropsWithChildren<

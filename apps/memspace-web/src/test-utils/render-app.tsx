@@ -29,14 +29,11 @@ export const TestApp = ({ children }: TestAppProps) => {
   );
 };
 
-type RenderAppOptions = {
+type AppOptions = {
   mockTag?: string;
 };
 
-export const renderApp = (
-  component: React.ReactNode,
-  options?: RenderAppOptions
-) => {
+export const setupApp = (options?: AppOptions) => {
   if (options?.mockTag) {
     mockUseRouter.mockReturnValue({
       isReady: true,
@@ -45,6 +42,13 @@ export const renderApp = (
       },
     });
   }
+};
+
+export const renderApp = (
+  component: React.ReactNode,
+  appOptions?: AppOptions
+) => {
+  setupApp(appOptions);
 
   render(<TestApp>{component}</TestApp>);
 };

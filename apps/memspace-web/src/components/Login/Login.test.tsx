@@ -69,7 +69,7 @@ describe('<Login />', () => {
       });
 
       it('should redirect to home page', () => {
-        expect(mockRouterPush).toBeCalledWith('/');
+        expect(mockRouterPush).toBeCalledWith({ pathname: '/' });
       });
     });
 
