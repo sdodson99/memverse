@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useFetcher } from '../use-fetcher';
 import { useAccessTokenContext } from './use-access-token-context';
 
 type LoginResponse = {
@@ -16,10 +17,11 @@ export class NonMemberError extends Error {
 
 export const useLogin = () => {
   const { setAccessToken } = useAccessTokenContext();
+  const fetcher = useFetcher();
 
   const login = async (youTubeAccessToken: string) => {
     try {
-      const { data } = await axios.post<LoginResponse>(
+      const { data } = await fetcher.post<LoginResponse>(
         `${process.env.NEXT_PUBLIC_AUTHENTICATION_SERVER_BASE_URL}/login`,
         {
           accessToken: youTubeAccessToken,

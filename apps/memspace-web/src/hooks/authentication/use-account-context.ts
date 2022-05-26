@@ -1,13 +1,14 @@
 import { Account } from '../../models/account';
 import { useAccessTokenContext } from './use-access-token-context';
 import { useIsLoggedIn } from './use-is-logged-in';
-import axios from 'axios';
 import constate from 'constate';
 import { useQuery } from 'react-query';
+import { useFetcher } from '../use-fetcher';
 
 const useAccount = () => {
   const { token } = useAccessTokenContext();
   const isLoggedIn = useIsLoggedIn();
+  const fetcher = useFetcher();
 
   const {
     data: account,
@@ -18,7 +19,7 @@ const useAccount = () => {
       return null;
     }
 
-    const { data } = await axios.get<Account>(
+    const { data } = await fetcher.get<Account>(
       `${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/account`,
       {
         headers: {

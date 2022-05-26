@@ -1,20 +1,14 @@
-import axios, { AxiosResponse } from 'axios';
-import { getMockData } from '../mocks';
+import axios from 'axios';
+import { getMockExecutor } from '../mocks';
 import { useMockTagContext } from './use-mock-tag-context';
 
 export const useFetcher = () => {
   const mockTag = useMockTagContext();
 
   if (mockTag) {
-    const mockData = getMockData(mockTag);
+    const mockExecutor = getMockExecutor(mockTag);
 
-    return {
-      get: <T = unknown, R = AxiosResponse<T>, _D = unknown>(
-        url: string
-      ): Promise<R> => {
-        return Promise.resolve(mockData.get(url) as unknown as R);
-      },
-    };
+    return mockExecutor;
   }
 
   return axios;

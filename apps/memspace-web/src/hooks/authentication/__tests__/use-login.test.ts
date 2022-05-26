@@ -2,6 +2,8 @@ import { useAccessTokenContext } from '../use-access-token-context';
 import { NonMemberError, useLogin } from '../use-login';
 import axios from 'axios';
 import { when } from 'jest-when';
+import { renderHook } from '@testing-library/react-hooks';
+import { MockTagProvider } from '../../use-mock-tag-context';
 
 jest.mock('../use-access-token-context');
 const mockUseAccessTokenContext = useAccessTokenContext as jest.Mock;
@@ -46,9 +48,11 @@ describe('useLogin', () => {
         .mockReturnValue({
           data: accessTokenResponse,
         });
-      const login = useLogin();
+      const { result } = renderHook(() => useLogin(), {
+        wrapper: MockTagProvider,
+      });
 
-      await login(token);
+      await result.current(token);
 
       expect(mockSetAccessToken).toBeCalledWith(accessTokenResponse);
     });
@@ -64,9 +68,11 @@ describe('useLogin', () => {
         .mockImplementation(() => {
           throw new Error();
         });
-      const login = useLogin();
+      const { result } = renderHook(() => useLogin(), {
+        wrapper: MockTagProvider,
+      });
 
-      await expect(login(token)).rejects.toThrow();
+      await expect(result.current(token)).rejects.toThrow();
     });
 
     it('should throw NonMemberError if request fails with 403 status code', async () => {
@@ -86,9 +92,11 @@ describe('useLogin', () => {
             },
           };
         });
-      const login = useLogin();
+      const { result } = renderHook(() => useLogin(), {
+        wrapper: MockTagProvider,
+      });
 
-      await expect(login(token)).rejects.toThrow(NonMemberError);
+      await expect(result.current(token)).rejects.toThrow(NonMemberError);
     });
   });
 });
