@@ -1,9 +1,13 @@
 import { useYouTubeLogin } from '../use-youtube-login';
 import { useGoogleIdentityServicesContext } from '../use-google-identity-services-context';
+import { useMockTagContext } from '../../use-mock-tag-context';
 
 jest.mock('../use-google-identity-services-context');
 const mockUseGoogleIdentityServicesContext =
   useGoogleIdentityServicesContext as jest.Mock;
+
+jest.mock('../../use-mock-tag-context');
+const mockUseMockTagContext = useMockTagContext as jest.Mock;
 
 describe('useYouTubeLogin', () => {
   let accessToken: string;
@@ -23,6 +27,7 @@ describe('useYouTubeLogin', () => {
 
   afterEach(() => {
     mockUseGoogleIdentityServicesContext.mockReset();
+    mockUseMockTagContext.mockReset();
   });
 
   describe('login', () => {
@@ -44,6 +49,15 @@ describe('useYouTubeLogin', () => {
       const { login } = useYouTubeLogin();
 
       await expect(async () => await login()).rejects.toThrow();
+    });
+
+    it('should return stub access token when in mock mode', async () => {
+      mockUseMockTagContext.mockReturnValue('any-mock');
+      const { login } = useYouTubeLogin();
+
+      const actualAccessToken = await login();
+
+      expect(actualAccessToken).toBe('mock-google-access-token');
     });
   });
 
