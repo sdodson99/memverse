@@ -17,6 +17,7 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: '<rootDir>/coverage',
   coverageProvider: 'babel',
+  coveragePathIgnorePatterns: ['<rootDir>/src/mocks/'],
   coverageThreshold: {
     global: {
       branches: 75,

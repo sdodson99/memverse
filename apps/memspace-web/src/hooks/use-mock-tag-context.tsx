@@ -19,7 +19,7 @@ export const MockTagProvider = ({ children }: MockTagProviderProps) => {
       return null;
     }
 
-    return query['mock']?.toString() ?? null;
+    return query['mock']?.toString().toLowerCase() ?? null;
   };
 
   if (mockingEnabled && mockTagLoading) {

@@ -4,6 +4,7 @@ import { AccessTokenProvider } from '../hooks/authentication/use-access-token-co
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider } from '@chakra-ui/react';
+import { MockTagProvider } from '../hooks/use-mock-tag-context';
 
 type TestAppProps = {
   children: React.ReactNode;
@@ -11,15 +12,17 @@ type TestAppProps = {
 
 export const TestApp = ({ children }: TestAppProps) => {
   return (
-    <RecoilRoot>
-      <ChakraProvider>
-        <AccessTokenProvider>
-          <QueryClientProvider client={new QueryClient()}>
-            {children}
-          </QueryClientProvider>
-        </AccessTokenProvider>
-      </ChakraProvider>
-    </RecoilRoot>
+    <MockTagProvider>
+      <RecoilRoot>
+        <ChakraProvider>
+          <AccessTokenProvider>
+            <QueryClientProvider client={new QueryClient()}>
+              {children}
+            </QueryClientProvider>
+          </AccessTokenProvider>
+        </ChakraProvider>
+      </RecoilRoot>
+    </MockTagProvider>
   );
 };
 

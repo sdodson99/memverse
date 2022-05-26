@@ -4,7 +4,10 @@ jest.mock('next/router');
 const mockUseRouter = useRouter as jest.Mock;
 
 beforeEach(() => {
-  mockUseRouter.mockReturnValue({});
+  mockUseRouter.mockReturnValue({
+    isReady: true,
+    query: {},
+  });
 });
 
 afterEach(() => {

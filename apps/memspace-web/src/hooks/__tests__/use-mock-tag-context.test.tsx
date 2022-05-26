@@ -37,6 +37,22 @@ describe('useMockTagContext', () => {
     expect(result.current).toBe(mockTag);
   });
 
+  it('should return lowercase mock tag', () => {
+    const upperMockTag = 'SUPER-MOCK';
+    mockUseRouter.mockReturnValue({
+      isReady: true,
+      query: {
+        mock: upperMockTag,
+      },
+    });
+
+    const { result } = renderHook(() => useMockTagContext(), {
+      wrapper: MockTagProvider,
+    });
+
+    expect(result.current).toBe(mockTag);
+  });
+
   it('should not render when mock tag loading in non-production', () => {
     mockUseRouter.mockReturnValue({
       isReady: false,
