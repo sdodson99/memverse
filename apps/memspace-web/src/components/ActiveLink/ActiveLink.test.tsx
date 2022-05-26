@@ -17,7 +17,7 @@ describe('<ActiveLink />', () => {
   });
 
   it('should mount', () => {
-    render(<ActiveLink href="/">hello world</ActiveLink>);
+    render(<ActiveLink href={{ pathname: '/' }}>hello world</ActiveLink>);
 
     const activeLink = screen.getByTestId('ActiveLink');
 
@@ -27,7 +27,7 @@ describe('<ActiveLink />', () => {
   it('should render with active class name when active', () => {
     mockUseRouter.mockReturnValue({ pathname: '/home' });
     render(
-      <ActiveLink href="/home" activeClassName="active">
+      <ActiveLink href={{ pathname: '/home' }} activeClassName="active">
         hello world
       </ActiveLink>
     );
@@ -41,7 +41,7 @@ describe('<ActiveLink />', () => {
     mockUseRouter.mockReturnValue({ pathname: '/home' });
     render(
       <ActiveLink
-        href="/inactive"
+        href={{ pathname: '/inactive' }}
         className="className"
         activeClassName="active"
       >

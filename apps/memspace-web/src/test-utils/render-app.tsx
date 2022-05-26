@@ -5,6 +5,9 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MockTagProvider } from '../hooks/use-mock-tag-context';
+import { useRouter } from 'next/router';
+
+const mockUseRouter = useRouter as jest.Mock;
 
 type TestAppProps = {
   children: React.ReactNode;
@@ -26,6 +29,22 @@ export const TestApp = ({ children }: TestAppProps) => {
   );
 };
 
-export const renderApp = (component: React.ReactNode) => {
+type RenderAppOptions = {
+  mockTag?: string;
+};
+
+export const renderApp = (
+  component: React.ReactNode,
+  options?: RenderAppOptions
+) => {
+  if (options?.mockTag) {
+    mockUseRouter.mockReturnValue({
+      isReady: true,
+      query: {
+        mock: options.mockTag,
+      },
+    });
+  }
+
   render(<TestApp>{component}</TestApp>);
 };

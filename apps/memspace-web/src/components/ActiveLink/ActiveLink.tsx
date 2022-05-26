@@ -1,23 +1,22 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import Link, { LinkProps } from '../Link/Link';
 
 type ActiveLinkProps = {
-  children: React.ReactNode;
-  href: string;
   className?: string;
   activeClassName?: string;
-};
+} & LinkProps;
 
 const ActiveLink = ({
-  children,
-  href,
   className = '',
   activeClassName = '',
+  href,
+  children,
+  ...others
 }: ActiveLinkProps) => {
   const { pathname } = useRouter();
 
-  const isActive = pathname === href;
+  const isActive = pathname === href.pathname;
 
   const getClassName = (): string => {
     let calculatedClassName = className;
@@ -30,7 +29,7 @@ const ActiveLink = ({
   };
 
   return (
-    <Link href={href}>
+    <Link href={href} {...others}>
       <a className={getClassName()} data-testid="ActiveLink">
         {children}
       </a>

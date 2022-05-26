@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import React from 'react';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { useLogout } from '../../hooks/authentication/use-logout';
 import ActiveLink from '../ActiveLink/ActiveLink';
 import Container from '../Container/Container';
+import Link from '../Link/Link';
 import styles from './Header.module.css';
 
 type HeaderProps = {};
@@ -17,7 +17,7 @@ const Header = ({}: HeaderProps) => {
     <div className={styles.header} data-testid="Header">
       <Container>
         <div className={styles.content}>
-          <Link href="/" passHref>
+          <Link href={{ pathname: '/' }} passHref>
             <a>
               <img
                 className={styles.logo}
@@ -29,7 +29,7 @@ const Header = ({}: HeaderProps) => {
 
           <nav>
             <ActiveLink
-              href="/"
+              href={{ pathname: '/' }}
               className={styles.navItem}
               activeClassName={styles.active}
             >
@@ -38,7 +38,7 @@ const Header = ({}: HeaderProps) => {
 
             {!isLoggedIn && (
               <ActiveLink
-                href="/login"
+                href={{ pathname: '/login' }}
                 className={styles.navItem}
                 activeClassName={styles.active}
               >
