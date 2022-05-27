@@ -23,7 +23,7 @@ export const createAccountRouter = (serviceProvider: ServiceProvider) => {
     authenticate,
     celebrate({
       [Segments.BODY]: Joi.object().keys({
-        content: Joi.string().allow('', null).max(100),
+        content: Joi.string().allow('', null).max(100).default(''),
       }),
     }),
     (req, res) => updateAccountMessageHandler.handle(req, res)

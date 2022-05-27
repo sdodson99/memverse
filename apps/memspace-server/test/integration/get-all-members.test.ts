@@ -1,17 +1,9 @@
 import supertest from 'supertest';
-import test from 'firebase-functions-test';
-import * as firebase from 'firebase-admin';
+import { setupFirebase } from './utilities';
 import { MessageByMemberIdQuery } from '../../src/queries/message-by-member-id';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
 
-const functionsTest = test();
-functionsTest.mockConfig({ youtube_studio: {}, access_token: {} });
-
-jest.mock('firebase-admin', () => ({
-  ...jest.requireActual<{}>('firebase-admin'),
-  initializeApp: jest.fn(),
-}));
-const mockFirebaseInitializeApp = firebase.initializeApp as jest.Mock;
+const functionsTest = setupFirebase();
 
 jest.mock('../../src/queries/message-by-member-id');
 const mockMessageByMemberIdQuery = MessageByMemberIdQuery as jest.Mock;
@@ -19,7 +11,7 @@ const mockMessageByMemberIdQuery = MessageByMemberIdQuery as jest.Mock;
 jest.mock('youtube-member-querier');
 const mockYouTubeMembersQuery = YouTubeMembersQuery as jest.Mock;
 
-describe('/members endpoint', () => {
+describe('GET /members', () => {
   let app: any;
 
   let mockYouTubeMembersQueryExecute: jest.Mock;
@@ -40,7 +32,6 @@ describe('/members endpoint', () => {
   });
 
   afterEach(() => {
-    mockFirebaseInitializeApp.mockReset();
     mockMessageByMemberIdQuery.mockReset();
     mockYouTubeMembersQuery.mockReset();
 
