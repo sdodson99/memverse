@@ -5,3 +5,27 @@
 .filter {
   margin-top: 1.5rem;
 }
+
+.paginationContainer {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.paginationLink {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+a.disabledPaginationLink {
+  opacity: 0.5;
+  cursor: default;
+}
+
+a.paginationActivePage {
+  text-decoration: underline;
+  cursor: default;
+}

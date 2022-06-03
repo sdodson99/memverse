@@ -126,4 +126,87 @@ describe('<ViewSpaceMembers />', () => {
       expect(fallbackMessage).toBeInTheDocument();
     });
   });
+
+  describe('pagination', () => {
+    beforeEach(() => {
+      mockUseSpaceMembersContext.mockReturnValue({
+        spaceMembers: [
+          { id: '1', username: 'user1' },
+          { id: '2', username: 'user2' },
+          { id: '3', username: 'user3' },
+          { id: '4', username: 'user4' },
+          { id: '5', username: 'user5' },
+          { id: '6', username: 'user6' },
+          { id: '7', username: 'user7' },
+          { id: '8', username: 'user8' },
+          { id: '9', username: 'user9' },
+          { id: '10', username: 'user10' },
+          { id: '11', username: 'user11' },
+          { id: '12', username: 'user12' },
+        ],
+        toggleSpaceMemberPaused: mockToggleSpaceMemberPaused,
+        setShowSpaceMemberDetails: mockSetShowSpaceMemberDetails,
+      });
+    });
+
+    it('should show first page on initialization', () => {
+      renderApp(<ViewSpaceMembers />);
+
+      const spaceMemberListingItemUsernames = screen.getAllByTestId(
+        'SpaceMemberListingItemUsername'
+      );
+
+      expect(spaceMemberListingItemUsernames.length).toBe(10);
+      expect(spaceMemberListingItemUsernames[0].textContent).toBe('user1');
+      expect(spaceMemberListingItemUsernames[9].textContent).toBe('user10');
+    });
+
+    it('should show correct page when page changed', () => {
+      renderApp(<ViewSpaceMembers />);
+
+      const page2Button = screen.getByText('2');
+      page2Button.click();
+
+      const spaceMemberListingItemUsernames = screen.getAllByTestId(
+        'SpaceMemberListingItemUsername'
+      );
+
+      expect(spaceMemberListingItemUsernames.length).toBe(2);
+      expect(spaceMemberListingItemUsernames[0].textContent).toBe('user11');
+      expect(spaceMemberListingItemUsernames[1].textContent).toBe('user12');
+    });
+
+    it('should show first page when filter changed', () => {
+      renderApp(<ViewSpaceMembers />);
+      const page2Button = screen.getByText('2');
+      page2Button.click();
+      const filterInput = screen.getByPlaceholderText('Filter members');
+
+      fireEvent.change(filterInput, {
+        target: {
+          value: 'user',
+        },
+      });
+      const spaceMemberListingItemUsernames = screen.getAllByTestId(
+        'SpaceMemberListingItemUsername'
+      );
+
+      expect(spaceMemberListingItemUsernames.length).toBe(10);
+      expect(spaceMemberListingItemUsernames[0].textContent).toBe('user1');
+      expect(spaceMemberListingItemUsernames[9].textContent).toBe('user10');
+    });
+
+    it('should hide pagination when no space members', () => {
+      mockUseSpaceMembersContext.mockReturnValue({
+        spaceMembers: [],
+        toggleSpaceMemberPaused: mockToggleSpaceMemberPaused,
+        setShowSpaceMemberDetails: mockSetShowSpaceMemberDetails,
+      });
+      renderApp(<ViewSpaceMembers />);
+
+      const pageButton = screen.queryByText('1');
+
+      expect(pageButton).not.toBeInTheDocument();
+    });
+  });
 });
