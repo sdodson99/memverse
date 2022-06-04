@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:stage": "NODE_ENV=test next build",
     "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint:eslint": "eslint ./src --ext=.tsx,.ts",
@@ -20,7 +21,8 @@
     "test:ci": "jest --ci --coverage",
     "export": "next export",
     "generate": "npx generate-react-cli component",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "firebase deploy --only hosting",
+    "deploy:stage": "firebase hosting:channel:deploy --expires 7d"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",

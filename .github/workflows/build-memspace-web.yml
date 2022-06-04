@@ -24,10 +24,9 @@ jobs:
         uses: actions/checkout@master
 
       - name: 'Setup Node'
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 16
 
       - name: 'Install packages'
         run: 'npm ci'
@@ -37,14 +36,18 @@ jobs:
         run: 'npm run lint'
         working-directory: ${{ env.PROJECT_PATH }}
 
-      - name: 'Build'
-        run: 'npm run build'
-        working-directory: ${{ env.PROJECT_PATH }}
-
       - name: 'Test'
         run: 'npm run test:ci'
         working-directory: ${{ env.PROJECT_PATH }}
 
+      - name: 'Build'
+        run: 'npm run build:stage'
+        working-directory: ${{ env.PROJECT_PATH }}
+
       - name: 'Export'
         run: 'npm run export'
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: 'Stage'
+        run: 'npm run deploy:stage -- ${{ github.ref_name }} --token ${{ secrets.FIREBASE_TOKEN }}'
         working-directory: ${{ env.PROJECT_PATH }}
