@@ -38,10 +38,10 @@ jobs:
         run: 'npm run lint'
         working-directory: ${{ env.PROJECT_PATH }}
 
-      - name: 'Build'
-        run: 'npm run build'
-        working-directory: ${{ env.PROJECT_PATH }}
-
       - name: 'Test'
         run: 'npm run test:ci'
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: 'Build'
+        run: 'npm run build'
         working-directory: ${{ env.PROJECT_PATH }}
