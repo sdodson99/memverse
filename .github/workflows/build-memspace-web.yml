@@ -50,5 +50,18 @@ jobs:
         working-directory: ${{ env.PROJECT_PATH }}
 
       - name: 'Stage'
-        run: 'npm run deploy:stage -- ${{ github.ref_name }} --token ${{ secrets.FIREBASE_TOKEN }}'
+        id: 'stage'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEMVERSE }}
+          entryPoint: ${{ env.PROJECT_PATH }}
+          channelId: ${{ github.ref_name }}
+
+      - name: 'Setup Playwright'
+        run: 'npx playwright install'
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: 'E2E'
+        run: 'BASE_URL=${{ steps.stage.outputs.details_url }} npm run e2e'
         working-directory: ${{ env.PROJECT_PATH }}
