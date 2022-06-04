@@ -3,6 +3,7 @@ name: Build Memspace Web
 on:
   push:
     branches:
+      - 'develop'
       - 'master'
     paths:
       - 'apps/memspace-web/**'

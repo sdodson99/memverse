@@ -3,6 +3,7 @@ name: Build Memspace Server
 on:
   push:
     branches:
+      - 'develop'
       - 'master'
     paths:
       - 'apps/memspace-server/**'

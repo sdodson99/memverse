@@ -3,6 +3,7 @@ name: Build Authentication Server
 on:
   push:
     branches:
+      - 'develop'
       - 'master'
     paths:
       - 'apps/authentication-server/**'

@@ -3,6 +3,7 @@ name: Build YouTube Member Querier
 on:
   push:
     branches:
+      - 'develop'
       - 'master'
     paths:
       - 'packages/youtube-member-querier/**'
