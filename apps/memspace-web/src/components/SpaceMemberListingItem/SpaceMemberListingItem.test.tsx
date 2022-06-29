@@ -10,6 +10,7 @@ describe('<SpaceMemberListingItem />', () => {
 
   beforeEach(() => {
     props = {
+      channelId: '123',
       username: 'username',
       photoUrl: 'photoUrl',
     };

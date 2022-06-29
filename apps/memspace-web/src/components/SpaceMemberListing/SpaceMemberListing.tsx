@@ -22,6 +22,7 @@ const SpaceMemberListing = ({
     return (
       <div key={m.id} className={styles.spaceMemberListingItem}>
         <SpaceMemberListingItem
+          channelId={m.id}
           username={m.username}
           photoUrl={m.photoUrl}
           message={m.message}

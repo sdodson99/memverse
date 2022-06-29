@@ -14,10 +14,17 @@
   word-break: break-word;
 }
 
-.username {
+.usernameContent {
   font-weight: bold;
+  display: flex;
 }
 
 .message {
   margin-top: 0.1rem;
+}
+
+.channelLink {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
 }
