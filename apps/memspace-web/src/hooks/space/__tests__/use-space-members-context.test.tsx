@@ -285,4 +285,80 @@ describe('useSpaceMembersContext', () => {
       expect(result.current.spaceMembersStateRef.current[0].height).toBe(size);
     });
   });
+
+  describe('setSpaceMemberSpeed', () => {
+    it('should set speed', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.setSpaceMemberSpeed(
+          result.current.spaceMembersStateRef.current[0].id,
+          100
+        );
+      });
+
+      expect(
+        result.current.spaceMembersStateRef.current[0].speedPixelsPerSecond
+      ).toBe(100);
+    });
+  });
+
+  describe('setSpaceMemberDirectionDegrees', () => {
+    it('should set direction degrees', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.setSpaceMemberDirectionDegrees(
+          result.current.spaceMembersStateRef.current[0].id,
+          100
+        );
+      });
+
+      expect(
+        result.current.spaceMembersStateRef.current[0].directionDegrees
+      ).toBe(100);
+    });
+  });
+
+  describe('setSpaceMemberPositionX', () => {
+    it('should set position X', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.setSpaceMemberPositionX(
+          result.current.spaceMembersStateRef.current[0].id,
+          100
+        );
+      });
+
+      expect(result.current.spaceMembersStateRef.current[0].x).toBe(100);
+    });
+  });
+
+  describe('setSpaceMemberPositionY', () => {
+    it('should set position Y', () => {
+      const { result } = renderHook(
+        () => useSpaceMembersContext(),
+        renderOptions
+      );
+
+      act(() => {
+        result.current.setSpaceMemberPositionY(
+          result.current.spaceMembersStateRef.current[0].id,
+          100
+        );
+      });
+
+      expect(result.current.spaceMembersStateRef.current[0].y).toBe(100);
+    });
+  });
 });

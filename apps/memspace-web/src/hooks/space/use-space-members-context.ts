@@ -86,6 +86,41 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     });
   };
 
+  const setSpaceMemberSpeed = (memberId: string, speed: number) => {
+    withSpaceMember(memberId, (m) => {
+      m.speedPixelsPerSecond = speed;
+
+      spaceMemberChangedSubject.next(m.id);
+    });
+  };
+
+  const setSpaceMemberDirectionDegrees = (
+    memberId: string,
+    degrees: number
+  ) => {
+    withSpaceMember(memberId, (m) => {
+      m.directionDegrees = degrees;
+
+      spaceMemberChangedSubject.next(m.id);
+    });
+  };
+
+  const setSpaceMemberPositionX = (memberId: string, x: number) => {
+    withSpaceMember(memberId, (m) => {
+      m.x = x;
+
+      spaceMemberChangedSubject.next(m.id);
+    });
+  };
+
+  const setSpaceMemberPositionY = (memberId: string, y: number) => {
+    withSpaceMember(memberId, (m) => {
+      m.y = y;
+
+      spaceMemberChangedSubject.next(m.id);
+    });
+  };
+
   const withAllSpaceMembers = (callback: SpaceMemberAction) => {
     spaceMembersStateRef.current.forEach((m) => callback(m));
   };
@@ -140,6 +175,10 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     loadSpaceMember,
     toggleSpaceMemberPaused,
     setShowSpaceMemberDetails,
+    setSpaceMemberSpeed,
+    setSpaceMemberDirectionDegrees,
+    setSpaceMemberPositionX,
+    setSpaceMemberPositionY,
     setSpaceMembersSize,
     updateSpaceMembers,
     updateSpaceMemberMessage,
