@@ -121,15 +121,19 @@ export class SpaceMember {
   }
 
   get speedPixelsPerSecond() {
-    if (this._paused) {
-      return 0;
-    }
-
     return this._speedPixelsPerSecond;
   }
 
   set speedPixelsPerSecond(value: number) {
     this._speedPixelsPerSecond = value;
+  }
+
+  private get calculatedSpeedPixelsPerSecond() {
+    if (this.paused) {
+      return 0;
+    }
+
+    return this.speedPixelsPerSecond;
   }
 
   get directionRadians() {
@@ -148,6 +152,14 @@ export class SpaceMember {
     }
 
     this._directionRadians = coercedValue;
+  }
+
+  get directionDegrees() {
+    return this.directionRadians * (180 / Math.PI);
+  }
+
+  set directionDegrees(value: number) {
+    this.directionRadians = value * (Math.PI / 180);
   }
 
   load() {
@@ -182,7 +194,8 @@ export class SpaceMember {
     // Instead, we should calculate all boundary collisions before moving member.
     if (timeElapsedSeconds > 1) return;
 
-    const pixelsTravelled = this.speedPixelsPerSecond * timeElapsedSeconds;
+    const pixelsTravelled =
+      this.calculatedSpeedPixelsPerSecond * timeElapsedSeconds;
 
     const xPixelsTravelled = Math.cos(this.directionRadians) * pixelsTravelled;
     const yPixelsTravelled = Math.sin(this.directionRadians) * pixelsTravelled;

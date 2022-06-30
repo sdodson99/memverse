@@ -8,25 +8,7 @@ describe('SpaceMember', () => {
     member = new SpaceMember('1', 'username', 'photoUrl', 'message');
   });
 
-  describe('get speedPixelsPerSecond', () => {
-    beforeEach(() => {
-      member.speedPixelsPerSecond = 50;
-    });
-
-    it('should return desired speed when not paused', () => {
-      member.unpause();
-
-      expect(member.speedPixelsPerSecond).toBe(50);
-    });
-
-    it('should return 0 speed when paused', () => {
-      member.pause();
-
-      expect(member.speedPixelsPerSecond).toBe(0);
-    });
-  });
-
-  describe('set direction', () => {
+  describe('set direction radians', () => {
     it('should normalize radians when negative angle provided', () => {
       member.directionRadians = -(7 * Math.PI) / 3; // -420 degree angle
 
@@ -37,6 +19,20 @@ describe('SpaceMember', () => {
       member.directionRadians = (13 * Math.PI) / 6; // 750 degree angle
 
       expect(member.directionRadians).toBeCloseTo(Math.PI / 6); // 30 degree angle
+    });
+  });
+
+  describe('get direction degrees', () => {
+    it('should return direction in degrees when set in radians', () => {
+      member.directionRadians = Math.PI / 6;
+
+      expect(member.directionDegrees).toBeCloseTo(30);
+    });
+
+    it('should return direction in degrees when set in degrees', () => {
+      member.directionDegrees = 150;
+
+      expect(member.directionDegrees).toBeCloseTo(150);
     });
   });
 
