@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './SpaceMemberListingItem.module.css';
 import { ExternalLinkIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
@@ -7,15 +7,11 @@ import {
   FormControl,
   FormLabel,
   FormHelperText,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
   Flex,
   Switch,
   Box,
 } from '@chakra-ui/react';
+import RealTimeNumberInput from '../RealTimeNumberInput/RealTimeNumberInput';
 
 export type SpaceMemberListingItemProps = {
   channelId: string;
@@ -74,52 +70,6 @@ const SpaceMemberListingItem = ({
     }
 
     return onShowDetails();
-  };
-
-  const handleSpeedChanged = (
-    _valueAsString: string,
-    valueAsNumber: number
-  ) => {
-    if (isNaN(valueAsNumber)) {
-      return onSpeedChanged(0);
-    }
-
-    return onSpeedChanged(valueAsNumber);
-  };
-
-  const handleDirectionDegreesChanged = (
-    _valueAsString: string,
-    valueAsNumber: number
-  ) => {
-    if (isNaN(valueAsNumber)) {
-      return onDirectionDegreesChanged(0);
-    }
-
-    return onDirectionDegreesChanged(valueAsNumber);
-  };
-
-  const [focusedX, setFocusedX] = useState(false);
-  const [currentValueX, setCurrentValueX] = useState(0);
-  const handlePositionXChanged = (valueAsNumber: number) => {
-    if (isNaN(valueAsNumber)) {
-      setCurrentValueX(0);
-      return onPositionXChanged(0);
-    }
-
-    setCurrentValueX(valueAsNumber);
-    return onPositionXChanged(valueAsNumber);
-  };
-
-  const [focusedY, setFocusedY] = useState(false);
-  const [currentValueY, setCurrentValueY] = useState(0);
-  const handlePositionYChanged = (valueAsNumber: number) => {
-    if (isNaN(valueAsNumber)) {
-      setCurrentValueY(0);
-      return onPositionYChanged(0);
-    }
-
-    setCurrentValueY(valueAsNumber);
-    return onPositionYChanged(valueAsNumber);
   };
 
   const channelLink = `https://www.youtube.com/channel/${channelId}`;
@@ -212,90 +162,51 @@ const SpaceMemberListingItem = ({
                   {' (pixels per second)'}
                 </FormHelperText>
               </FormLabel>
-              <NumberInput
+              <RealTimeNumberInput
                 id="speed"
                 mt="2"
-                value={speedPixelsPerSecond}
-                onChange={handleSpeedChanged}
+                value={Math.round(speedPixelsPerSecond)}
+                onComplete={(value: number) => onSpeedChanged(value)}
                 min={0}
                 max={1000}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              />
             </Flex>
             <Flex direction="column" mt="4">
               <FormLabel htmlFor="direction" mb="0">
                 Direction
                 <FormHelperText display="inline">{' (degrees)'}</FormHelperText>
               </FormLabel>
-              <NumberInput
+              <RealTimeNumberInput
                 id="direction"
                 mt="2"
                 value={Math.round(directionDegrees)}
-                onChange={handleDirectionDegreesChanged}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+                onComplete={(value: number) => onDirectionDegreesChanged(value)}
+                min={0}
+              />
             </Flex>
             <Flex direction="column" mt="4">
               <FormLabel htmlFor="posX" mb="0">
                 Position X
               </FormLabel>
-              <NumberInput
+              <RealTimeNumberInput
                 id="posX"
                 mt="2"
-                value={!focusedX ? Math.round(x) : currentValueX}
-                onChange={(_, value) => setCurrentValueX(value)}
-                onFocus={() => {
-                  setFocusedX(true);
-                  setCurrentValueX(Math.round(x));
-                }}
-                onBlur={() => {
-                  setFocusedX(false);
-                  handlePositionXChanged(currentValueX);
-                }}
+                value={Math.round(x)}
+                onComplete={(value: number) => onPositionXChanged(value)}
                 min={0}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              />
             </Flex>
             <Flex direction="column" mt="4">
               <FormLabel htmlFor="posY" mb="0">
                 Position Y
               </FormLabel>
-              <NumberInput
+              <RealTimeNumberInput
                 id="posY"
                 mt="2"
-                value={!focusedY ? Math.round(y) : currentValueY}
-                onChange={(_, value) => setCurrentValueY(value)}
-                onFocus={() => {
-                  setFocusedY(true);
-                  setCurrentValueY(Math.round(y));
-                }}
-                onBlur={() => {
-                  setFocusedY(false);
-                  handlePositionYChanged(currentValueY);
-                }}
+                value={Math.round(y)}
+                onComplete={(value: number) => onPositionYChanged(value)}
                 min={0}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+              />
             </Flex>
           </Flex>
         </FormControl>

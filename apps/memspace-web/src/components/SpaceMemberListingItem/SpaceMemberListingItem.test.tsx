@@ -108,6 +108,7 @@ describe('<SpaceMemberListingItem />', () => {
           value: speed,
         },
       });
+      fireEvent.blur(speedLabel);
 
       expect(props.onSpeedChanged).toBeCalledWith(speed);
     });
@@ -122,6 +123,7 @@ describe('<SpaceMemberListingItem />', () => {
           value: directionDegrees,
         },
       });
+      fireEvent.blur(directionLabel);
 
       expect(props.onDirectionDegreesChanged).toBeCalledWith(directionDegrees);
     });
