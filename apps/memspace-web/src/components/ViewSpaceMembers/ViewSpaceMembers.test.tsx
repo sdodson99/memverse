@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import ViewSpaceMembers from './ViewSpaceMembers';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 import { renderApp } from '../../test-utils/render-app';
+import { SpaceMember } from '../../models/space-member';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
@@ -11,16 +12,29 @@ const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 describe('<ViewSpaceMembers />', () => {
   let mockToggleSpaceMemberPaused: jest.Mock;
   let mockSetShowSpaceMemberDetails: jest.Mock;
+  let spaceMembers: SpaceMember[];
+
+  const createSpaceMember = (id: string) => {
+    return {
+      id,
+      username: `user${id}`,
+      speedPixelsPerSecond: 0,
+      directionDegrees: 0,
+      x: 0,
+      y: 0,
+    };
+  };
 
   beforeEach(() => {
     mockToggleSpaceMemberPaused = jest.fn();
     mockSetShowSpaceMemberDetails = jest.fn();
 
+    spaceMembers = [
+      createSpaceMember('1'),
+      createSpaceMember('2'),
+    ] as unknown as SpaceMember[];
     mockUseSpaceMembersContext.mockReturnValue({
-      spaceMembers: [
-        { id: '1', username: 'user1' },
-        { id: '2', username: 'user2' },
-      ],
+      spaceMembers,
       toggleSpaceMemberPaused: mockToggleSpaceMemberPaused,
       setShowSpaceMemberDetails: mockSetShowSpaceMemberDetails,
     });
@@ -48,38 +62,34 @@ describe('<ViewSpaceMembers />', () => {
 
   it('should toggle pause when space member paused', () => {
     renderApp(<ViewSpaceMembers />);
-    const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
-    firstMenuButton.click();
 
-    const pauseButton = screen.getAllByText('Pause')[0];
+    const pauseButton = screen.getAllByLabelText('Pause')[0];
     pauseButton.click();
 
-    expect(mockToggleSpaceMemberPaused).toBeCalledWith({
-      id: '1',
-      username: 'user1',
-    });
+    expect(mockToggleSpaceMemberPaused).toBeCalledWith(spaceMembers[0]);
   });
 
   it('should show details when space member details requested to be shown', () => {
     renderApp(<ViewSpaceMembers />);
-    const firstMenuButton = screen.getAllByTestId('MenuButton')[0];
-    firstMenuButton.click();
 
-    const showDetailsButton = screen.getAllByText('Show Details')[0];
+    const showDetailsButton = screen.getAllByText('Show details')[0];
     showDetailsButton.click();
 
-    expect(mockSetShowSpaceMemberDetails).toBeCalledWith(
-      { id: '1', username: 'user1' },
-      true
-    );
+    expect(mockSetShowSpaceMemberDetails).toBeCalledWith(spaceMembers[0], true);
   });
 
   it('should order space members by message', () => {
     mockUseSpaceMembersContext.mockReturnValue({
       spaceMembers: [
-        { id: '1', username: 'user1', message: 'def' },
-        { id: '2', username: 'user2' },
-        { id: '3', username: 'user3', message: 'abc' },
+        {
+          ...createSpaceMember('1'),
+          message: 'def',
+        },
+        createSpaceMember('2'),
+        {
+          ...createSpaceMember('3'),
+          message: 'abc',
+        },
       ],
     });
     renderApp(<ViewSpaceMembers />);
@@ -131,18 +141,18 @@ describe('<ViewSpaceMembers />', () => {
     beforeEach(() => {
       mockUseSpaceMembersContext.mockReturnValue({
         spaceMembers: [
-          { id: '1', username: 'user1' },
-          { id: '2', username: 'user2' },
-          { id: '3', username: 'user3' },
-          { id: '4', username: 'user4' },
-          { id: '5', username: 'user5' },
-          { id: '6', username: 'user6' },
-          { id: '7', username: 'user7' },
-          { id: '8', username: 'user8' },
-          { id: '9', username: 'user9' },
-          { id: '10', username: 'user10' },
-          { id: '11', username: 'user11' },
-          { id: '12', username: 'user12' },
+          createSpaceMember('1'),
+          createSpaceMember('2'),
+          createSpaceMember('3'),
+          createSpaceMember('4'),
+          createSpaceMember('5'),
+          createSpaceMember('6'),
+          createSpaceMember('7'),
+          createSpaceMember('8'),
+          createSpaceMember('9'),
+          createSpaceMember('10'),
+          createSpaceMember('11'),
+          createSpaceMember('12'),
         ],
         toggleSpaceMemberPaused: mockToggleSpaceMemberPaused,
         setShowSpaceMemberDetails: mockSetShowSpaceMemberDetails,

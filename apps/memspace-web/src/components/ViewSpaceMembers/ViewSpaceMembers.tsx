@@ -11,8 +11,15 @@ type ViewSpaceMembersProps = {};
 const ITEMS_PER_PAGE = 10;
 
 const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
-  const { spaceMembers, toggleSpaceMemberPaused, setShowSpaceMemberDetails } =
-    useThrottledSpaceMembersContext();
+  const {
+    spaceMembers,
+    toggleSpaceMemberPaused,
+    setShowSpaceMemberDetails,
+    setSpaceMemberSpeed,
+    setSpaceMemberDirectionDegrees,
+    setSpaceMemberPositionX,
+    setSpaceMemberPositionY,
+  } = useThrottledSpaceMembersContext();
   const filterRef = useRef<HTMLInputElement | null>(null);
   const [filter, setFilter] = useState('');
   const [offset, setOffset] = useState(0);
@@ -24,8 +31,21 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
 
   const handleShowDetails = (member: SpaceMember) =>
     setShowSpaceMemberDetails(member, true);
+
   const handleHideDetails = (member: SpaceMember) =>
     setShowSpaceMemberDetails(member, false);
+
+  const handleSpeedChanged = (member: SpaceMember, value: number) =>
+    setSpaceMemberSpeed(member?.id, value);
+
+  const handleDirectionDegreesChanged = (member: SpaceMember, value: number) =>
+    setSpaceMemberDirectionDegrees(member?.id, value);
+
+  const handlePositionXChanged = (member: SpaceMember, value: number) =>
+    setSpaceMemberPositionX(member?.id, value);
+
+  const handlePositionYChanged = (member: SpaceMember, value: number) =>
+    setSpaceMemberPositionY(member?.id, value);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
@@ -86,6 +106,10 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
               onUnpause={handleTogglePause}
               onShowDetails={handleShowDetails}
               onHideDetails={handleHideDetails}
+              onSpeedChanged={handleSpeedChanged}
+              onDirectionDegreesChanged={handleDirectionDegreesChanged}
+              onPositionXChanged={handlePositionXChanged}
+              onPositionYChanged={handlePositionYChanged}
             />
             <ReactPaginate
               pageRangeDisplayed={3}
@@ -102,6 +126,8 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
               previousLinkClassName={styles.paginationLink}
               nextLinkClassName={styles.paginationLink}
               disabledLinkClassName={styles.disabledPaginationLink}
+              previousLabel="Back"
+              nextLabel="Next"
             />
           </>
         )}

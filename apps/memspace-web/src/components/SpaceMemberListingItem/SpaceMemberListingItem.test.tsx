@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import SpaceMemberListingItem, {
   SpaceMemberListingItemProps,
@@ -13,6 +13,20 @@ describe('<SpaceMemberListingItem />', () => {
       channelId: '123',
       username: 'username',
       photoUrl: 'photoUrl',
+      directionDegrees: 0,
+      onDirectionDegreesChanged: jest.fn(),
+      speedPixelsPerSecond: 0,
+      onSpeedChanged: jest.fn(),
+      x: 0,
+      y: 0,
+      onPositionXChanged: jest.fn(),
+      onPositionYChanged: jest.fn(),
+      isShowingDetails: false,
+      onShowDetails: jest.fn(),
+      onHideDetails: jest.fn(),
+      paused: false,
+      onPause: jest.fn(),
+      onUnpause: jest.fn(),
     };
   });
 
@@ -43,57 +57,103 @@ describe('<SpaceMemberListingItem />', () => {
     expect(message).toBeInTheDocument();
   });
 
-  describe('menu', () => {
-    it('should raise onPause when pause button clicked', () => {
+  describe('configuration panel', () => {
+    it('should raise onPause when pause selected', () => {
       props.paused = false;
-      props.onPause = jest.fn();
       render(<SpaceMemberListingItem {...props} />);
-      const menuButton = screen.getByTestId('MenuButton');
-      menuButton.click();
 
-      const pauseButton = screen.getByText('Pause');
-      pauseButton.click();
+      const pauseLabel = screen.getByLabelText('Pause');
+      pauseLabel.click();
 
       expect(props.onPause).toBeCalled();
     });
 
-    it('should raise onUnpause when unpause button clicked', () => {
+    it('should raise onUnpause when pause unselected', () => {
       props.paused = true;
-      props.onUnpause = jest.fn();
       render(<SpaceMemberListingItem {...props} />);
-      const menuButton = screen.getByTestId('MenuButton');
-      menuButton.click();
 
-      const unpauseButton = screen.getByText('Unpause');
-      unpauseButton.click();
+      const pauseLabel = screen.getByLabelText('Pause');
+      pauseLabel.click();
 
       expect(props.onUnpause).toBeCalled();
     });
 
-    it('should raise onShowDetails when show details button clicked', () => {
+    it('should raise onShowDetails when show details selected', () => {
       props.isShowingDetails = false;
-      props.onShowDetails = jest.fn();
       render(<SpaceMemberListingItem {...props} />);
-      const menuButton = screen.getByTestId('MenuButton');
-      menuButton.click();
 
-      const showDetailsButton = screen.getByText('Show Details');
-      showDetailsButton.click();
+      const showDetailsLabel = screen.getByLabelText('Show details');
+      showDetailsLabel.click();
 
       expect(props.onShowDetails).toBeCalled();
     });
 
-    it('should raise onHideDetails when hide details button clicked', () => {
+    it('should raise onHideDetails when show details unselected', () => {
       props.isShowingDetails = true;
-      props.onHideDetails = jest.fn();
       render(<SpaceMemberListingItem {...props} />);
-      const menuButton = screen.getByTestId('MenuButton');
-      menuButton.click();
 
-      const hideDetailsButton = screen.getByText('Hide Details');
-      hideDetailsButton.click();
+      const showDetailsLabel = screen.getByLabelText('Show details');
+      showDetailsLabel.click();
 
       expect(props.onHideDetails).toBeCalled();
+    });
+
+    it('should update speed when speed changed', () => {
+      const speed = 120;
+      render(<SpaceMemberListingItem {...props} />);
+
+      const speedLabel = screen.getByLabelText('Speed (pixels per second)');
+      fireEvent.change(speedLabel, {
+        target: {
+          value: speed,
+        },
+      });
+
+      expect(props.onSpeedChanged).toBeCalledWith(speed);
+    });
+
+    it('should update direction when direction changed', () => {
+      const directionDegrees = 120;
+      render(<SpaceMemberListingItem {...props} />);
+
+      const directionLabel = screen.getByLabelText('Direction (degrees)');
+      fireEvent.change(directionLabel, {
+        target: {
+          value: directionDegrees,
+        },
+      });
+
+      expect(props.onDirectionDegreesChanged).toBeCalledWith(directionDegrees);
+    });
+
+    it('should update position X when position X blurred', () => {
+      const positionX = 120;
+      render(<SpaceMemberListingItem {...props} />);
+
+      const positionXLabel = screen.getByLabelText('Position X');
+      fireEvent.change(positionXLabel, {
+        target: {
+          value: positionX,
+        },
+      });
+      fireEvent.blur(positionXLabel);
+
+      expect(props.onPositionXChanged).toBeCalledWith(positionX);
+    });
+
+    it('should update position Y when position Y blurred', () => {
+      const positionY = 120;
+      render(<SpaceMemberListingItem {...props} />);
+
+      const positionYLabel = screen.getByLabelText('Position Y');
+      fireEvent.change(positionYLabel, {
+        target: {
+          value: positionY,
+        },
+      });
+      fireEvent.blur(positionYLabel);
+
+      expect(props.onPositionYChanged).toBeCalledWith(positionY);
     });
   });
 });
