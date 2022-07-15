@@ -13,7 +13,9 @@ test('update space member message', async ({ page, baseURL }) => {
 
   await page.click('text=Update');
 
-  const successMessage = page.locator('text=Successfully updated message.');
+  const successMessage = await page.$(
+    'text=We successfully updated your space member message.'
+  );
 
-  expect(successMessage).toBeDefined();
+  expect(successMessage).toBeTruthy();
 });

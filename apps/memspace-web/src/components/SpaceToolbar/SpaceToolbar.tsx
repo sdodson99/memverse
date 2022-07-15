@@ -63,7 +63,7 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
             <>
               <Tooltip
                 hasArrow
-                label="Update Members"
+                label="Update Message"
                 bg="gray.100"
                 color="gray.900"
               >
