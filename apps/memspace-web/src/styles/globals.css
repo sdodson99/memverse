@@ -1,6 +1,4 @@
 :root {
-  --color-primary: #755df6;
-  --color-primary-dark: #3b2b96;
   --color-space: #333333;
 }
 
@@ -14,12 +12,4 @@ body {
   margin: 0;
   font-family: Verdana, 'Segoe UI', sans-serif;
   line-height: 1.5rem;
-}
-
-button {
-  font-size: inherit;
-  font-family: inherit;
-  cursor: pointer;
-  background-color: transparent;
-  border: 0;
 }

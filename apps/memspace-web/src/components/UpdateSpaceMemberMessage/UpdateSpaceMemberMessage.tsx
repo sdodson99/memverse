@@ -8,7 +8,7 @@ import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-me
 import { useAccountContext } from '../../hooks/authentication/use-account-context';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import Button from '../Button/Button';
+import { Button } from '@chakra-ui/react';
 
 type UpdateSpaceMemberMessageProps = {};
 
@@ -29,9 +29,9 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
     handleSubmit,
     setValue,
     reset,
-    formState: { errors, isSubmitting, isDirty, isSubmitted },
+    formState: { errors, isSubmitting, isSubmitted },
   } = useForm<UpdateSpaceMemberMessageFieldVaues>({
-    mode: 'onChange',
+    mode: 'onSubmit',
     reValidateMode: 'onChange',
   });
 
@@ -59,7 +59,6 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
     reset({}, { keepValues: true, keepIsSubmitted: true });
   };
 
-  const canSubmit = !isSubmitting && isDirty;
   const showSubmitResult = isSubmitted && !isSubmitting;
 
   return (
@@ -89,13 +88,13 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
             {...register('message')}
           />
           <div className={styles.submitRow}>
-            <Button disabled={!canSubmit}>Update</Button>
-
-            {isSubmitting && (
-              <div className={styles.submittingSpinner}>
-                <LoadingSpinner size={35} strokeWidth={3} color="black" />
-              </div>
-            )}
+            <Button
+              isLoading={isSubmitting}
+              loadingText="Updating..."
+              colorScheme="blue"
+            >
+              Update
+            </Button>
           </div>
 
           {showSubmitResult && (

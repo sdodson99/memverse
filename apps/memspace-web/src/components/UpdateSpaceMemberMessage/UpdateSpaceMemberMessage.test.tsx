@@ -114,16 +114,6 @@ describe('<UpdateSpaceMemberMessage />', () => {
       });
     });
 
-    it('should disable submit button when successful', async () => {
-      mockExecuteUpdateMemberMessage.mockReturnValue({});
-
-      fireEvent.submit(updateButton);
-
-      await waitFor(() => {
-        expect(updateButton.disabled).toBeTruthy();
-      });
-    });
-
     it('should enable submit button when unsuccessful', async () => {
       mockExecuteUpdateMemberMessage.mockReturnValue({ error: new Error() });
 
