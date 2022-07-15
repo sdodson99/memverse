@@ -16,11 +16,19 @@ describe('<SpaceMemberListing />', () => {
         id: 'id1',
         username: 'username1',
         photoUrl: 'photoUrl1',
+        speedPixelsPerSecond: 0,
+        directionDegrees: 0,
+        x: 0,
+        y: 0,
       },
       {
         id: 'id2',
         username: 'username2',
         photoUrl: 'photoUrl2',
+        speedPixelsPerSecond: 0,
+        directionDegrees: 0,
+        x: 0,
+        y: 0,
       },
     ] as SpaceMember[];
 

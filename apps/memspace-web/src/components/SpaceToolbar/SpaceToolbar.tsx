@@ -3,11 +3,11 @@ import styles from './SpaceToolbar.module.css';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import ViewSpaceMembers from '../ViewSpaceMembers/ViewSpaceMembers';
-import UpdateSpaceMemberMessage from '../UpdateSpaceMemberMessage/UpdateSpaceMemberMessage';
 import Container from '../Container/Container';
 import { useThrottledSpaceMembersContext } from '../../hooks/space/use-throttled-space-members-context';
 import { usePaperScope } from '../../hooks/space/use-paper-scope';
 import { Tooltip } from '@chakra-ui/react';
+import UpdateSpaceMemberMessageSheet from '../UpdateSpaceMemberMessageSheet/UpdateSpaceMemberMessageSheet';
 
 type SpaceToolbarProps = {};
 
@@ -90,17 +90,13 @@ const SpaceToolbar = ({}: SpaceToolbarProps) => {
           <ViewSpaceMembers />
         </div>
       </BottomSheet>
-      <BottomSheet
+      <UpdateSpaceMemberMessageSheet
         open={currentSheet === 'UPDATE_MEMBER_MESSAGE'}
-        header="Message"
-        maxHeight={500}
         onDismiss={handleSheetDismiss}
+        onSuccess={handleSheetDismiss}
         className={styles.sheet}
-      >
-        <div className={styles.sheetContent}>
-          <UpdateSpaceMemberMessage />
-        </div>
-      </BottomSheet>
+        innerContentClassName={styles.sheetContent}
+      />
     </div>
   );
 };

@@ -25,8 +25,8 @@ export const useHandleSpaceMemberResets = (
           toggleSpaceMemberPaused(m);
           raster.bringToFront();
         };
-        raster.onMouseEnter = () => setShowSpaceMemberDetails(m, true);
-        raster.onMouseLeave = () => setShowSpaceMemberDetails(m, false);
+        raster.onMouseEnter = () => setShowSpaceMemberDetails(m.id, true);
+        raster.onMouseLeave = () => setShowSpaceMemberDetails(m.id, false);
         raster.photoUrl = m.photoUrl;
 
         raster.update(m);

@@ -75,7 +75,10 @@ describe('<ViewSpaceMembers />', () => {
     const showDetailsButton = screen.getAllByText('Show details')[0];
     showDetailsButton.click();
 
-    expect(mockSetShowSpaceMemberDetails).toBeCalledWith(spaceMembers[0], true);
+    expect(mockSetShowSpaceMemberDetails).toBeCalledWith(
+      spaceMembers[0].id,
+      true
+    );
   });
 
   it('should order space members by message', () => {

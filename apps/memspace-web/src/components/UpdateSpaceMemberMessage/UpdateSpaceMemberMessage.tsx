@@ -10,13 +10,17 @@ import { useSpaceMembersContext } from '../../hooks/space/use-space-members-cont
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { Button } from '@chakra-ui/react';
 
-type UpdateSpaceMemberMessageProps = {};
+type UpdateSpaceMemberMessageProps = {
+  onSuccess?: (memberId: string) => void;
+};
 
 type UpdateSpaceMemberMessageFieldVaues = {
   message: string;
 };
 
-const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
+const UpdateSpaceMemberMessage = ({
+  onSuccess,
+}: UpdateSpaceMemberMessageProps) => {
   const { message, loading, error: loadError } = useMemberMessage();
   const { account } = useAccountContext();
 
@@ -53,7 +57,11 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
     }
 
     if (account) {
-      updateSpaceMemberMessage(account.id, message);
+      const { id } = account;
+
+      updateSpaceMemberMessage(id, message);
+
+      onSuccess?.(id);
     }
 
     reset({}, { keepValues: true, keepIsSubmitted: true });
@@ -92,26 +100,18 @@ const UpdateSpaceMemberMessage = ({}: UpdateSpaceMemberMessageProps) => {
               isLoading={isSubmitting}
               loadingText="Updating..."
               colorScheme="blue"
+              type="submit"
             >
               Update
             </Button>
           </div>
 
-          {showSubmitResult && (
-            <>
-              {submitError && (
-                <div className={styles.errorMessage}>
-                  <ErrorMessage>
-                    Failed to update message. Please try again later.
-                  </ErrorMessage>
-                </div>
-              )}
-              {!submitError && (
-                <div className={styles.successMessage}>
-                  Successfully updated message.
-                </div>
-              )}
-            </>
+          {showSubmitResult && submitError && (
+            <div className={styles.errorMessage}>
+              <ErrorMessage>
+                Failed to update message. Please try again later.
+              </ErrorMessage>
+            </div>
           )}
         </form>
       )}

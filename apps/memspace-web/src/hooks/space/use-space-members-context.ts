@@ -69,12 +69,12 @@ const useSpaceMembers = ({ members }: UseSpaceMembersProps) => {
     });
   };
 
-  const setShowSpaceMemberDetails = (member: SpaceMember, show: boolean) => {
-    withSpaceMember(member.id, (m) => {
+  const setShowSpaceMemberDetails = (memberId: string, show: boolean) => {
+    withSpaceMember(memberId, (m) => {
       m.showUsername = show;
       m.showMessage = show;
 
-      spaceMemberChangedSubject.next(member.id);
+      spaceMemberChangedSubject.next(memberId);
     });
   };
 

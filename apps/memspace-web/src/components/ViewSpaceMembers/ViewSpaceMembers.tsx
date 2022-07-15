@@ -30,10 +30,10 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
     toggleSpaceMemberPaused(member);
 
   const handleShowDetails = (member: SpaceMember) =>
-    setShowSpaceMemberDetails(member, true);
+    setShowSpaceMemberDetails(member?.id, true);
 
   const handleHideDetails = (member: SpaceMember) =>
-    setShowSpaceMemberDetails(member, false);
+    setShowSpaceMemberDetails(member?.id, false);
 
   const handleSpeedChanged = (member: SpaceMember, value: number) =>
     setSpaceMemberSpeed(member?.id, value);

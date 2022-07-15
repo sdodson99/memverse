@@ -255,7 +255,7 @@ describe('useSpaceMembersContext', () => {
 
       act(() => {
         result.current.setShowSpaceMemberDetails(
-          result.current.spaceMembersStateRef.current[0],
+          result.current.spaceMembersStateRef.current[0].id,
           true
         );
       });

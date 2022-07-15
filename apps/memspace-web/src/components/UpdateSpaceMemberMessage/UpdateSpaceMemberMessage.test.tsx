@@ -73,6 +73,7 @@ describe('<UpdateSpaceMemberMessage />', () => {
     let updateButton: HTMLInputElement;
     let mockExecuteUpdateMemberMessage: jest.Mock;
     let mockUpdateSpaceMemberMessage: jest.Mock;
+    let mockOnSuccess: jest.Mock;
 
     let message: string;
 
@@ -90,7 +91,9 @@ describe('<UpdateSpaceMemberMessage />', () => {
           id: '123',
         },
       });
-      render(<UpdateSpaceMemberMessage />);
+      mockOnSuccess = jest.fn();
+
+      render(<UpdateSpaceMemberMessage onSuccess={mockOnSuccess} />);
       updateButton = screen.getByText('Update') as HTMLInputElement;
 
       const messageTextInput = screen.getByTestId('messageTextInput');
@@ -146,15 +149,14 @@ describe('<UpdateSpaceMemberMessage />', () => {
       });
     });
 
-    it('should render success message when successful', async () => {
+    it('should raise success callback when successful', async () => {
       mockExecuteUpdateMemberMessage.mockReturnValue({});
+
       fireEvent.submit(updateButton);
 
-      const successMessage = await screen.findByText(
-        'Successfully updated message.'
-      );
-
-      expect(successMessage).toBeInTheDocument();
+      await waitFor(() => {
+        expect(mockOnSuccess).toBeCalledWith('123');
+      });
     });
   });
 });
