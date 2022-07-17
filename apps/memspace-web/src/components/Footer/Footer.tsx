@@ -4,9 +4,9 @@ import styles from './Footer.module.css';
 type FooterProps = {};
 
 const Footer = ({}: FooterProps) => (
-  <div className={styles.footer} data-testid="Footer">
+  <footer className={styles.footer} data-testid="Footer">
     © 2022 SingletonSean
-  </div>
+  </footer>
 );
 
 export default Footer;

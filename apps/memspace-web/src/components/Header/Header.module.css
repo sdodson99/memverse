@@ -10,22 +10,21 @@
 
 .content {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   font-size: 1rem;
 }
 
 .navItem {
-  padding: 0.5rem 1rem;
-  color: white;
+  color: rgba(255, 255, 255, 0.7);
   transition: all 100ms;
   text-decoration: none;
-  opacity: 0.7;
 }
 
 .navItem.active,
 .navItem:hover {
-  opacity: 1;
+  color: white;
 }
 
 .navItem.active {
@@ -34,4 +33,15 @@
 
 .navItem:hover:not(.active) {
   text-decoration: underline;
+}
+
+.desktopNav .navItem {
+  padding: 0.5rem 1rem;
+}
+
+.mobileNav .navItem {
+  border-top: 1px solid gray;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  text-align: left;
 }
