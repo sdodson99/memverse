@@ -68,6 +68,7 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
     });
 
   const hasSpaceMembers = transformedSpaceMembers.length > 0;
+  const currentPage = offset / ITEMS_PER_PAGE;
   const pageCount = Math.ceil(transformedSpaceMembers.length / ITEMS_PER_PAGE);
 
   const paginatedSpaceMembers = transformedSpaceMembers.slice(
@@ -113,6 +114,7 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
               onPositionYChanged={handlePositionYChanged}
             />
             <ReactPaginate
+              forcePage={currentPage}
               pageCount={pageCount}
               onPageChange={({ selected: pageNumber }) => {
                 handlePageChanged(pageNumber);
