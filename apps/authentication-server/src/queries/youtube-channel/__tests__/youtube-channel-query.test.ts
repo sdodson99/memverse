@@ -37,20 +37,36 @@ describe('YouTubeChannelQuery', () => {
   });
 
   it("should return user's first YouTube channel", async () => {
-    const expectedChannel = {
-      id: '123',
-    };
+    const id = '123';
+    const displayName = 'displayName123';
+    const photoUrl = 'photoUrl123';
     when(mockAxiosGet)
       .calledWith(requestEndpoint, requestOptions)
       .mockReturnValue({
         data: {
-          items: [expectedChannel],
+          items: [
+            {
+              id: id,
+              snippet: {
+                title: displayName,
+                thumbnails: {
+                  default: {
+                    url: photoUrl,
+                  },
+                },
+              },
+            },
+          ],
         },
       });
 
     const channel = await query.execute(accessToken);
 
-    expect(channel).toBe(expectedChannel);
+    expect(channel).toEqual({
+      id,
+      displayName,
+      photoUrl,
+    });
   });
 
   it('should return null if user has no YouTube channel', async () => {

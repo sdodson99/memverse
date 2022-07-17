@@ -37,7 +37,13 @@ export class YouTubeChannelQuery {
         return null;
       }
 
-      return youTubeChannels[0];
+      const firstYouTubeChannel = youTubeChannels[0];
+
+      return {
+        id: firstYouTubeChannel.id,
+        displayName: firstYouTubeChannel.snippet?.title,
+        photoUrl: firstYouTubeChannel.snippet?.thumbnails?.default?.url,
+      };
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError: AxiosError = error;

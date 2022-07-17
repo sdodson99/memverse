@@ -4,4 +4,12 @@ export type YouTubeChannelQueryResponse = {
 
 type YouTubeChannelResponse = {
   id: string;
+  snippet: {
+    title: string;
+    thumbnails: {
+      default: {
+        url: string;
+      };
+    };
+  };
 };
