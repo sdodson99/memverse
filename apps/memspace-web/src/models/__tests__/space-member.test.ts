@@ -72,13 +72,15 @@ describe('SpaceMember', () => {
       bounds = {
         top: 0,
         left: 0,
-        bottom: 100,
-        right: 100,
+        bottom: 1000,
+        right: 1000,
+        width: 1000,
+        height: 1000,
       } as paper.Rectangle;
 
-      member.initializePosition(50, 50);
-      member.height = 4;
-      member.width = 4;
+      member.width = 50;
+      member.height = 50;
+      member.initializePosition(500, 500);
     });
 
     it('should move member', () => {
@@ -86,48 +88,48 @@ describe('SpaceMember', () => {
 
       member.update(1, bounds);
 
-      expect(member.x).toBe(55);
-      expect(member.y).toBe(50);
+      expect(member.x).toBe(505);
+      expect(member.y).toBe(500);
     });
 
     it('should bounce raster off left wall on collision', () => {
-      member.speedPixelsPerSecond = 80;
-      member.directionRadians = (5 * Math.PI) / 6; // 150 degree angle
+      member.speedPixelsPerSecond = 600;
+      member.directionDegrees = 150;
 
       member.update(1, bounds);
 
-      expect(member.x).toBe(2); // Left wall and half width of raster
-      expect(member.directionRadians).toBeCloseTo(Math.PI / 6); // 30 degree angle
+      expect(member.x).toBe(25); // Left wall and half width of raster
+      expect(member.directionDegrees).toBeCloseTo(30);
     });
 
     it('should bounce raster off right wall on collision', () => {
-      member.speedPixelsPerSecond = 80;
-      member.directionRadians = Math.PI / 6; // 30 degree angle
+      member.speedPixelsPerSecond = 600;
+      member.directionDegrees = 30;
 
       member.update(1, bounds);
 
-      expect(member.x).toBe(98); // Right wall and half width of raster
-      expect(member.directionRadians).toBeCloseTo((5 * Math.PI) / 6); // 150 degree angle
+      expect(member.x).toBe(975); // Right wall and half width of raster
+      expect(member.directionDegrees).toBeCloseTo(150);
     });
 
     it('should bounce raster off top wall on collision', () => {
-      member.speedPixelsPerSecond = 80;
-      member.directionRadians = Math.PI / 3; // 60 degree angle
+      member.speedPixelsPerSecond = 600;
+      member.directionDegrees = 60;
 
       member.update(1, bounds);
 
-      expect(member.y).toBe(98); // Top wall and half height of raster
-      expect(member.directionRadians).toBeCloseTo((5 * Math.PI) / 3); // 300 degree angle
+      expect(member.y).toBe(975); // Top wall and half height of raster
+      expect(member.directionDegrees).toBeCloseTo(300);
     });
 
     it('should bounce raster off bottom wall on collision', () => {
-      member.speedPixelsPerSecond = 80;
-      member.directionRadians = (4 * Math.PI) / 3; // 240 degree angle
+      member.speedPixelsPerSecond = 600;
+      member.directionDegrees = 240;
 
       member.update(1, bounds);
 
-      expect(member.y).toBe(2); // Bottom wall and half height of raster
-      expect(member.directionRadians).toBeCloseTo((2 * Math.PI) / 3); // 120 degree angle
+      expect(member.y).toBe(25); // Bottom wall and half height of raster
+      expect(member.directionDegrees).toBeCloseTo(120);
     });
   });
 
@@ -181,6 +183,50 @@ describe('SpaceMember', () => {
       member.unpause();
 
       expect(member.paused).toBeFalsy();
+    });
+  });
+
+  describe('fit size', () => {
+    let bounds: paper.Rectangle;
+
+    beforeEach(() => {
+      bounds = { width: 1000, height: 300 } as paper.Rectangle;
+    });
+
+    it('should update space member size to relatively fit bounds', () => {
+      member.fitSize(bounds);
+
+      expect(member.width).toBe(30);
+      expect(member.height).toBe(30);
+    });
+
+    it('should keep space member size the same when desired size has not changed', () => {
+      member.width = 30;
+      member.height = 30;
+
+      member.fitSize(bounds);
+
+      expect(member.width).toBe(30);
+      expect(member.height).toBe(30);
+    });
+
+    it('should coerce space member size to a minimum value', () => {
+      bounds.width = 50;
+
+      member.fitSize(bounds);
+
+      expect(member.width).toBe(25);
+      expect(member.height).toBe(25);
+    });
+
+    it('should coerce space member size to a maximum value', () => {
+      bounds.width = 500000;
+      bounds.height = 500000;
+
+      member.fitSize(bounds);
+
+      expect(member.width).toBe(50);
+      expect(member.height).toBe(50);
     });
   });
 });

@@ -1,6 +1,9 @@
 import paper from 'paper';
 
 const DEFAULT_SIZE_PIXELS = 50;
+const SPACE_MEMBER_SIZE_TO_CANVAS_SIZE_PROPORTION = 0.1;
+const MIN_SPACE_MEMBER_SIZE = 25;
+const MAX_SPACE_MEMBER_SIZE = 50;
 
 export class SpaceMember {
   private _id: string;
@@ -194,6 +197,8 @@ export class SpaceMember {
     // Instead, we should calculate all boundary collisions before moving member.
     if (timeElapsedSeconds > 1) return;
 
+    this.fitSize(bounds);
+
     const pixelsTravelled =
       this.calculatedSpeedPixelsPerSecond * timeElapsedSeconds;
 
@@ -204,6 +209,32 @@ export class SpaceMember {
     this._y += yPixelsTravelled;
 
     this.fitBounds(bounds);
+  }
+
+  fitSize(bounds: paper.Rectangle) {
+    const { width, height } = bounds;
+
+    const smallestViewDiameter = Math.min(width, height);
+    let spaceMemberDiameter =
+      smallestViewDiameter * SPACE_MEMBER_SIZE_TO_CANVAS_SIZE_PROPORTION;
+
+    if (spaceMemberDiameter < MIN_SPACE_MEMBER_SIZE) {
+      spaceMemberDiameter = MIN_SPACE_MEMBER_SIZE;
+    }
+
+    if (spaceMemberDiameter > MAX_SPACE_MEMBER_SIZE) {
+      spaceMemberDiameter = MAX_SPACE_MEMBER_SIZE;
+    }
+
+    const diameterChanged =
+      this.height !== spaceMemberDiameter || this.width !== spaceMemberDiameter;
+
+    if (!diameterChanged) {
+      return;
+    }
+
+    this.height = spaceMemberDiameter;
+    this.width = spaceMemberDiameter;
   }
 
   moveTo(x: number, y: number, bounds: paper.Rectangle) {
