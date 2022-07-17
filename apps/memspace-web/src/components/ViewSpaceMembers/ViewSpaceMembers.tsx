@@ -112,13 +112,13 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
               onPositionYChanged={handlePositionYChanged}
             />
             <ReactPaginate
-              pageRangeDisplayed={3}
               pageCount={pageCount}
               onPageChange={({ selected: pageNumber }) => {
                 handlePageChanged(pageNumber);
               }}
               renderOnZeroPageCount={() => null}
               breakLabel="..."
+              marginPagesDisplayed={1}
               containerClassName={styles.paginationContainer}
               pageLinkClassName={styles.paginationLink}
               activeLinkClassName={styles.paginationActivePage}

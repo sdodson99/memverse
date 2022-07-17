@@ -12,12 +12,18 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .paginationLink {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+}
+
+.paginationLink:hover {
+  border: 1px solid #d3d3d3;
 }
 
 a.disabledPaginationLink {
@@ -26,6 +32,11 @@ a.disabledPaginationLink {
 }
 
 a.paginationActivePage {
-  text-decoration: underline;
   cursor: default;
+  color: white;
+  background-color: var(--color-space);
+}
+
+a.paginationActivePage:hover {
+  border: 1px solid transparent;
 }
