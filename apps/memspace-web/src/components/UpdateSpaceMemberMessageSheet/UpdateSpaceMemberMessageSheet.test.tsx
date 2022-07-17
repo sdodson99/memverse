@@ -40,7 +40,9 @@ describe('<UpdateSpaceMemberMessageSheet />', () => {
   });
 
   it('should mount', () => {
-    renderApp(<UpdateSpaceMemberMessageSheet open={true} />);
+    renderApp(<UpdateSpaceMemberMessageSheet open={true} />, {
+      mockTag: 'base-mock',
+    });
 
     const updateSpaceMemberMessageForm = screen.getByTestId(
       'UpdateSpaceMemberMessage'
