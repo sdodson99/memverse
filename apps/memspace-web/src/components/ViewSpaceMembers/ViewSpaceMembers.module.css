@@ -34,9 +34,20 @@ a.disabledPaginationLink {
 a.paginationActivePage {
   cursor: default;
   color: white;
+  display: block;
   background-color: var(--color-space);
 }
 
 a.paginationActivePage:hover {
   border: 1px solid transparent;
+}
+
+.paginationPage {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .paginationPage {
+    display: block;
+  }
 }

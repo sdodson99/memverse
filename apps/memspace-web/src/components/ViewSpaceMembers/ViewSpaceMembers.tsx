@@ -5,6 +5,7 @@ import SpaceMemberListing from '../SpaceMemberListing/SpaceMemberListing';
 import TextInput from '../TextInput/TextInput';
 import styles from './ViewSpaceMembers.module.css';
 import ReactPaginate from 'react-paginate';
+import classNames from 'classnames';
 
 type ViewSpaceMembersProps = {};
 
@@ -120,9 +121,15 @@ const ViewSpaceMembers = ({}: ViewSpaceMembersProps) => {
               breakLabel="..."
               marginPagesDisplayed={1}
               containerClassName={styles.paginationContainer}
-              pageLinkClassName={styles.paginationLink}
+              pageLinkClassName={classNames(
+                styles.paginationLink,
+                styles.paginationPage
+              )}
+              breakLinkClassName={classNames(
+                styles.paginationLink,
+                styles.paginationPage
+              )}
               activeLinkClassName={styles.paginationActivePage}
-              breakLinkClassName={styles.paginationLink}
               previousLinkClassName={styles.paginationLink}
               nextLinkClassName={styles.paginationLink}
               disabledLinkClassName={styles.disabledPaginationLink}
