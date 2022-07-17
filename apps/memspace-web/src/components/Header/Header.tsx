@@ -73,8 +73,8 @@ const Header = ({}: HeaderProps) => {
             {isMobile && (
               <>
                 <IconButton
-                  icon={<HamburgerIcon />}
-                  variant="outline"
+                  icon={<HamburgerIcon color="gray.800" />}
+                  bgColor="white"
                   aria-label="Toggle navigation"
                   onClick={() => onToggleNavigation()}
                 />
