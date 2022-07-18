@@ -3,6 +3,7 @@ import { setupFirebase } from './utilities';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
 import axios from 'axios';
 import { when } from 'jest-when';
+import { auth } from 'firebase-admin';
 
 const functionsTest = setupFirebase();
 
@@ -12,15 +13,27 @@ const mockYouTubeMembersQuery = YouTubeMembersQuery as jest.Mock;
 jest.mock('axios');
 const mockAxiosGet = axios.get as jest.Mock;
 
+jest.mock('firebase-admin', () => ({
+  initializeApp: jest.fn(),
+  auth: jest.fn(),
+}));
+const mockFirebaseAuth = auth as jest.Mock;
+
 describe('POST /login', () => {
   let app: any;
 
   let mockYouTubeMembersQueryExecute: jest.Mock;
+  let mockGetUsers: jest.Mock;
 
   beforeAll(() => {
     mockYouTubeMembersQueryExecute = jest.fn();
     mockYouTubeMembersQuery.mockReturnValue({
       execute: mockYouTubeMembersQueryExecute,
+    });
+
+    mockGetUsers = jest.fn();
+    mockFirebaseAuth.mockReturnValue({
+      getUsers: mockGetUsers,
     });
 
     app = require('../../src/index').authenticationApi;
@@ -29,6 +42,7 @@ describe('POST /login', () => {
   afterEach(() => {
     mockYouTubeMembersQuery.mockReset();
     mockAxiosGet.mockReset();
+    mockGetUsers.mockReset();
 
     functionsTest.cleanup();
   });
@@ -58,6 +72,9 @@ describe('POST /login', () => {
     mockYouTubeMembersQueryExecute.mockReturnValue([
       { channelId: 'channel-1' },
     ]);
+    when(mockGetUsers)
+      .calledWith([{ uid: 'channel-1' }])
+      .mockReturnValue({ users: ['1'] });
 
     const { statusCode, body } = await supertest(app)
       .post('/login')

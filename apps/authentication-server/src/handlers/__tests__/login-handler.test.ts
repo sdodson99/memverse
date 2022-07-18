@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import { Request, Response } from 'firebase-functions';
 import { when } from 'jest-when';
+import { CreateUserIfNotExistsCommand } from '../../commands/create-user-if-not-exists';
 import { IsYouTubeMemberQuery } from '../../queries/is-youtube-member';
 import { YouTubeChannel } from '../../queries/youtube-channel/youtube-channel';
 import { AccessTokenGenerator } from '../../services/access-tokens/access-token-generator';
@@ -12,6 +13,7 @@ describe('LoginHandler', () => {
   let mockYouTubeChannelQueryExecute: jest.Mock;
   let mockIsYouTubeMemberQueryExecute: jest.Mock;
   let mockAccessTokenGeneratorGenerate: jest.Mock;
+  let mockCreateUserIfNotExistsCommandExecute: jest.Mock;
 
   let req: Request;
   let res: Response;
@@ -32,10 +34,16 @@ describe('LoginHandler', () => {
       generate: mockAccessTokenGeneratorGenerate,
     } as unknown as AccessTokenGenerator;
 
+    mockCreateUserIfNotExistsCommandExecute = jest.fn();
+    const createUserIfNotExistsCommand = {
+      execute: mockCreateUserIfNotExistsCommandExecute,
+    } as unknown as CreateUserIfNotExistsCommand;
+
     handler = new LoginHandler(
       youTubeChannelQuery,
       isYouTubeMemberQuery,
       accessTokenGenerator,
+      createUserIfNotExistsCommand,
       {
         info: jest.fn(),
         warn: jest.fn(),

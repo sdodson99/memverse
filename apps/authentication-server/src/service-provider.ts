@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
+import { CreateUserIfNotExistsCommand } from './commands/create-user-if-not-exists';
 import { LoginHandler } from './handlers/login-handler';
 import { IsYouTubeMemberQuery } from './queries/is-youtube-member';
 import { YouTubeChannelQuery } from './queries/youtube-channel';
@@ -28,11 +29,13 @@ export const createServiceProvider = (): ServiceProvider => {
     accessTokenConfig.secret_key,
     parseInt(accessTokenConfig.expires_in)
   );
+  const createUserIfNotExistsCommand = new CreateUserIfNotExistsCommand(logger);
 
   const loginHandler = new LoginHandler(
     youTubeChannelQuery,
     isYouTubeMemberQuery,
     accessTokenGenerator,
+    createUserIfNotExistsCommand,
     logger
   );
 
