@@ -1,10 +1,10 @@
 import * as functions from 'firebase-functions';
 import { Request, Response } from 'firebase-functions';
 import { when } from 'jest-when';
-import { CreateUserIfNotExistsCommand } from '../../commands/create-user-if-not-exists';
-import { UpdateUserClaimsCommand } from '../../commands/update-user-claims';
-import { IsYouTubeMemberQuery } from '../../queries/is-youtube-member';
-import { YouTubeChannel } from '../../queries/youtube-channel/youtube-channel';
+import { CreateUserIfNotExistsCommand } from '../../services/create-user-if-not-exists';
+import { UpdateUserClaimsCommand } from '../../services/update-user-claims';
+import { IsYouTubeMemberQuery } from '../../services/is-youtube-member';
+import { YouTubeChannel } from '../../services/youtube-channel/youtube-channel';
 import { AccessTokenGenerator } from '../../services/access-tokens/access-token-generator';
 import { LoginHandler } from '../login-handler';
 

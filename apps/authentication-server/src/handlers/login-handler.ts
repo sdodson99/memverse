@@ -1,10 +1,10 @@
 import * as functions from 'firebase-functions';
 import { Request, Response } from 'express';
-import { YouTubeChannelQuery } from '../queries/youtube-channel';
-import { IsYouTubeMemberQuery } from '../queries/is-youtube-member';
+import { YouTubeChannelQuery } from '../services/youtube-channel';
+import { IsYouTubeMemberQuery } from '../services/is-youtube-member';
 import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
-import { CreateUserIfNotExistsCommand } from '../commands/create-user-if-not-exists';
-import { UpdateUserClaimsCommand } from '../commands/update-user-claims';
+import { CreateUserIfNotExistsCommand } from '../services/create-user-if-not-exists';
+import { UpdateUserClaimsCommand } from '../services/update-user-claims';
 
 export class LoginHandler {
   constructor(

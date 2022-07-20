@@ -1,11 +1,11 @@
 import * as functions from 'firebase-functions';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
-import { CreateUserIfNotExistsCommand } from './commands/create-user-if-not-exists';
-import { UpdateUserClaimsCommand } from './commands/update-user-claims';
-import { LoginHandler } from './handlers/login-handler';
-import { IsYouTubeMemberQuery } from './queries/is-youtube-member';
-import { YouTubeChannelQuery } from './queries/youtube-channel';
+import { CreateUserIfNotExistsCommand } from './services/create-user-if-not-exists';
+import { UpdateUserClaimsCommand } from './services/update-user-claims';
+import { YouTubeChannelQuery } from './services/youtube-channel';
+import { IsYouTubeMemberQuery } from './services/is-youtube-member';
 import { AccessTokenGenerator } from './services/access-tokens/access-token-generator';
+import { LoginHandler } from './handlers/login-handler';
 
 export type ServiceProvider = {
   resolveLoginHandler: () => LoginHandler;
