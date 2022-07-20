@@ -24,6 +24,7 @@ describe('POST /login', () => {
 
   let mockYouTubeMembersQueryExecute: jest.Mock;
   let mockGetUsers: jest.Mock;
+  let mockCreateCustomToken: jest.Mock;
 
   beforeAll(() => {
     mockYouTubeMembersQueryExecute = jest.fn();
@@ -32,9 +33,11 @@ describe('POST /login', () => {
     });
 
     mockGetUsers = jest.fn();
+    mockCreateCustomToken = jest.fn();
     mockFirebaseAuth.mockReturnValue({
       getUsers: mockGetUsers,
       setCustomUserClaims: jest.fn(),
+      createCustomToken: mockCreateCustomToken,
     });
 
     app = require('../../src/index').authenticationApi;
@@ -76,6 +79,10 @@ describe('POST /login', () => {
     when(mockGetUsers)
       .calledWith([{ uid: 'channel-1' }])
       .mockReturnValue({ users: ['1'] });
+    const customToken = 'custom-token123';
+    when(mockCreateCustomToken)
+      .calledWith('channel-1')
+      .mockReturnValue(customToken);
 
     const { statusCode, body } = await supertest(app)
       .post('/login')
@@ -83,6 +90,7 @@ describe('POST /login', () => {
 
     expect(statusCode).toBe(200);
     expect(body.token).toBeDefined();
+    expect(body.accessToken).toBe(customToken);
     expect(body.expiresIn).toBe(3600);
   });
 

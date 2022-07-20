@@ -7,6 +7,7 @@ import { IsYouTubeMemberQuery } from '../../services/is-youtube-member';
 import { YouTubeChannel } from '../../services/youtube-channel/youtube-channel';
 import { AccessTokenGenerator } from '../../services/access-tokens/access-token-generator';
 import { LoginHandler } from '../login-handler';
+import { GenerateAccessTokenCommand } from '../../services/generate-access-token';
 
 describe('LoginHandler', () => {
   let handler: LoginHandler;
@@ -16,6 +17,7 @@ describe('LoginHandler', () => {
   let mockAccessTokenGeneratorGenerate: jest.Mock;
   let mockCreateUserIfNotExistsCommandExecute: jest.Mock;
   let mockUpdateUserClaimsCommandExecute: jest.Mock;
+  let mockGenerateAccessTokenCommandExecute: jest.Mock;
 
   let req: Request;
   let res: Response;
@@ -46,12 +48,18 @@ describe('LoginHandler', () => {
       execute: mockUpdateUserClaimsCommandExecute,
     } as unknown as UpdateUserClaimsCommand;
 
+    mockGenerateAccessTokenCommandExecute = jest.fn();
+    const generateAccessTokenCommand = {
+      execute: mockGenerateAccessTokenCommandExecute,
+    } as unknown as GenerateAccessTokenCommand;
+
     handler = new LoginHandler(
       youTubeChannelQuery,
       isYouTubeMemberQuery,
       accessTokenGenerator,
       createUserIfNotExistsCommand,
       updateUserClaimsCommand,
+      generateAccessTokenCommand,
       {
         info: jest.fn(),
         warn: jest.fn(),
@@ -144,15 +152,21 @@ describe('LoginHandler', () => {
         });
 
         it('should return access token for authenticated user', async () => {
-          const accessToken = 'accessToken';
-
+          const accessToken = { token: '123' };
           when(mockAccessTokenGeneratorGenerate)
             .calledWith(channel.id)
             .mockReturnValue(accessToken);
+          const customAccessToken = 'customAccessToken123';
+          when(mockGenerateAccessTokenCommandExecute)
+            .calledWith(channel.id)
+            .mockReturnValue(customAccessToken);
 
           await handler.handle(req, res);
 
-          expect(res.send).toBeCalledWith(accessToken);
+          expect(res.send).toBeCalledWith({
+            ...accessToken,
+            accessToken: customAccessToken,
+          });
         });
       });
     });

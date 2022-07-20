@@ -5,6 +5,7 @@ import { IsYouTubeMemberQuery } from '../services/is-youtube-member';
 import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
 import { CreateUserIfNotExistsCommand } from '../services/create-user-if-not-exists';
 import { UpdateUserClaimsCommand } from '../services/update-user-claims';
+import { GenerateAccessTokenCommand } from '../services/generate-access-token';
 
 export class LoginHandler {
   constructor(
@@ -13,6 +14,7 @@ export class LoginHandler {
     private accessTokenGenerator: AccessTokenGenerator,
     private createUserIfNotExistsCommand: CreateUserIfNotExistsCommand,
     private updateUserClaimsCommand: UpdateUserClaimsCommand,
+    private generateAccessTokenCommand: GenerateAccessTokenCommand,
     private logger: typeof functions.logger
   ) {}
 
@@ -48,6 +50,7 @@ export class LoginHandler {
 
     this.logger.info('Verified user is a channel member.', { channelId });
 
+    // Temporarily sign our own access tokens for backwards compatibility with frontend
     const accessToken = this.accessTokenGenerator.generate(channelId);
 
     this.logger.info('Signed access token for user.', { channelId });
@@ -65,10 +68,14 @@ export class LoginHandler {
 
     this.logger.info('Updated user claims.', { channelId });
 
-    // const customToken = await admin.auth().createCustomToken(channelId);
+    const customToken = await this.generateAccessTokenCommand.execute(
+      channelId
+    );
 
-    // this.logger.info('custom token', { customToken });
+    this.logger.info(
+      'Successfully authenticated and created access token for user.'
+    );
 
-    return res.send(accessToken);
+    return res.send({ ...accessToken, accessToken: customToken });
   }
 }
