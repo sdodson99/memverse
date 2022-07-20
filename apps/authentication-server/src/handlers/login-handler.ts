@@ -4,6 +4,7 @@ import { YouTubeChannelQuery } from '../queries/youtube-channel';
 import { IsYouTubeMemberQuery } from '../queries/is-youtube-member';
 import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
 import { CreateUserIfNotExistsCommand } from '../commands/create-user-if-not-exists';
+import { UpdateUserClaimsCommand } from '../commands/update-user-claims';
 
 export class LoginHandler {
   constructor(
@@ -11,6 +12,7 @@ export class LoginHandler {
     private isYouTubeMemberQuery: IsYouTubeMemberQuery,
     private accessTokenGenerator: AccessTokenGenerator,
     private createUserIfNotExistsCommand: CreateUserIfNotExistsCommand,
+    private updateUserClaimsCommand: UpdateUserClaimsCommand,
     private logger: typeof functions.logger
   ) {}
 
@@ -57,9 +59,11 @@ export class LoginHandler {
 
     this.logger.info('Ensured user exists.', { channelId });
 
-    // await admin
-    //   .auth()
-    //   .setCustomUserClaims(channelId, { memberAsOf: Date.now() });
+    await this.updateUserClaimsCommand.execute(channelId, {
+      memberAsOf: Date.now(),
+    });
+
+    this.logger.info('Updated user claims.', { channelId });
 
     // const customToken = await admin.auth().createCustomToken(channelId);
 

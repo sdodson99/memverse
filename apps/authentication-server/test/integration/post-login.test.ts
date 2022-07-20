@@ -34,6 +34,7 @@ describe('POST /login', () => {
     mockGetUsers = jest.fn();
     mockFirebaseAuth.mockReturnValue({
       getUsers: mockGetUsers,
+      setCustomUserClaims: jest.fn(),
     });
 
     app = require('../../src/index').authenticationApi;

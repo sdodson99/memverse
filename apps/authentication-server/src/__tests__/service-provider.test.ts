@@ -1,7 +1,9 @@
 import { config } from 'firebase-functions';
 import { createServiceProvider } from '../service-provider';
 
-jest.mock('firebase-functions');
+jest.mock('firebase-functions', () => ({
+  config: jest.fn(),
+}));
 const mockFunctionsConfig = config as unknown as jest.Mock;
 
 describe('createServiceProvider', () => {

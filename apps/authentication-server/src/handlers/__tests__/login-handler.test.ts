@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions';
 import { Request, Response } from 'firebase-functions';
 import { when } from 'jest-when';
 import { CreateUserIfNotExistsCommand } from '../../commands/create-user-if-not-exists';
+import { UpdateUserClaimsCommand } from '../../commands/update-user-claims';
 import { IsYouTubeMemberQuery } from '../../queries/is-youtube-member';
 import { YouTubeChannel } from '../../queries/youtube-channel/youtube-channel';
 import { AccessTokenGenerator } from '../../services/access-tokens/access-token-generator';
@@ -14,6 +15,7 @@ describe('LoginHandler', () => {
   let mockIsYouTubeMemberQueryExecute: jest.Mock;
   let mockAccessTokenGeneratorGenerate: jest.Mock;
   let mockCreateUserIfNotExistsCommandExecute: jest.Mock;
+  let mockUpdateUserClaimsCommandExecute: jest.Mock;
 
   let req: Request;
   let res: Response;
@@ -39,11 +41,17 @@ describe('LoginHandler', () => {
       execute: mockCreateUserIfNotExistsCommandExecute,
     } as unknown as CreateUserIfNotExistsCommand;
 
+    mockUpdateUserClaimsCommandExecute = jest.fn();
+    const updateUserClaimsCommand = {
+      execute: mockUpdateUserClaimsCommandExecute,
+    } as unknown as UpdateUserClaimsCommand;
+
     handler = new LoginHandler(
       youTubeChannelQuery,
       isYouTubeMemberQuery,
       accessTokenGenerator,
       createUserIfNotExistsCommand,
+      updateUserClaimsCommand,
       {
         info: jest.fn(),
         warn: jest.fn(),
@@ -105,18 +113,47 @@ describe('LoginHandler', () => {
         expect(res.sendStatus).toBeCalledWith(403);
       });
 
-      it('should return access token for authenticated user', async () => {
-        const accessToken = 'accessToken';
-        when(mockIsYouTubeMemberQueryExecute)
-          .calledWith(channel.id)
-          .mockReturnValue(true);
-        when(mockAccessTokenGeneratorGenerate)
-          .calledWith(channel.id)
-          .mockReturnValue(accessToken);
+      describe('when user is member', () => {
+        beforeEach(() => {
+          when(mockIsYouTubeMemberQueryExecute)
+            .calledWith(channel.id)
+            .mockReturnValue(true);
+        });
 
-        await handler.handle(req, res);
+        it('should attempt to create user if they do not exist', async () => {
+          await handler.handle(req, res);
 
-        expect(res.send).toBeCalledWith(accessToken);
+          expect(mockCreateUserIfNotExistsCommandExecute).toBeCalledWith(
+            channel.id,
+            {
+              displayName: channel.displayName,
+              photoUrl: channel.photoUrl,
+            }
+          );
+        });
+
+        it('should update user claims with member as of date', async () => {
+          await handler.handle(req, res);
+
+          expect(mockUpdateUserClaimsCommandExecute.mock.calls[0][0]).toBe(
+            channel.id
+          );
+          expect(
+            mockUpdateUserClaimsCommandExecute.mock.calls[0][1].memberAsOf
+          ).toBeDefined();
+        });
+
+        it('should return access token for authenticated user', async () => {
+          const accessToken = 'accessToken';
+
+          when(mockAccessTokenGeneratorGenerate)
+            .calledWith(channel.id)
+            .mockReturnValue(accessToken);
+
+          await handler.handle(req, res);
+
+          expect(res.send).toBeCalledWith(accessToken);
+        });
       });
     });
   });
