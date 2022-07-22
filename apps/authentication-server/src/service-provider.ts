@@ -7,9 +7,14 @@ import { IsYouTubeMemberQuery } from './services/is-youtube-member';
 import { AccessTokenGenerator } from './services/access-tokens/access-token-generator';
 import { LoginHandler } from './handlers/login-handler';
 import { GenerateAccessTokenCommand } from './services/generate-access-token';
+import { createLoginRouter } from './routes/login';
+import { Router } from 'express';
+import { UpdateMemberClaimsJob } from './jobs';
+import { GetExistingUsersQuery } from './services/existing-users';
 
 export type ServiceProvider = {
-  resolveLoginHandler: () => LoginHandler;
+  resolveLoginRouter: () => Router;
+  resolveUpdateMemberClaimsJob: () => UpdateMemberClaimsJob;
 };
 
 export const createServiceProvider = (): ServiceProvider => {
@@ -34,6 +39,7 @@ export const createServiceProvider = (): ServiceProvider => {
   const createUserIfNotExistsCommand = new CreateUserIfNotExistsCommand(logger);
   const updateUserClaimsCommand = new UpdateUserClaimsCommand();
   const generateAccessTokenCommand = new GenerateAccessTokenCommand();
+  const getExistingUsersQuery = new GetExistingUsersQuery();
 
   const loginHandler = new LoginHandler(
     youTubeChannelQuery,
@@ -45,7 +51,15 @@ export const createServiceProvider = (): ServiceProvider => {
     logger
   );
 
+  const updateMemberClaimsJob = new UpdateMemberClaimsJob(
+    youTubeMembersQuery,
+    getExistingUsersQuery,
+    updateUserClaimsCommand,
+    logger
+  );
+
   return {
-    resolveLoginHandler: () => loginHandler,
+    resolveLoginRouter: () => createLoginRouter(loginHandler),
+    resolveUpdateMemberClaimsJob: () => updateMemberClaimsJob,
   };
 };

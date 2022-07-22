@@ -12,7 +12,6 @@ export class CreateUserIfNotExistsCommand {
   /**
    * Attempt to create a user if the user does not already exist.
    * @param uid The ID of the user to attempt to create.
-   * @returns True/false for is channel member.
    * @throws {Error} Thrown if commands fails.
    */
   async execute(uid: string, { displayName, photoUrl }: UserDetails = {}) {

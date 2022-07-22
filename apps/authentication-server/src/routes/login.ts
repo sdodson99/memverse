@@ -1,10 +1,8 @@
 import { Router as createRouter } from 'express';
-import { ServiceProvider } from '../service-provider';
+import { LoginHandler } from '../handlers/login-handler';
 
-export const createLoginRouter = (serviceProvider: ServiceProvider) => {
+export const createLoginRouter = (loginHandler: LoginHandler) => {
   const router = createRouter();
-
-  const loginHandler = serviceProvider.resolveLoginHandler();
 
   router.post('/', (req, res) => loginHandler.handle(req, res));
 
