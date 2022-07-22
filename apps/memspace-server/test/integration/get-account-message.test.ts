@@ -1,10 +1,10 @@
 import supertest from 'supertest';
 import { setupFirebase, generateAccessToken } from './utilities';
-import { MessageByMemberIdQuery } from '../../src/queries/message-by-member-id';
+import { MessageByMemberIdQuery } from '../../src/services/message-by-member-id';
 
 const functionsTest = setupFirebase();
 
-jest.mock('../../src/queries/message-by-member-id');
+jest.mock('../../src/services/message-by-member-id');
 const mockMessageByMemberIdQuery = MessageByMemberIdQuery as jest.Mock;
 
 describe('GET /account/message', () => {

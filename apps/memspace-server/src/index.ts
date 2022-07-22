@@ -6,6 +6,9 @@ import { createMembersRouter } from './routes/members';
 import { createAccountRouter } from './routes/account';
 import { errors } from 'celebrate';
 import { createServiceProvider } from './service-provider';
+import admin from 'firebase-admin';
+
+admin.initializeApp();
 
 const app = express();
 app.use(cors());

@@ -1,15 +1,15 @@
 import * as functions from 'firebase-functions';
-import { SaveMessageCommand } from './commands/save-message';
+import { SaveMessageCommand } from './services/save-message';
 import { DatabasePaths } from './configuration/database-paths';
 import { GetAccountHandler } from './handlers/account/get-account-handler';
 import { GetAccountMessageHandler } from './handlers/account/get-account-message-handler';
 import { UpdateAccountMessageHandler } from './handlers/account/update-account-message-handler';
 import { GetAllMembersHandler } from './handlers/members/get-all-members-handler';
-import { AllMembersQuery } from './queries/all-members';
-import { ManyMessagesByMemberIdsQuery } from './queries/many-messages-by-member-ids';
-import { MessageByMemberIdQuery } from './queries/message-by-member-id';
-import { getFirebaseApp } from './startup/firebase-app';
+import { AllMembersQuery } from './services/all-members';
+import { ManyMessagesByMemberIdsQuery } from './services/many-messages-by-member-ids';
+import { MessageByMemberIdQuery } from './services/message-by-member-id';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
+import admin from 'firebase-admin';
 
 export type ServiceProvider = {
   resolveGetAllMembersHandler: () => GetAllMembersHandler;
@@ -21,7 +21,7 @@ export type ServiceProvider = {
 export const createServiceProvider = (): ServiceProvider => {
   const firebaseConfig = functions.config();
   const youTubeStudioConfig = firebaseConfig.youtube_studio;
-  const firebaseApp = getFirebaseApp();
+  const firebaseApp = admin.app();
 
   const messageByMemberIdQuery = new MessageByMemberIdQuery(
     firebaseApp,

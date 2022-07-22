@@ -1,10 +1,10 @@
 import supertest from 'supertest';
 import { setupFirebase, generateAccessToken } from './utilities';
-import { SaveMessageCommand } from '../../src/commands/save-message';
+import { SaveMessageCommand } from '../../src/services/save-message';
 
 const functionsTest = setupFirebase();
 
-jest.mock('../../src/commands/save-message');
+jest.mock('../../src/services/save-message');
 const mockSaveMessageCommand = SaveMessageCommand as jest.Mock;
 
 describe('PUT /account/message', () => {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MessageByMemberIdQuery } from '../../queries/message-by-member-id';
+import { MessageByMemberIdQuery } from '../../services/message-by-member-id';
 
 export class GetAccountMessageHandler {
   constructor(private messageByMemberIdQuery: MessageByMemberIdQuery) {}

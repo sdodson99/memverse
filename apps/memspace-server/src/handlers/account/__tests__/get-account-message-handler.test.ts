@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { when } from 'jest-when';
-import { MessageByMemberIdQuery } from '../../../queries/message-by-member-id';
+import { MessageByMemberIdQuery } from '../../../services/message-by-member-id';
 import { GetAccountMessageHandler } from '../get-account-message-handler';
 
 describe('GetAccountMessageHandler', () => {

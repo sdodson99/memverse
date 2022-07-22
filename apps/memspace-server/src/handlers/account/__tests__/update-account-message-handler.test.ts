@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { SaveMessageCommand } from '../../../commands/save-message';
+import { SaveMessageCommand } from '../../../services/save-message';
 import { UpdateAccountMessageHandler } from '../update-account-message-handler';
 
 describe('UpdateAccountMessageHandler', () => {

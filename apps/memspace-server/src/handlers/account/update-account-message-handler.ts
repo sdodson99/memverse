@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { SaveMessageCommand } from '../../commands/save-message';
+import { SaveMessageCommand } from '../../services/save-message';
 
 export class UpdateAccountMessageHandler {
   constructor(private saveMessageCommand: SaveMessageCommand) {}

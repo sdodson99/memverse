@@ -1,11 +1,11 @@
 import supertest from 'supertest';
 import { setupFirebase } from './utilities';
-import { MessageByMemberIdQuery } from '../../src/queries/message-by-member-id';
+import { MessageByMemberIdQuery } from '../../src/services/message-by-member-id';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
 
 const functionsTest = setupFirebase();
 
-jest.mock('../../src/queries/message-by-member-id');
+jest.mock('../../src/services/message-by-member-id');
 const mockMessageByMemberIdQuery = MessageByMemberIdQuery as jest.Mock;
 
 jest.mock('youtube-member-querier');

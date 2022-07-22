@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AllMembersQuery } from '../../queries/all-members';
+import { AllMembersQuery } from '../../services/all-members';
 
 export class GetAllMembersHandler {
   constructor(private allMembersQuery: AllMembersQuery) {}

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AllMembersQuery } from '../../../queries/all-members';
+import { AllMembersQuery } from '../../../services/all-members';
 import { GetAllMembersHandler } from '../get-all-members-handler';
 
 describe('GetAllMembersHandler', () => {
