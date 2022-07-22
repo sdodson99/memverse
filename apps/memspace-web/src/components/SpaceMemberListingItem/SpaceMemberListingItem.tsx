@@ -99,7 +99,10 @@ const SpaceMemberListingItem = ({
             ml={{ sm: '4' }}
             mt={{ base: '2', sm: '0' }}
           >
-            <div className={styles.usernameLine}>
+            <Flex
+              fontWeight="bold"
+              justifyContent={{ base: 'center', sm: 'start' }}
+            >
               <span data-testid="SpaceMemberListingItemUsername">
                 {username}
               </span>
@@ -111,7 +114,7 @@ const SpaceMemberListingItem = ({
               >
                 <ExternalLinkIcon aria-label="Go to channel" />
               </a>
-            </div>
+            </Flex>
 
             {message && <Box mt="1">{message}</Box>}
           </Flex>

@@ -8,11 +8,6 @@
   max-height: 200px;
 }
 
-.usernameLine {
-  font-weight: bold;
-  display: flex;
-}
-
 .channelLink {
   display: flex;
   align-items: center;
