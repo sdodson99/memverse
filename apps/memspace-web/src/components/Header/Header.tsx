@@ -23,7 +23,14 @@ const Header = ({}: HeaderProps) => {
 
   const { isOpen: isNavigationOpen, onToggle: onToggleNavigation } =
     useDisclosure();
-  const isMobile = useBreakpointValue({ base: true, sm: false });
+  const isMobile = useBreakpointValue({ base: true, sm: false }, 'unknown');
+
+  // Originally, isMobile would fallback to 'true' on first render since useBreakpointValue would fallback
+  // to using the 'base' value. This would cause mobile navigation to appear on desktop first render.
+  // By setting the default breakpoint to 'unknown', isMobile will fallback to 'undefined' instead.
+  // We will not render any navigation on first render.
+  // This should prevent us from rendering the wrong navigation styling on first render.
+  const navigationReady = isMobile !== undefined;
 
   const PrimaryNavigation = () => {
     return (
@@ -70,28 +77,32 @@ const Header = ({}: HeaderProps) => {
               </a>
             </Link>
 
-            {isMobile && (
+            {navigationReady && (
               <>
-                <IconButton
-                  icon={<HamburgerIcon color="gray.800" />}
-                  bgColor="white"
-                  aria-label="Toggle navigation"
-                  onClick={() => onToggleNavigation()}
-                />
-                <Box width="full" className={styles.mobileNav}>
-                  <Collapse in={isNavigationOpen} animateOpacity>
-                    <Flex direction="column" pt="4">
-                      <PrimaryNavigation />
-                    </Flex>
-                  </Collapse>
-                </Box>
-              </>
-            )}
+                {isMobile && (
+                  <>
+                    <IconButton
+                      icon={<HamburgerIcon color="gray.800" />}
+                      bgColor="white"
+                      aria-label="Toggle navigation"
+                      onClick={() => onToggleNavigation()}
+                    />
+                    <Box width="full" className={styles.mobileNav}>
+                      <Collapse in={isNavigationOpen} animateOpacity>
+                        <Flex direction="column" pt="4">
+                          <PrimaryNavigation />
+                        </Flex>
+                      </Collapse>
+                    </Box>
+                  </>
+                )}
 
-            {!isMobile && (
-              <Flex className={styles.desktopNav}>
-                <PrimaryNavigation />
-              </Flex>
+                {!isMobile && (
+                  <Flex className={styles.desktopNav}>
+                    <PrimaryNavigation />
+                  </Flex>
+                )}
+              </>
             )}
           </div>
         </nav>
