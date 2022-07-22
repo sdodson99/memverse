@@ -1,4 +1,4 @@
-import { isProduction } from '..';
+import { isProduction, getFirebaseConfig } from '..';
 
 describe('configuration', () => {
   describe('isProduction', () => {
@@ -16,6 +16,12 @@ describe('configuration', () => {
       process.env.NEXT_PUBLIC_ENVIRONMENT = 'staging';
 
       expect(isProduction()).toBeFalsy();
+    });
+  });
+
+  describe('getFirebaseConfig', () => {
+    it('should return config', () => {
+      expect(getFirebaseConfig()).toBeDefined();
     });
   });
 });
