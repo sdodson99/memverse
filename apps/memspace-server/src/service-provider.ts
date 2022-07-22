@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions';
 import { SaveMessageCommand } from './services/save-message';
 import { DatabasePaths } from './configuration/database-paths';
-import { GetAccountHandler } from './handlers/account/get-account-handler';
 import { GetAccountMessageHandler } from './handlers/account/get-account-message-handler';
 import { UpdateAccountMessageHandler } from './handlers/account/update-account-message-handler';
 import { GetAllMembersHandler } from './handlers/members/get-all-members-handler';
@@ -13,7 +12,6 @@ import admin from 'firebase-admin';
 
 export type ServiceProvider = {
   resolveGetAllMembersHandler: () => GetAllMembersHandler;
-  resolveGetAccountHandler: () => GetAccountHandler;
   resolveGetAccountMessageHandler: () => GetAccountMessageHandler;
   resolveUpdateAccountMessageHandler: () => UpdateAccountMessageHandler;
 };
@@ -47,7 +45,6 @@ export const createServiceProvider = (): ServiceProvider => {
   );
 
   const getAllMembersHandler = new GetAllMembersHandler(allMembersQuery);
-  const getAccountHandler = new GetAccountHandler();
   const getAccountMessageHandler = new GetAccountMessageHandler(
     messageByMemberIdQuery
   );
@@ -57,7 +54,6 @@ export const createServiceProvider = (): ServiceProvider => {
 
   return {
     resolveGetAllMembersHandler: () => getAllMembersHandler,
-    resolveGetAccountHandler: () => getAccountHandler,
     resolveGetAccountMessageHandler: () => getAccountMessageHandler,
     resolveUpdateAccountMessageHandler: () => updateAccountMessageHandler,
   };
