@@ -1,2 +1,2 @@
-export * from './generate-access-token';
 export * from './setup-firebase';
+export * from './mock-authenticate';

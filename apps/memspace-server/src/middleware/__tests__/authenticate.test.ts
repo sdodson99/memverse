@@ -1,9 +1,12 @@
-import * as jwt from 'jsonwebtoken';
 import { authenticate } from '../authenticate';
 import { Request, Response } from 'express';
+import { auth } from 'firebase-admin';
 
-jest.mock('jsonwebtoken');
-const mockTokenVerify = jwt.verify as jest.Mock;
+jest.mock('firebase-admin', () => ({
+  ...jest.requireActual('firebase-admin'),
+  auth: jest.fn(),
+}));
+const mockFirebaseAuth = auth as jest.Mock;
 
 describe('authenticate middleware', () => {
   let req: Request;
@@ -12,6 +15,8 @@ describe('authenticate middleware', () => {
 
   let mockStatus: jest.Mock;
   let mockSend: jest.Mock;
+
+  let mockVerifyIdToken: jest.Mock;
 
   beforeEach(() => {
     next = jest.fn();
@@ -26,10 +31,15 @@ describe('authenticate middleware', () => {
     res = {
       status: mockStatus,
     } as unknown as Response;
+
+    mockVerifyIdToken = jest.fn();
+    mockFirebaseAuth.mockReturnValue({
+      verifyIdToken: mockVerifyIdToken,
+    });
   });
 
   afterEach(() => {
-    mockTokenVerify.mockReset();
+    mockFirebaseAuth.mockReset();
   });
 
   it('should return 401 when no access token provided', () => {
@@ -58,8 +68,8 @@ describe('authenticate middleware', () => {
     req.headers = {
       authorization: 'Bearer 123',
     };
-    mockTokenVerify.mockImplementation((_token, _key, cb) => {
-      cb(new Error());
+    mockVerifyIdToken.mockImplementation(() => {
+      throw new Error();
     });
 
     authenticate(req, res, next);
@@ -73,23 +83,23 @@ describe('authenticate middleware', () => {
       req.headers = {
         authorization: 'Bearer 123',
       };
-      mockTokenVerify.mockImplementation((_token, _key, cb) => {
-        cb(null, {
-          id: 'user_id',
-        });
+      mockVerifyIdToken.mockResolvedValue({
+        uid: 'user_id',
+        memberAsOf: '123',
       });
     });
 
-    it('should set user on request', () => {
-      authenticate(req, res, next);
+    it('should set user on request', async () => {
+      await authenticate(req, res, next);
 
       expect(req.user).toEqual({
         id: 'user_id',
+        memberAsOf: '123',
       });
     });
 
-    it('should execute next middleware', () => {
-      authenticate(req, res, next);
+    it('should execute next middleware', async () => {
+      await authenticate(req, res, next);
 
       expect(next).toBeCalled();
     });

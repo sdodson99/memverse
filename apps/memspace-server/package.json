@@ -11,6 +11,7 @@
     "dev": "npm run build && firebase emulators:start --only functions,database",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
+    "start:emulators": "firebase emulators:start --only database",
     "lint:eslint": "eslint \"src/**/*.ts\"",
     "lint:prettier": "prettier --check \"src/**/*.ts\"",
     "lint": "npm run lint:eslint && npm run lint:prettier",
@@ -34,7 +35,6 @@
     "express": "^4.17.2",
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
-    "jsonwebtoken": "^8.5.1",
     "youtube-member-querier": "^1.0.0"
   },
   "devDependencies": {

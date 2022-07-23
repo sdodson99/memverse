@@ -1,6 +1,7 @@
 import supertest from 'supertest';
-import { setupFirebase, generateAccessToken } from './utilities';
+import { setupFirebase } from './utilities';
 import { MessageByMemberIdQuery } from '../../src/services/message-by-member-id';
+import { mockAuthenticate } from './utilities';
 
 const functionsTest = setupFirebase();
 
@@ -31,7 +32,8 @@ describe('GET /account/message', () => {
     mockMessageByMemberIdQueryExecute.mockReturnValue({
       content: 'my-message',
     });
-    const token = generateAccessToken();
+    const token = 'token123';
+    mockAuthenticate(token);
 
     const { statusCode, body } = await supertest(app)
       .get('/account/message')
@@ -43,7 +45,8 @@ describe('GET /account/message', () => {
 
   it('should return empty message when authorized but user has no message saved', async () => {
     mockMessageByMemberIdQueryExecute.mockReturnValue(null);
-    const token = generateAccessToken();
+    const token = 'token123';
+    mockAuthenticate(token);
 
     const { statusCode, body } = await supertest(app)
       .get('/account/message')

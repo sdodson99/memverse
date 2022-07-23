@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import { setupFirebase, generateAccessToken } from './utilities';
+import { mockAuthenticate, setupFirebase } from './utilities';
 import { SaveMessageCommand } from '../../src/services/save-message';
 
 const functionsTest = setupFirebase();
@@ -28,7 +28,8 @@ describe('PUT /account/message', () => {
   });
 
   it('should update message when authorized', async () => {
-    const token = generateAccessToken();
+    const token = 'token123';
+    mockAuthenticate(token);
 
     const { statusCode } = await supertest(app)
       .put('/account/message')
@@ -44,7 +45,8 @@ describe('PUT /account/message', () => {
   });
 
   it('should clear message when no message content specified', async () => {
-    const token = generateAccessToken();
+    const token = 'token123';
+    mockAuthenticate(token);
 
     const { statusCode } = await supertest(app)
       .put('/account/message')
@@ -58,7 +60,8 @@ describe('PUT /account/message', () => {
   });
 
   it('should clear message when message body not provided', async () => {
-    const token = generateAccessToken();
+    const token = 'token123';
+    mockAuthenticate(token);
 
     const { statusCode } = await supertest(app)
       .put('/account/message')
@@ -71,7 +74,8 @@ describe('PUT /account/message', () => {
   });
 
   it('should return 400 when message content too long', async () => {
-    const token = generateAccessToken();
+    const token = 'token123';
+    mockAuthenticate(token);
 
     const { statusCode } = await supertest(app)
       .put('/account/message')

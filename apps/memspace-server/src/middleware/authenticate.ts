@@ -1,11 +1,7 @@
 import { RequestHandler } from 'express';
-import * as functions from 'firebase-functions';
-import * as jwt from 'jsonwebtoken';
+import { auth } from 'firebase-admin';
 
-const firebaseConfig = functions.config();
-const accessTokenSecretKey = firebaseConfig?.access_token?.secret_key;
-
-export const authenticate: RequestHandler = (req, res, next) => {
+export const authenticate: RequestHandler = async (req, res, next) => {
   const bearerAccessToken = req.headers.authorization;
 
   if (!bearerAccessToken) {
@@ -18,25 +14,16 @@ export const authenticate: RequestHandler = (req, res, next) => {
 
   const accessToken = bearerAccessToken.substring('Bearer '.length);
 
-  return jwt.verify(
-    accessToken,
-    accessTokenSecretKey,
-    (
-      err: jwt.VerifyErrors | null,
-      rawPayload: string | jwt.JwtPayload | undefined
-    ) => {
-      if (err) {
-        return res.status(401).send('Invalid access token.');
-      }
+  try {
+    const { uid, memberAsOf } = await auth().verifyIdToken(accessToken);
 
-      const payload = rawPayload as jwt.JwtPayload;
-      const userId = payload['id'];
+    req.user = {
+      id: uid,
+      memberAsOf,
+    };
 
-      req.user = {
-        id: userId,
-      };
-
-      return next();
-    }
-  );
+    return next();
+  } catch (error) {
+    return res.status(401).send('Invalid access token.');
+  }
 };

@@ -6,5 +6,6 @@ declare namespace Express {
 
   type User = {
     id: string;
+    memberAsOf?: number;
   };
 }
