@@ -5,9 +5,11 @@
     "install": "lerna exec -- npm install",
     "bootstrap": "lerna bootstrap",
     "test": "lerna run test",
-    "fix": "lerna run fix"
+    "fix": "lerna run fix",
+    "emulators": "firebase emulators:start"
   },
   "devDependencies": {
+    "firebase-tools": "^11.3.0",
     "jest": "^27.4.5",
     "jest-when": "^3.5.0",
     "lerna": "^4.0.0"
