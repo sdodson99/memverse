@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import { setupFirebase } from './utilities';
+import { mockAuthorizeIsMember, setupFirebase } from './utilities';
 import { MessageByMemberIdQuery } from '../../src/services/message-by-member-id';
 import { mockAuthenticate } from './utilities';
 
@@ -33,7 +33,7 @@ describe('GET /account/message', () => {
       content: 'my-message',
     });
     const token = 'token123';
-    mockAuthenticate(token);
+    mockAuthorizeIsMember(token);
 
     const { statusCode, body } = await supertest(app)
       .get('/account/message')
@@ -46,7 +46,7 @@ describe('GET /account/message', () => {
   it('should return empty message when authorized but user has no message saved', async () => {
     mockMessageByMemberIdQueryExecute.mockReturnValue(null);
     const token = 'token123';
-    mockAuthenticate(token);
+    mockAuthorizeIsMember(token);
 
     const { statusCode, body } = await supertest(app)
       .get('/account/message')
@@ -60,5 +60,16 @@ describe('GET /account/message', () => {
     const { statusCode } = await supertest(app).get('/account/message');
 
     expect(statusCode).toBe(401);
+  });
+
+  it('should return 403 when not a member', async () => {
+    const token = 'token123';
+    mockAuthenticate(token);
+
+    const { statusCode } = await supertest(app)
+      .get('/account/message')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(statusCode).toBe(403);
   });
 });

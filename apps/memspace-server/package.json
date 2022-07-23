@@ -34,6 +34,7 @@
     "express": "^4.17.2",
     "firebase-admin": "^9.8.0",
     "firebase-functions": "^3.14.1",
+    "luxon": "^3.0.1",
     "youtube-member-querier": "^1.0.0"
   },
   "devDependencies": {
@@ -42,6 +43,7 @@
     "@types/jest": "^27.0.3",
     "@types/jest-when": "^2.7.4",
     "@types/jsonwebtoken": "^8.5.8",
+    "@types/luxon": "^3.0.0",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",

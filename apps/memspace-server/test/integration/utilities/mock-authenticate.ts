@@ -23,7 +23,16 @@ afterEach(() => {
 
 export const mockAuthenticate = (
   token: string,
-  userResponse: unknown = { uid: '123' }
+  userResponse = { uid: '123' }
 ) => {
   when(mockVerifyIdToken).calledWith(token).mockReturnValue(userResponse);
+};
+
+export const mockAuthorizeIsMember = (
+  token: string,
+  userResponse = { uid: '123' }
+) => {
+  when(mockVerifyIdToken)
+    .calledWith(token)
+    .mockReturnValue({ ...userResponse, memberAsOf: Date.now() });
 };

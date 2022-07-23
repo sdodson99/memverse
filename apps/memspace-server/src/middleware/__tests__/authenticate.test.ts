@@ -92,10 +92,7 @@ describe('authenticate middleware', () => {
     it('should set user on request', async () => {
       await authenticate(req, res, next);
 
-      expect(req.user).toEqual({
-        id: 'user_id',
-        memberAsOf: '123',
-      });
+      expect(req.user?.id).toBe('user_id');
     });
 
     it('should execute next middleware', async () => {

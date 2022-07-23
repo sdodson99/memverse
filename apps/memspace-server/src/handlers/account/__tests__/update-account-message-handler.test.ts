@@ -30,6 +30,7 @@ describe('UpdateAccountMessageHandler', () => {
     beforeEach(async () => {
       req.user = {
         id: '123',
+        isMember: () => true,
       };
 
       message = 'hello world';

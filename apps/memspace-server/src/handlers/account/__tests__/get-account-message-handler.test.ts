@@ -30,6 +30,7 @@ describe('GetAccountMessageHandler', () => {
     beforeEach(() => {
       req.user = {
         id: '123',
+        isMember: () => true,
       };
     });
 
