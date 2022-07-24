@@ -89,9 +89,7 @@ describe('POST /login', () => {
       .send({ accessToken });
 
     expect(statusCode).toBe(200);
-    expect(body.token).toBeDefined();
     expect(body.accessToken).toBe(customToken);
-    expect(body.expiresIn).toBe(3600);
   });
 
   it('should return 401 when no Google access token sent', async () => {

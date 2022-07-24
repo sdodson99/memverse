@@ -5,7 +5,6 @@ import { CreateUserIfNotExistsCommand } from '../../services/create-user-if-not-
 import { UpdateUserClaimsCommand } from '../../services/update-user-claims';
 import { IsYouTubeMemberQuery } from '../../services/is-youtube-member';
 import { YouTubeChannel } from '../../services/youtube-channel/youtube-channel';
-import { AccessTokenGenerator } from '../../services/access-tokens/access-token-generator';
 import { LoginHandler } from '../login-handler';
 import { GenerateAccessTokenCommand } from '../../services/generate-access-token';
 
@@ -14,7 +13,6 @@ describe('LoginHandler', () => {
 
   let mockYouTubeChannelQueryExecute: jest.Mock;
   let mockIsYouTubeMemberQueryExecute: jest.Mock;
-  let mockAccessTokenGeneratorGenerate: jest.Mock;
   let mockCreateUserIfNotExistsCommandExecute: jest.Mock;
   let mockUpdateUserClaimsCommandExecute: jest.Mock;
   let mockGenerateAccessTokenCommandExecute: jest.Mock;
@@ -32,11 +30,6 @@ describe('LoginHandler', () => {
     const isYouTubeMemberQuery = {
       execute: mockIsYouTubeMemberQueryExecute,
     } as unknown as IsYouTubeMemberQuery;
-
-    mockAccessTokenGeneratorGenerate = jest.fn();
-    const accessTokenGenerator = {
-      generate: mockAccessTokenGeneratorGenerate,
-    } as unknown as AccessTokenGenerator;
 
     mockCreateUserIfNotExistsCommandExecute = jest.fn();
     const createUserIfNotExistsCommand = {
@@ -56,7 +49,6 @@ describe('LoginHandler', () => {
     handler = new LoginHandler(
       youTubeChannelQuery,
       isYouTubeMemberQuery,
-      accessTokenGenerator,
       createUserIfNotExistsCommand,
       updateUserClaimsCommand,
       generateAccessTokenCommand,
@@ -152,20 +144,15 @@ describe('LoginHandler', () => {
         });
 
         it('should return access token for authenticated user', async () => {
-          const accessToken = { token: '123' };
-          when(mockAccessTokenGeneratorGenerate)
-            .calledWith(channel.id)
-            .mockReturnValue(accessToken);
-          const customAccessToken = 'customAccessToken123';
+          const accessToken = 'customAccessToken123';
           when(mockGenerateAccessTokenCommandExecute)
             .calledWith(channel.id)
-            .mockReturnValue(customAccessToken);
+            .mockReturnValue(accessToken);
 
           await handler.handle(req, res);
 
           expect(res.send).toBeCalledWith({
-            ...accessToken,
-            accessToken: customAccessToken,
+            accessToken,
           });
         });
       });

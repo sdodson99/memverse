@@ -4,7 +4,6 @@ import { CreateUserIfNotExistsCommand } from './services/create-user-if-not-exis
 import { UpdateUserClaimsCommand } from './services/update-user-claims';
 import { YouTubeChannelQuery } from './services/youtube-channel';
 import { IsYouTubeMemberQuery } from './services/is-youtube-member';
-import { AccessTokenGenerator } from './services/access-tokens/access-token-generator';
 import { LoginHandler } from './handlers/login-handler';
 import { GenerateAccessTokenCommand } from './services/generate-access-token';
 import { createLoginRouter } from './routes/login';
@@ -20,7 +19,6 @@ export type ServiceProvider = {
 export const createServiceProvider = (): ServiceProvider => {
   const firebaseConfig = functions.config();
   const youTubeStudioConfig = firebaseConfig.youtube_studio;
-  const accessTokenConfig = firebaseConfig.access_token;
   const logger = functions.logger;
 
   const youTubeChannelQuery = new YouTubeChannelQuery();
@@ -32,10 +30,6 @@ export const createServiceProvider = (): ServiceProvider => {
     authorizationHeader: youTubeStudioConfig.authorization_header,
   });
   const isYouTubeMemberQuery = new IsYouTubeMemberQuery(youTubeMembersQuery);
-  const accessTokenGenerator = new AccessTokenGenerator(
-    accessTokenConfig.secret_key,
-    parseInt(accessTokenConfig.expires_in)
-  );
   const createUserIfNotExistsCommand = new CreateUserIfNotExistsCommand(logger);
   const updateUserClaimsCommand = new UpdateUserClaimsCommand();
   const generateAccessTokenCommand = new GenerateAccessTokenCommand();
@@ -44,7 +38,6 @@ export const createServiceProvider = (): ServiceProvider => {
   const loginHandler = new LoginHandler(
     youTubeChannelQuery,
     isYouTubeMemberQuery,
-    accessTokenGenerator,
     createUserIfNotExistsCommand,
     updateUserClaimsCommand,
     generateAccessTokenCommand,

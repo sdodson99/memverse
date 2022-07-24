@@ -2,7 +2,6 @@ import * as functions from 'firebase-functions';
 import { Request, Response } from 'express';
 import { YouTubeChannelQuery } from '../services/youtube-channel';
 import { IsYouTubeMemberQuery } from '../services/is-youtube-member';
-import { AccessTokenGenerator } from '../services/access-tokens/access-token-generator';
 import { CreateUserIfNotExistsCommand } from '../services/create-user-if-not-exists';
 import { UpdateUserClaimsCommand } from '../services/update-user-claims';
 import { GenerateAccessTokenCommand } from '../services/generate-access-token';
@@ -11,7 +10,6 @@ export class LoginHandler {
   constructor(
     private youTubeChannelQuery: YouTubeChannelQuery,
     private isYouTubeMemberQuery: IsYouTubeMemberQuery,
-    private accessTokenGenerator: AccessTokenGenerator,
     private createUserIfNotExistsCommand: CreateUserIfNotExistsCommand,
     private updateUserClaimsCommand: UpdateUserClaimsCommand,
     private generateAccessTokenCommand: GenerateAccessTokenCommand,
@@ -50,11 +48,6 @@ export class LoginHandler {
 
     this.logger.info('Verified user is a channel member.', { channelId });
 
-    // Temporarily sign our own access tokens for backwards compatibility with frontend
-    const accessToken = this.accessTokenGenerator.generate(channelId);
-
-    this.logger.info('Signed access token for user.', { channelId });
-
     await this.createUserIfNotExistsCommand.execute(channelId, {
       displayName,
       photoUrl,
@@ -68,7 +61,7 @@ export class LoginHandler {
 
     this.logger.info('Updated user claims.', { channelId });
 
-    const customToken = await this.generateAccessTokenCommand.execute(
+    const accessToken = await this.generateAccessTokenCommand.execute(
       channelId
     );
 
@@ -76,6 +69,6 @@ export class LoginHandler {
       'Successfully authenticated and created access token for user.'
     );
 
-    return res.send({ ...accessToken, accessToken: customToken });
+    return res.send({ accessToken });
   }
 }
