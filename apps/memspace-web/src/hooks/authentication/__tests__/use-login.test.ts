@@ -1,102 +1,59 @@
-import { useAccessTokenContext } from '../use-access-token-context';
-import { NonMemberError, useLogin } from '../use-login';
-import axios from 'axios';
-import { when } from 'jest-when';
-import { renderHook } from '@testing-library/react-hooks';
-import { MockTagProvider } from '../../use-mock-tag-context';
+import { useApplicationLogin } from '../use-application-login';
+import { useLogin } from '../use-login';
+import { useYouTubeLogin } from '../use-youtube-login';
 
-jest.mock('../use-access-token-context');
-const mockUseAccessTokenContext = useAccessTokenContext as jest.Mock;
+jest.mock('../use-application-login');
+const mockUseApplicationLogin = useApplicationLogin as jest.Mock;
 
-jest.mock('axios');
-const mockAxiosPost = axios.post as jest.Mock;
-const mockIsAxiosError = axios.isAxiosError as unknown as jest.Mock;
+jest.mock('../use-youtube-login');
+const mockUseYouTubeLogin = useYouTubeLogin as jest.Mock;
 
 describe('useLogin', () => {
-  let mockSetAccessToken: jest.Mock;
+  let mockApplicationLogin: jest.Mock;
+  let mockYouTubeLogin: jest.Mock;
+
+  let accessToken: string;
 
   beforeEach(() => {
-    mockSetAccessToken = jest.fn();
-
-    mockUseAccessTokenContext.mockReturnValue({
-      setAccessToken: mockSetAccessToken,
+    mockApplicationLogin = jest.fn();
+    mockUseApplicationLogin.mockReturnValue({
+      login: mockApplicationLogin,
     });
-  });
 
-  afterEach(() => {
-    mockUseAccessTokenContext.mockReset();
-    mockAxiosPost.mockReset();
-    mockIsAxiosError.mockReset();
+    mockYouTubeLogin = jest.fn();
+    mockUseYouTubeLogin.mockReturnValue({
+      login: mockYouTubeLogin,
+    });
+
+    accessToken = 'access123';
   });
 
   describe('login', () => {
-    let token: string;
+    it('should login with YouTube access token', async () => {
+      mockYouTubeLogin.mockReturnValue(accessToken);
+      const { login } = useLogin();
 
-    beforeEach(() => {
-      token = '123';
+      await login();
+
+      expect(mockApplicationLogin).toBeCalledWith(accessToken);
+    });
+  });
+
+  describe('isInitializing', () => {
+    it('should return true when initializing', () => {
+      mockUseYouTubeLogin.mockReturnValue({ isInitializing: true });
+
+      const { isInitializing } = useLogin();
+
+      expect(isInitializing).toBeTruthy();
     });
 
-    it('should set access token if successful', async () => {
-      const accessTokenResponse = { token: '456' };
-      when(mockAxiosPost)
-        .calledWith(
-          `${process.env.NEXT_PUBLIC_AUTHENTICATION_SERVER_BASE_URL}/login`,
-          {
-            accessToken: token,
-          }
-        )
-        .mockReturnValue({
-          data: accessTokenResponse,
-        });
-      const { result } = renderHook(() => useLogin(), {
-        wrapper: MockTagProvider,
-      });
+    it('should return false when not initializing', () => {
+      mockUseYouTubeLogin.mockReturnValue({ isInitializing: false });
 
-      await result.current(token);
+      const { isInitializing } = useLogin();
 
-      expect(mockSetAccessToken).toBeCalledWith(accessTokenResponse);
-    });
-
-    it('should throw if request fails', async () => {
-      when(mockAxiosPost)
-        .calledWith(
-          `${process.env.NEXT_PUBLIC_AUTHENTICATION_SERVER_BASE_URL}/login`,
-          {
-            accessToken: token,
-          }
-        )
-        .mockImplementation(() => {
-          throw new Error();
-        });
-      const { result } = renderHook(() => useLogin(), {
-        wrapper: MockTagProvider,
-      });
-
-      await expect(result.current(token)).rejects.toThrow();
-    });
-
-    it('should throw NonMemberError if request fails with 403 status code', async () => {
-      mockIsAxiosError.mockReturnValue(true);
-      when(mockAxiosPost)
-        .calledWith(
-          `${process.env.NEXT_PUBLIC_AUTHENTICATION_SERVER_BASE_URL}/login`,
-          {
-            accessToken: token,
-          }
-        )
-        .mockImplementation(() => {
-          // eslint-disable-next-line no-throw-literal
-          throw {
-            response: {
-              status: 403,
-            },
-          };
-        });
-      const { result } = renderHook(() => useLogin(), {
-        wrapper: MockTagProvider,
-      });
-
-      await expect(result.current(token)).rejects.toThrow(NonMemberError);
+      expect(isInitializing).toBeFalsy();
     });
   });
 });

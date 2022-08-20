@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { NonMemberError, useLogin } from '../../hooks/authentication/use-login';
-import { useYouTubeLogin } from '../../hooks/authentication/use-youtube-login';
+import { NonMemberError } from '../../hooks/authentication/use-application-login';
+import { useLogin } from '../../hooks/authentication/use-login';
 import { useNavigate } from '../../hooks/use-navigate';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
@@ -15,20 +15,15 @@ const Login = ({}: LoginProps) => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState<LoginError>();
 
-  const { login: youTubeLogin, isInitializing: isYouTubeLoginInitializing } =
-    useYouTubeLogin();
-  const login = useLogin();
+  const { login, isInitializing: isLoginInitializing } = useLogin();
   const navigate = useNavigate();
 
   const handleLoginClick = async () => {
     setLoginError(undefined);
+    setIsLoggingIn(true);
 
     try {
-      const accessToken = await youTubeLogin();
-
-      setIsLoggingIn(true);
-
-      await login(accessToken);
+      await login();
 
       await navigate({ pathname: '/' });
     } catch (error) {
@@ -57,7 +52,7 @@ const Login = ({}: LoginProps) => {
         in order to successfully login.
       </div>
 
-      {!isLoggingIn && !isYouTubeLoginInitializing && (
+      {!isLoggingIn && !isLoginInitializing && (
         <div>
           <div className={styles.loginButton}>
             <YouTubeLoginButton onClick={handleLoginClick} />
@@ -95,7 +90,7 @@ const Login = ({}: LoginProps) => {
         </div>
       )}
 
-      {(isLoggingIn || isYouTubeLoginInitializing) && (
+      {(isLoggingIn || isLoginInitializing) && (
         <div className={styles.loadingSpinner}>
           <LoadingSpinner size={75} />
         </div>

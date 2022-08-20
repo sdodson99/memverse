@@ -2,29 +2,26 @@ import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Login from './Login';
-import { NonMemberError, useLogin } from '../../hooks/authentication/use-login';
-import { useYouTubeLogin } from '../../hooks/authentication/use-youtube-login';
+import { NonMemberError } from '../../hooks/authentication/use-application-login';
+import { useLogin } from '../../hooks/authentication/use-login';
 import { useRouter } from 'next/router';
 
 jest.mock('../../hooks/authentication/use-login');
-jest.mock('../../hooks/authentication/use-youtube-login');
 jest.mock('next/router');
 
 const mockUseLogin = useLogin as jest.Mock;
-const mockUseYouTubeLogin = useYouTubeLogin as jest.Mock;
 const mockUseRouter = useRouter as jest.Mock;
 
 describe('<Login />', () => {
-  let mockYouTubeLogin: jest.Mock;
+  let mockLogin: jest.Mock;
 
   beforeEach(() => {
-    mockYouTubeLogin = jest.fn();
-    mockUseYouTubeLogin.mockReturnValue({ login: mockYouTubeLogin });
+    mockLogin = jest.fn();
+    mockUseLogin.mockReturnValue({ login: mockLogin });
   });
 
   afterEach(() => {
     mockUseLogin.mockReset();
-    mockUseYouTubeLogin.mockReset();
     mockUseRouter.mockReset();
   });
 
@@ -37,24 +34,12 @@ describe('<Login />', () => {
   });
 
   describe('on login click', () => {
-    let mockLogin: jest.Mock;
-
-    beforeEach(() => {
-      mockLogin = jest.fn();
-      mockUseLogin.mockReturnValue(mockLogin);
-    });
-
     describe('with successful login', () => {
       let mockRouterPush: jest.Mock;
-
-      let accessToken: string;
 
       beforeEach(async () => {
         mockRouterPush = jest.fn();
         mockUseRouter.mockReturnValue({ push: mockRouterPush });
-
-        accessToken = '123';
-        mockYouTubeLogin.mockReturnValue(accessToken);
 
         render(<Login />);
 
@@ -64,8 +49,8 @@ describe('<Login />', () => {
         });
       });
 
-      it('should login with YouTube access token', () => {
-        expect(mockLogin).toBeCalledWith(accessToken);
+      it('should login', () => {
+        expect(mockLogin).toBeCalled();
       });
 
       it('should redirect to home page', () => {
@@ -107,9 +92,9 @@ describe('<Login />', () => {
     });
   });
 
-  describe('YouTube login initializing', () => {
+  describe('login initializing', () => {
     it('should render login button when not initializing', () => {
-      mockUseYouTubeLogin.mockReturnValue({ isInitializing: false });
+      mockUseLogin.mockReturnValue({ isInitializing: false });
       render(<Login />);
 
       const loginButton = screen.queryByTestId('YouTubeLoginButton');
@@ -118,7 +103,7 @@ describe('<Login />', () => {
     });
 
     it('should not render login button when initializing', () => {
-      mockUseYouTubeLogin.mockReturnValue({ isInitializing: true });
+      mockUseLogin.mockReturnValue({ isInitializing: true });
       render(<Login />);
 
       const loginButton = screen.queryByTestId('YouTubeLoginButton');
