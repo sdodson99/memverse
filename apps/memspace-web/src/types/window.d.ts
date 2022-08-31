@@ -12,7 +12,7 @@ declare global {
 
   export type GoogleTokenClient = {
     requestAccessToken: () => void;
-    callback: (response: GoogleTokenClientCallbackResponse) => void;
+    callback?: (response: GoogleTokenClientCallbackResponse) => void;
   };
 
   export interface Window {

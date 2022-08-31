@@ -1,16 +1,9 @@
-import { useMockTagContext } from '../use-mock-tag-context';
-import { useGoogleIdentityServicesContext } from './use-google-identity-services-context';
+import { useGoogleIdentityServicesContext } from './google-identity-services/use-google-identity-services-context';
 
 export const useYouTubeLogin = () => {
   const { client, initialized } = useGoogleIdentityServicesContext();
 
-  const mockTag = useMockTagContext();
-
   const youTubeLogin = async () => {
-    if (mockTag) {
-      return Promise.resolve('mock-google-access-token');
-    }
-
     if (!client) {
       throw new Error('Client not initialized.');
     }

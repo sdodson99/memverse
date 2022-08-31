@@ -33,8 +33,8 @@ type AppOptions = {
   mockTag?: string;
 };
 
-export const setupApp = (options?: AppOptions) => {
-  if (options?.mockTag) {
+export const setupApp = (options: AppOptions = { mockTag: 'base' }) => {
+  if (options.mockTag) {
     mockUseRouter.mockReturnValue({
       isReady: true,
       query: {
@@ -51,4 +51,10 @@ export const renderApp = (
   setupApp(appOptions);
 
   render(<TestApp>{component}</TestApp>);
+};
+
+export const getTestApp = (appOptions: AppOptions = { mockTag: 'base' }) => {
+  setupApp(appOptions);
+
+  return TestApp;
 };

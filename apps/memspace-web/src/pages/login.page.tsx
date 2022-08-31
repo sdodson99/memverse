@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import PageLayout from '../components/PageLayout/PageLayout';
 import Login from '../components/Login/Login';
-import { GoogleIdentityServicesProvider } from '../hooks/authentication/use-google-identity-services-context';
+import { GoogleIdentityServicesProvider } from '../hooks/authentication/google-identity-services/google-identity-services-provider';
 
 const LoginPage: NextPage = () => {
   return (

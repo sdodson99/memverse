@@ -6,7 +6,7 @@ import { renderApp } from '../../test-utils/render-app';
 
 describe('<Link />', () => {
   it('should not append mock tag if no mock available', () => {
-    renderApp(<Link href={{ pathname: '/' }}>Test</Link>);
+    renderApp(<Link href={{ pathname: '/' }}>Test</Link>, {});
 
     const link = screen.getByText('Test');
 
