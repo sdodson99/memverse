@@ -1,6 +1,8 @@
 import { useApplicationLogin } from '../use-application-login';
 import { useLogin } from '../use-login';
 import { useYouTubeLogin } from '../use-youtube-login';
+import { useFirebaseLogin } from '../use-firebase-login';
+import { when } from 'jest-when';
 
 jest.mock('../use-application-login');
 const mockUseApplicationLogin = useApplicationLogin as jest.Mock;
@@ -8,11 +10,16 @@ const mockUseApplicationLogin = useApplicationLogin as jest.Mock;
 jest.mock('../use-youtube-login');
 const mockUseYouTubeLogin = useYouTubeLogin as jest.Mock;
 
+jest.mock('../use-firebase-login');
+const mockUseFirebaseLogin = useFirebaseLogin as jest.Mock;
+
 describe('useLogin', () => {
   let mockApplicationLogin: jest.Mock;
   let mockYouTubeLogin: jest.Mock;
+  let mockFirebaseLogin: jest.Mock;
 
-  let accessToken: string;
+  let youTubeAccessToken: string;
+  let firebaseAccessToken: string;
 
   beforeEach(() => {
     mockApplicationLogin = jest.fn();
@@ -25,17 +32,26 @@ describe('useLogin', () => {
       login: mockYouTubeLogin,
     });
 
-    accessToken = 'access123';
+    mockFirebaseLogin = jest.fn();
+    mockUseFirebaseLogin.mockReturnValue({
+      login: mockFirebaseLogin,
+    });
+
+    youTubeAccessToken = 'youtubeaccess123';
+    firebaseAccessToken = 'firebaseaccess123';
   });
 
   describe('login', () => {
-    it('should login with YouTube access token', async () => {
-      mockYouTubeLogin.mockReturnValue(accessToken);
+    it('should login with custom Firebase token for YouTube user', async () => {
+      mockYouTubeLogin.mockReturnValue(youTubeAccessToken);
+      when(mockApplicationLogin)
+        .calledWith(youTubeAccessToken)
+        .mockReturnValue(firebaseAccessToken);
       const { login } = useLogin();
 
       await login();
 
-      expect(mockApplicationLogin).toBeCalledWith(accessToken);
+      expect(mockFirebaseLogin).toBeCalledWith(firebaseAccessToken);
     });
   });
 

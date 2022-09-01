@@ -1,6 +1,6 @@
 import { base } from './base';
 
-export const bulkmembers = {
+export const bulkMembers = {
   ...base,
   get: {
     ...base.get,

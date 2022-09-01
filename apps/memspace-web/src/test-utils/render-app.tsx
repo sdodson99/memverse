@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MockTagProvider } from '../hooks/use-mock-tag-context';
 import { useRouter } from 'next/router';
+import { FirebaseAuthProvider } from '../hooks/authentication/firebase-auth/firebase-auth-provider';
 
 const mockUseRouter = useRouter as jest.Mock;
 
@@ -16,15 +17,17 @@ type TestAppProps = {
 export const TestApp = ({ children }: TestAppProps) => {
   return (
     <MockTagProvider>
-      <RecoilRoot>
-        <ChakraProvider>
-          <AccessTokenProvider>
-            <QueryClientProvider client={new QueryClient()}>
-              {children}
-            </QueryClientProvider>
-          </AccessTokenProvider>
-        </ChakraProvider>
-      </RecoilRoot>
+      <FirebaseAuthProvider>
+        <RecoilRoot>
+          <ChakraProvider>
+            <AccessTokenProvider>
+              <QueryClientProvider client={new QueryClient()}>
+                {children}
+              </QueryClientProvider>
+            </AccessTokenProvider>
+          </ChakraProvider>
+        </RecoilRoot>
+      </FirebaseAuthProvider>
     </MockTagProvider>
   );
 };
@@ -53,7 +56,7 @@ export const renderApp = (
   render(<TestApp>{component}</TestApp>);
 };
 
-export const getTestApp = (appOptions: AppOptions = { mockTag: 'base' }) => {
+export const getTestApp = (appOptions?: AppOptions) => {
   setupApp(appOptions);
 
   return TestApp;

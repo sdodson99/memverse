@@ -47,8 +47,7 @@ export const base = {
     ) => {
       return {
         data: {
-          token: 'access-token',
-          expiresIn: 3600,
+          accessToken: 'mock-access-token',
         },
       };
     },

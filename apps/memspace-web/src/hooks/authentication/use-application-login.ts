@@ -1,10 +1,8 @@
-import axios from 'axios';
 import { useFetcher } from '../use-fetcher';
 import { useAccessTokenContext } from './use-access-token-context';
 
 type LoginResponse = {
-  token: string;
-  expiresIn: number;
+  accessToken: string;
 };
 
 export class NonMemberError extends Error {
@@ -16,8 +14,8 @@ export class NonMemberError extends Error {
 }
 
 export const useApplicationLogin = () => {
-  const { setAccessToken } = useAccessTokenContext();
   const fetcher = useFetcher();
+  const { setAccessToken } = useAccessTokenContext();
 
   const login = async (youTubeAccessToken: string) => {
     try {
@@ -28,12 +26,16 @@ export const useApplicationLogin = () => {
         }
       );
 
-      setAccessToken(data);
+      // TODO: Remove after Firebase migration
+      setAccessToken({
+        token: data.accessToken,
+        expiresIn: 3600,
+      });
+
+      return data.accessToken;
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 403) {
-          throw new NonMemberError();
-        }
+      if (error?.response?.status === 403) {
+        throw new NonMemberError();
       }
 
       throw error;

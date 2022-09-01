@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MockTagProvider } from '../hooks/use-mock-tag-context';
+import { FirebaseAuthProvider } from '../hooks/authentication/firebase-auth/firebase-auth-provider';
 
 const queryClient = new QueryClient();
 
@@ -17,20 +18,22 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <MockTagProvider>
       <FirebaseProvider>
-        <RecoilRoot>
-          <ChakraProvider>
-            <AccessTokenProvider>
-              <QueryClientProvider client={queryClient}>
-                <AccountProvider>
-                  <Head>
-                    <title>Memspace</title>
-                  </Head>
-                  <Component {...pageProps} />
-                </AccountProvider>
-              </QueryClientProvider>
-            </AccessTokenProvider>
-          </ChakraProvider>
-        </RecoilRoot>
+        <FirebaseAuthProvider>
+          <RecoilRoot>
+            <ChakraProvider>
+              <AccessTokenProvider>
+                <QueryClientProvider client={queryClient}>
+                  <AccountProvider>
+                    <Head>
+                      <title>Memspace</title>
+                    </Head>
+                    <Component {...pageProps} />
+                  </AccountProvider>
+                </QueryClientProvider>
+              </AccessTokenProvider>
+            </ChakraProvider>
+          </RecoilRoot>
+        </FirebaseAuthProvider>
       </FirebaseProvider>
     </MockTagProvider>
   );

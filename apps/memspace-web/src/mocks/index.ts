@@ -1,9 +1,11 @@
 import { AxiosResponse } from 'axios';
-import { base, bulkmembers } from './tags';
+import { base, bulkMembers, loginFailed, loginNonMember } from './tags';
 
 const MOCK_TAG_EXECUTOR_MAP: Record<string, typeof base> = {
   base,
-  bulkmembers,
+  bulkmembers: bulkMembers,
+  loginfailed: loginFailed,
+  loginnonmember: loginNonMember,
 };
 
 export const getMockExecutor = (mockTag: string) => {
