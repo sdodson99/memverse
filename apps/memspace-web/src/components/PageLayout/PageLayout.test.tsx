@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import PageLayout, { PageLayoutProps } from './PageLayout';
-import { AccessTokenProvider } from '../../hooks/authentication/use-access-token-context';
+import { renderApp } from '../../test-utils/render-app';
 
 describe('<PageLayout />', () => {
   let props: PageLayoutProps;
@@ -19,7 +19,7 @@ describe('<PageLayout />', () => {
   });
 
   it('should mount', () => {
-    render(<PageLayout {...props} />, { wrapper: AccessTokenProvider });
+    renderApp(<PageLayout {...props} />);
 
     const pageLayout = screen.getByTestId('PageLayout');
 
@@ -27,7 +27,7 @@ describe('<PageLayout />', () => {
   });
 
   it('should render content', () => {
-    render(<PageLayout {...props} />, { wrapper: AccessTokenProvider });
+    renderApp(<PageLayout {...props} />);
 
     const title = screen.getByText(props.title);
     const content = screen.getByText(children);

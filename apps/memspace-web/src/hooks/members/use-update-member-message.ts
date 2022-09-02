@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useAccessTokenContext } from '../authentication/use-access-token-context';
+import { useFirebaseAuthContext } from '../authentication/firebase-auth/use-firebase-auth-context';
 import { useFetcher } from '../use-fetcher';
 
 export const useUpdateMemberMessage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
-  const { token } = useAccessTokenContext();
+  const { getIdToken } = useFirebaseAuthContext();
   const fetcher = useFetcher();
 
   const execute = async (message: string) => {
@@ -14,6 +14,8 @@ export const useUpdateMemberMessage = () => {
     setError(null);
 
     try {
+      const token = await getIdToken();
+
       await fetcher.put(
         `${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/account/message`,
         {

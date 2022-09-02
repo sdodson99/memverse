@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Layout from './Layout';
-import { AccessTokenProvider } from '../../hooks/authentication/use-access-token-context';
+import { renderApp } from '../../test-utils/render-app';
 
 describe('<Layout />', () => {
   it('should mount', () => {
-    render(<Layout>Page</Layout>, { wrapper: AccessTokenProvider });
+    renderApp(<Layout>Page</Layout>);
 
     const layout = screen.getByTestId('Layout');
 
@@ -14,7 +14,7 @@ describe('<Layout />', () => {
   });
 
   it('should render children', () => {
-    render(<Layout>Page</Layout>, { wrapper: AccessTokenProvider });
+    renderApp(<Layout>Page</Layout>);
 
     const children = screen.getByText('Page');
 

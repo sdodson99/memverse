@@ -1,5 +1,4 @@
 import { useFetcher } from '../use-fetcher';
-import { useAccessTokenContext } from './use-access-token-context';
 
 type LoginResponse = {
   accessToken: string;
@@ -15,7 +14,6 @@ export class NonMemberError extends Error {
 
 export const useApplicationLogin = () => {
   const fetcher = useFetcher();
-  const { setAccessToken } = useAccessTokenContext();
 
   const login = async (youTubeAccessToken: string) => {
     try {
@@ -25,12 +23,6 @@ export const useApplicationLogin = () => {
           accessToken: youTubeAccessToken,
         }
       );
-
-      // TODO: Remove after Firebase migration
-      setAccessToken({
-        token: data.accessToken,
-        expiresIn: 3600,
-      });
 
       return data.accessToken;
     } catch (error) {

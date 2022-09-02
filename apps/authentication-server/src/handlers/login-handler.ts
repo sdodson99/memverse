@@ -55,6 +55,9 @@ export class LoginHandler {
 
     this.logger.info('Ensured user exists.', { channelId });
 
+    // Need to update member claim after login in case user became member after the
+    // daily CRON job executed. Also, need to update member claim for new and existing
+    // users in case existing user was previously a member long ago.
     await this.updateUserClaimsCommand.execute(channelId, {
       memberAsOf: Date.now(),
     });

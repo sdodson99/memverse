@@ -1,31 +1,31 @@
-import { useAccessTokenContext } from '../use-access-token-context';
+import { useFirebaseAuthContext } from '../firebase-auth/use-firebase-auth-context';
 import { useLogout } from '../use-logout';
 
-jest.mock('../use-access-token-context');
-const mockUseAccessTokenContext = useAccessTokenContext as jest.Mock;
+jest.mock('../firebase-auth/use-firebase-auth-context');
+const mockUseFirebaseAuthContext = useFirebaseAuthContext as jest.Mock;
 
 describe('useLogout', () => {
-  let mockClearAccessToken: jest.Mock;
+  let mockSignOut: jest.Mock;
 
   beforeEach(() => {
-    mockClearAccessToken = jest.fn();
+    mockSignOut = jest.fn();
 
-    mockUseAccessTokenContext.mockReturnValue({
-      clearAccessToken: mockClearAccessToken,
+    mockUseFirebaseAuthContext.mockReturnValue({
+      signOut: mockSignOut,
     });
   });
 
   afterEach(() => {
-    mockUseAccessTokenContext.mockReset();
+    mockUseFirebaseAuthContext.mockReset();
   });
 
   describe('logout', () => {
-    it('should clear access token', () => {
+    it('should sign out through Firebase', () => {
       const logout = useLogout();
 
       logout();
 
-      expect(mockClearAccessToken).toBeCalled();
+      expect(mockSignOut).toBeCalled();
     });
   });
 });

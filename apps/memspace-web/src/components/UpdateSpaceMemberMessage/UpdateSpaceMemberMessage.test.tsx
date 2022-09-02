@@ -10,7 +10,7 @@ import '@testing-library/jest-dom/extend-expect';
 import UpdateSpaceMemberMessage from './UpdateSpaceMemberMessage';
 import { useMemberMessage } from '../../hooks/members/use-member-message';
 import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
-import { useAccountContext } from '../../hooks/authentication/use-account-context';
+import { useFirebaseAuthContext } from '../../hooks/authentication/firebase-auth/use-firebase-auth-context';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 
 jest.mock('../../hooks/members/use-member-message');
@@ -19,15 +19,15 @@ const mockUseMemberMessage = useMemberMessage as jest.Mock;
 jest.mock('../../hooks/members/use-update-member-message');
 const mockUseUpdateMemberMessage = useUpdateMemberMessage as jest.Mock;
 
-jest.mock('../../hooks/authentication/use-account-context');
-const mockUseAccountContext = useAccountContext as jest.Mock;
+jest.mock('../../hooks/authentication/firebase-auth/use-firebase-auth-context');
+const mockUseFirebaseAuthContext = useFirebaseAuthContext as jest.Mock;
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
 describe('<UpdateSpaceMemberMessage />', () => {
   beforeEach(() => {
-    mockUseAccountContext.mockReturnValue({});
+    mockUseFirebaseAuthContext.mockReturnValue({});
     mockUseSpaceMembersContext.mockReturnValue({});
     mockUseMemberMessage.mockReturnValue({});
     mockUseUpdateMemberMessage.mockReturnValue({});
@@ -37,7 +37,7 @@ describe('<UpdateSpaceMemberMessage />', () => {
     mockUseMemberMessage.mockReset();
     mockUseUpdateMemberMessage.mockReset();
     mockUseSpaceMembersContext.mockReset();
-    mockUseAccountContext.mockReset();
+    mockUseFirebaseAuthContext.mockReset();
   });
 
   it('should mount', () => {
@@ -86,8 +86,8 @@ describe('<UpdateSpaceMemberMessage />', () => {
       mockUseUpdateMemberMessage.mockReturnValue({
         execute: mockExecuteUpdateMemberMessage,
       });
-      mockUseAccountContext.mockReturnValue({
-        account: {
+      mockUseFirebaseAuthContext.mockReturnValue({
+        currentUser: {
           id: '123',
         },
       });

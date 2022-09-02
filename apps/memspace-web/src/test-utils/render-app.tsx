@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { AccessTokenProvider } from '../hooks/authentication/use-access-token-context';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -20,11 +19,9 @@ export const TestApp = ({ children }: TestAppProps) => {
       <FirebaseAuthProvider>
         <RecoilRoot>
           <ChakraProvider>
-            <AccessTokenProvider>
-              <QueryClientProvider client={new QueryClient()}>
-                {children}
-              </QueryClientProvider>
-            </AccessTokenProvider>
+            <QueryClientProvider client={new QueryClient()}>
+              {children}
+            </QueryClientProvider>
           </ChakraProvider>
         </RecoilRoot>
       </FirebaseAuthProvider>

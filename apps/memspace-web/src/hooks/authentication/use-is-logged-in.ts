@@ -1,9 +1,7 @@
-import { useAccessTokenContext } from './use-access-token-context';
+import { useFirebaseAuthContext } from './firebase-auth/use-firebase-auth-context';
 
 export const useIsLoggedIn = () => {
-  const { hasToken, isExpired } = useAccessTokenContext();
+  const { currentUser } = useFirebaseAuthContext();
 
-  const isLoggedIn = hasToken && !isExpired();
-
-  return isLoggedIn;
+  return !!currentUser;
 };

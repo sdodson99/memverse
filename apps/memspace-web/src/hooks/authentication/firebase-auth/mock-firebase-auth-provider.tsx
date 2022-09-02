@@ -1,5 +1,9 @@
-import React, { ReactNode } from 'react';
-import { FirebaseAuthContext, FirebaseAuth } from './use-firebase-auth-context';
+import React, { ReactNode, useState } from 'react';
+import {
+  FirebaseAuthContext,
+  FirebaseAuth,
+  User,
+} from './use-firebase-auth-context';
 
 type MockFirebaseAuthProviderProps = {
   children?: ReactNode;
@@ -8,10 +12,18 @@ type MockFirebaseAuthProviderProps = {
 export const MockFirebaseAuthProvider = ({
   children,
 }: MockFirebaseAuthProviderProps) => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
   const mockFirebaseAuth: FirebaseAuth = {
-    signInWithCustomToken: async (_customToken: string) => {
-      return;
+    signInWithCustomToken: async (_customToken: string) =>
+      setCurrentUser({
+        id: '1',
+      }),
+    getIdToken: async () => 'mock-firebase-id-token',
+    signOut: async () => {
+      setCurrentUser(null);
     },
+    currentUser,
   };
 
   return (

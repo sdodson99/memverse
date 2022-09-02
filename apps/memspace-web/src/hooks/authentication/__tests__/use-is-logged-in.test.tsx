@@ -1,18 +1,19 @@
-import { useAccessTokenContext } from '../use-access-token-context';
 import { useIsLoggedIn } from '../use-is-logged-in';
+import { useFirebaseAuthContext } from '../firebase-auth/use-firebase-auth-context';
 
-jest.mock('../use-access-token-context');
-const mockUseAccessTokenContext = useAccessTokenContext as jest.Mock;
+jest.mock('../firebase-auth/use-firebase-auth-context');
+const mockUseFirebaseAuthContext = useFirebaseAuthContext as jest.Mock;
 
 describe('useIsLoggedIn', () => {
   afterEach(() => {
-    mockUseAccessTokenContext.mockReset();
+    mockUseFirebaseAuthContext.mockReset();
   });
 
-  it('should return true if user has non-expired token', () => {
-    mockUseAccessTokenContext.mockReturnValue({
-      hasToken: true,
-      isExpired: () => false,
+  it('should return true when current user exists', () => {
+    mockUseFirebaseAuthContext.mockReturnValue({
+      currentUser: {
+        id: '123',
+      },
     });
 
     const isLoggedIn = useIsLoggedIn();
@@ -20,21 +21,9 @@ describe('useIsLoggedIn', () => {
     expect(isLoggedIn).toBeTruthy();
   });
 
-  it('should return false if user has no token', () => {
-    mockUseAccessTokenContext.mockReturnValue({
-      hasToken: false,
-      isExpired: () => false,
-    });
-
-    const isLoggedIn = useIsLoggedIn();
-
-    expect(isLoggedIn).toBeFalsy();
-  });
-
-  it('should return false if user has expired token', () => {
-    mockUseAccessTokenContext.mockReturnValue({
-      hasToken: true,
-      isExpired: () => true,
+  it('should return false when current user does not exist', () => {
+    mockUseFirebaseAuthContext.mockReturnValue({
+      currentUser: null,
     });
 
     const isLoggedIn = useIsLoggedIn();

@@ -4,13 +4,13 @@ import '@testing-library/jest-dom/extend-expect';
 import UpdateSpaceMemberMessageSheet from './UpdateSpaceMemberMessageSheet';
 import { renderApp } from '../../test-utils/render-app';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
-import { useAccountContext } from '../../hooks/authentication/use-account-context';
+import { useFirebaseAuthContext } from '../../hooks/authentication/firebase-auth/use-firebase-auth-context';
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
-jest.mock('../../hooks/authentication/use-account-context');
-const mockUseAccountContext = useAccountContext as jest.Mock;
+jest.mock('../../hooks/authentication/firebase-auth/use-firebase-auth-context');
+const mockUseFirebaseAuthContext = useFirebaseAuthContext as jest.Mock;
 
 describe('<UpdateSpaceMemberMessageSheet />', () => {
   let mockUpdateSpaceMemberMessage: jest.Mock;
@@ -27,8 +27,9 @@ describe('<UpdateSpaceMemberMessageSheet />', () => {
     });
 
     memberId = '123';
-    mockUseAccountContext.mockReturnValue({
-      account: {
+    mockUseFirebaseAuthContext.mockReturnValue({
+      getIdToken: () => 'token123',
+      currentUser: {
         id: memberId,
       },
     });
@@ -36,7 +37,7 @@ describe('<UpdateSpaceMemberMessageSheet />', () => {
 
   afterEach(() => {
     mockUseSpaceMembersContext.mockReset();
-    mockUseAccountContext.mockReset();
+    mockUseFirebaseAuthContext.mockReset();
   });
 
   it('should mount', () => {

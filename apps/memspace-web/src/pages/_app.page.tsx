@@ -2,10 +2,8 @@ import '../styles/globals.css';
 import 'react-spring-bottom-sheet/dist/style.css';
 import React from 'react';
 import type { AppProps, NextWebVitalsMetric } from 'next/app';
-import { AccessTokenProvider } from '../hooks/authentication/use-access-token-context';
 import Head from 'next/head';
 import { FirebaseProvider } from '../hooks/use-firebase-context';
-import { AccountProvider } from '../hooks/authentication/use-account-context';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -21,16 +19,12 @@ function App({ Component, pageProps }: AppProps) {
         <FirebaseAuthProvider>
           <RecoilRoot>
             <ChakraProvider>
-              <AccessTokenProvider>
-                <QueryClientProvider client={queryClient}>
-                  <AccountProvider>
-                    <Head>
-                      <title>Memspace</title>
-                    </Head>
-                    <Component {...pageProps} />
-                  </AccountProvider>
-                </QueryClientProvider>
-              </AccessTokenProvider>
+              <QueryClientProvider client={queryClient}>
+                <Head>
+                  <title>Memspace</title>
+                </Head>
+                <Component {...pageProps} />
+              </QueryClientProvider>
             </ChakraProvider>
           </RecoilRoot>
         </FirebaseAuthProvider>

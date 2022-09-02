@@ -1,10 +1,10 @@
-import { useAccessTokenContext } from './use-access-token-context';
+import { useFirebaseAuthContext } from './firebase-auth/use-firebase-auth-context';
 
 export const useLogout = () => {
-  const { clearAccessToken } = useAccessTokenContext();
+  const { signOut } = useFirebaseAuthContext();
 
   const logout = () => {
-    clearAccessToken();
+    return signOut();
   };
 
   return logout;

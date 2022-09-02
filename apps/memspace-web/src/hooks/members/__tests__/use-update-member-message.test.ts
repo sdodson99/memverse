@@ -1,12 +1,12 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { useAccessTokenContext } from '../../authentication/use-access-token-context';
+import { useFirebaseAuthContext } from '../../authentication/firebase-auth/use-firebase-auth-context';
 import axios from 'axios';
 import { when } from 'jest-when';
 import { waitFor } from '@testing-library/react';
 import { useUpdateMemberMessage } from '../use-update-member-message';
 
-jest.mock('../../authentication/use-access-token-context');
-const mockUseAccessTokenContext = useAccessTokenContext as jest.Mock;
+jest.mock('../../authentication/firebase-auth/use-firebase-auth-context');
+const mockUseFirebaseAuthContext = useFirebaseAuthContext as jest.Mock;
 
 jest.mock('axios');
 const mockAxiosPut = axios.put as jest.Mock;
@@ -18,13 +18,15 @@ describe('useUpdateMemberMessage', () => {
 
   beforeEach(() => {
     token = '123';
-    mockUseAccessTokenContext.mockReturnValue({ token });
+    mockUseFirebaseAuthContext.mockReturnValue({
+      getIdToken: async () => token,
+    });
 
     message = 'message';
   });
 
   afterEach(() => {
-    mockUseAccessTokenContext.mockReset();
+    mockUseFirebaseAuthContext.mockReset();
     mockAxiosPut.mockReset();
   });
 

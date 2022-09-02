@@ -4,7 +4,6 @@ import '@testing-library/jest-dom/extend-expect';
 import SpaceToolbar from './SpaceToolbar';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 import { useIsLoggedIn } from '../../hooks/authentication/use-is-logged-in';
-import { useAccountContext } from '../../hooks/authentication/use-account-context';
 import { renderApp } from '../../test-utils/render-app';
 import { usePaperScope } from '../../hooks/space/use-paper-scope';
 
@@ -13,9 +12,6 @@ const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
 
 jest.mock('../../hooks/authentication/use-is-logged-in');
 const mockUseIsLoggedIn = useIsLoggedIn as jest.Mock;
-
-jest.mock('../../hooks/authentication/use-account-context');
-const mockUseAccountContext = useAccountContext as jest.Mock;
 
 jest.mock('../../hooks/space/use-paper-scope');
 const mockUsePaperScope = usePaperScope as jest.Mock;
@@ -30,13 +26,11 @@ describe('<SpaceToolbar />', () => {
       shuffleSpaceMembers: mockShuffleSpaceMembers,
     });
 
-    mockUseAccountContext.mockReturnValue({});
     mockUsePaperScope.mockReturnValue([]);
   });
 
   afterEach(() => {
     mockUseSpaceMembersContext.mockReset();
-    mockUseAccountContext.mockReset();
     mockUseIsLoggedIn.mockReset();
     mockUsePaperScope.mockReset();
   });

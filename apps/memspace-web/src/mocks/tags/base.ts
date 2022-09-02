@@ -26,16 +26,10 @@ export const base = {
           },
         ],
       }),
-    [`${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/account`]:
-      async () => ({
-        data: {
-          id: '1',
-        },
-      }),
     [`${process.env.NEXT_PUBLIC_MEMSPACE_SERVER_BASE_URL}/account/message`]:
       async () => ({
         data: {
-          content: 'Hello world!',
+          content: '',
         },
       }),
   },

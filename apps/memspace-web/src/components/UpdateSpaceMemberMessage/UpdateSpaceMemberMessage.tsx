@@ -5,10 +5,10 @@ import styles from './UpdateSpaceMemberMessage.module.css';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMemberMessage } from '../../hooks/members/use-member-message';
 import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
-import { useAccountContext } from '../../hooks/authentication/use-account-context';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { Button } from '@chakra-ui/react';
+import { useFirebaseAuthContext } from '../../hooks/authentication/firebase-auth/use-firebase-auth-context';
 
 type UpdateSpaceMemberMessageProps = {
   onSuccess?: (memberId: string) => void;
@@ -22,7 +22,7 @@ const UpdateSpaceMemberMessage = ({
   onSuccess,
 }: UpdateSpaceMemberMessageProps) => {
   const { message, loading, error: loadError } = useMemberMessage();
-  const { account } = useAccountContext();
+  const { currentUser } = useFirebaseAuthContext();
 
   const { execute: executeUpdateMemberMessage, error: submitError } =
     useUpdateMemberMessage();
@@ -56,8 +56,8 @@ const UpdateSpaceMemberMessage = ({
       return;
     }
 
-    if (account) {
-      const { id } = account;
+    if (currentUser) {
+      const { id } = currentUser;
 
       updateSpaceMemberMessage(id, message);
 
