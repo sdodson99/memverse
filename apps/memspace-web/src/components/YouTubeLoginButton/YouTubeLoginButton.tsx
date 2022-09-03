@@ -11,8 +11,10 @@ const YouTubeLoginButton = ({ onClick }: YouTubeLoginButtonProps) => (
     data-testid="YouTubeLoginButton"
     onClick={onClick}
   >
-    <span>Login with</span>
-    <img className={styles.logo} src="/youtube-text.png" alt="YouTube" />
+    <div className={styles.label}>Login with</div>
+    <div>
+      <img className={styles.logo} src="/youtube-text.png" alt="YouTube" />
+    </div>
   </button>
 );
 

@@ -12,7 +12,10 @@
   color: white;
 }
 
+.label {
+  margin-right: 0.4rem;
+}
+
 .logo {
-  margin-left: 0.4rem;
   height: 25px;
 }
