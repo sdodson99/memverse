@@ -1,4 +1,5 @@
 import { useFetcher } from '../use-fetcher';
+import axios from 'axios';
 
 type LoginResponse = {
   accessToken: string;
@@ -26,8 +27,10 @@ export const useApplicationLogin = () => {
 
       return data.accessToken;
     } catch (error) {
-      if (error?.response?.status === 403) {
-        throw new NonMemberError();
+      if (axios.isAxiosError(error)) {
+        if (error?.response?.status === 403) {
+          throw new NonMemberError();
+        }
       }
 
       throw error;

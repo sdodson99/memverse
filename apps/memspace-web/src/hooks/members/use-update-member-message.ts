@@ -4,7 +4,7 @@ import { useFetcher } from '../use-fetcher';
 
 export const useUpdateMemberMessage = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<unknown>(null);
 
   const { getIdToken } = useFirebaseAuthContext();
   const fetcher = useFetcher();

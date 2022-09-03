@@ -11,6 +11,7 @@ export const loginNonMember = {
     ) => {
       // eslint-disable-next-line no-throw-literal
       throw {
+        isAxiosError: true,
         response: {
           status: 403,
         },
