@@ -9,6 +9,7 @@ import { useSpaceMembersContext } from '../../hooks/space/use-space-members-cont
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { Button } from '@chakra-ui/react';
 import { useFirebaseAuthContext } from '../../hooks/authentication/firebase-auth/use-firebase-auth-context';
+import { useHandleAuthenticationErrorEffect } from '../../hooks/authentication/use-handle-authentication-error-effect';
 
 type UpdateSpaceMemberMessageProps = {
   onSuccess?: (memberId: string) => void;
@@ -44,6 +45,9 @@ const UpdateSpaceMemberMessage = ({
       setValue('message', message);
     }
   }, [message, loading, loadError, setValue]);
+
+  useHandleAuthenticationErrorEffect(loadError);
+  useHandleAuthenticationErrorEffect(submitError);
 
   const onSubmit: SubmitHandler<UpdateSpaceMemberMessageFieldVaues> = async (
     data

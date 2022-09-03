@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import {
   FirebaseAuthContext,
   FirebaseAuth,
@@ -49,11 +49,11 @@ export const RealFirebaseAuthProvider = ({
     return getIdTokenBase(currentUser);
   };
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     const auth = getAuth();
 
     await signOutBase(auth);
-  };
+  }, []);
 
   const toUser = (firebaseUser: FirebaseUser | null): User | null => {
     if (!firebaseUser) {

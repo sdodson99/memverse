@@ -6,6 +6,7 @@ import {
   loginNonMember,
   existingMemberMessage,
   getMemberMessageFailed,
+  getMemberMessageUnauthorized,
 } from './tags';
 
 const MOCK_TAG_EXECUTOR_MAP: Record<string, typeof base> = {
@@ -15,6 +16,7 @@ const MOCK_TAG_EXECUTOR_MAP: Record<string, typeof base> = {
   loginnonmember: loginNonMember,
   existingmembermessage: existingMemberMessage,
   getmembermessagefailed: getMemberMessageFailed,
+  getmembermessageunauthorized: getMemberMessageUnauthorized,
 };
 
 export const getMockExecutor = (mockTag: string) => {

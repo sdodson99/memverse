@@ -12,6 +12,7 @@ import { useMemberMessage } from '../../hooks/members/use-member-message';
 import { useUpdateMemberMessage } from '../../hooks/members/use-update-member-message';
 import { useFirebaseAuthContext } from '../../hooks/authentication/firebase-auth/use-firebase-auth-context';
 import { useSpaceMembersContext } from '../../hooks/space/use-space-members-context';
+import { useHandleAuthenticationErrorEffect } from '../../hooks/authentication/use-handle-authentication-error-effect';
 
 jest.mock('../../hooks/members/use-member-message');
 const mockUseMemberMessage = useMemberMessage as jest.Mock;
@@ -24,6 +25,10 @@ const mockUseFirebaseAuthContext = useFirebaseAuthContext as jest.Mock;
 
 jest.mock('../../hooks/space/use-space-members-context');
 const mockUseSpaceMembersContext = useSpaceMembersContext as jest.Mock;
+
+jest.mock('../../hooks/authentication/use-handle-authentication-error-effect');
+const mockUseHandleAuthenticationErrorEffect =
+  useHandleAuthenticationErrorEffect as jest.Mock;
 
 describe('<UpdateSpaceMemberMessage />', () => {
   beforeEach(() => {
@@ -38,6 +43,7 @@ describe('<UpdateSpaceMemberMessage />', () => {
     mockUseUpdateMemberMessage.mockReset();
     mockUseSpaceMembersContext.mockReset();
     mockUseFirebaseAuthContext.mockReset();
+    mockUseHandleAuthenticationErrorEffect.mockReset();
   });
 
   it('should mount', () => {
@@ -67,6 +73,24 @@ describe('<UpdateSpaceMemberMessage />', () => {
     const initializeMessageTextInput = screen.getByDisplayValue(message);
 
     expect(initializeMessageTextInput).toBeInTheDocument();
+  });
+
+  it('should handle member message query authentication errors', () => {
+    const error = 'hello world';
+    mockUseMemberMessage.mockReturnValue({ error });
+
+    render(<UpdateSpaceMemberMessage />);
+
+    expect(mockUseHandleAuthenticationErrorEffect).toBeCalledWith(error);
+  });
+
+  it('should handle member message update authentication errors', () => {
+    const error = 'hello world';
+    mockUseUpdateMemberMessage.mockReturnValue({ error });
+
+    render(<UpdateSpaceMemberMessage />);
+
+    expect(mockUseHandleAuthenticationErrorEffect).toBeCalledWith(error);
   });
 
   describe('on submit', () => {
