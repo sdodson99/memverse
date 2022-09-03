@@ -112,7 +112,7 @@ const SpaceMemberListingItem = ({
                 rel="noreferrer"
                 className={styles.channelLink}
               >
-                <ExternalLinkIcon aria-label="Go to channel" />
+                <ExternalLinkIcon aria-label={`Go to ${username} channel`} />
               </a>
             </Flex>
 

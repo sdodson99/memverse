@@ -1,3 +1,4 @@
+import { Link } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { NonMemberError } from '../../hooks/authentication/use-application-login';
 import { useLogin } from '../../hooks/authentication/use-login';
@@ -42,13 +43,14 @@ const Login = ({}: LoginProps) => {
       <div className={styles.description}>
         Use a YouTube account to login to Memspace. You <strong>must</strong> be
         a{' '}
-        <a
+        <Link
           href="https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg/join"
           target="_blank"
           rel="noreferrer"
+          color="blue"
         >
           SingletonSean YouTube member
-        </a>{' '}
+        </Link>{' '}
         in order to successfully login.
       </div>
 
