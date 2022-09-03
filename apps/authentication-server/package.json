@@ -21,7 +21,7 @@
     "test:watch": "jest --watch",
     "test:cover": "jest --coverage",
     "test:ci": "jest --ci --coverage",
-    "deploy": "firebase deploy --only functions:authenticationApi",
+    "deploy": "firebase deploy --only functions:authenticationApi,functions:updateMemberClaimsJobFunction",
     "logs": "firebase functions:log"
   },
   "author": "Sean Dodson",
