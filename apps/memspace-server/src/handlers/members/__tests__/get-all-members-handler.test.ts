@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { AllMembersQuery } from '../../../services/all-members';
 import { GetAllMembersHandler } from '../get-all-members-handler';
+import functions from 'firebase-functions';
 
 describe('GetAllMembersHandler', () => {
   let handler: GetAllMembersHandler;
@@ -16,7 +17,7 @@ describe('GetAllMembersHandler', () => {
       execute: mockAllMembersQueryExecute,
     } as unknown as AllMembersQuery;
 
-    handler = new GetAllMembersHandler(allMembersQuery);
+    handler = new GetAllMembersHandler(allMembersQuery, functions.logger);
 
     req = {} as Request;
     res = {

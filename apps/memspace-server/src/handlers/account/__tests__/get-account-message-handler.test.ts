@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import functions from 'firebase-functions';
 import { when } from 'jest-when';
 import { MessageByMemberIdQuery } from '../../../services/message-by-member-id';
 import { GetAccountMessageHandler } from '../get-account-message-handler';
@@ -17,7 +18,10 @@ describe('GetAccountMessageHandler', () => {
       execute: mockMessageByMemberIdQueryExecute,
     } as unknown as MessageByMemberIdQuery;
 
-    handler = new GetAccountMessageHandler(messageByMemberIdQuery);
+    handler = new GetAccountMessageHandler(
+      messageByMemberIdQuery,
+      functions.logger
+    );
 
     req = {} as Request;
     res = {

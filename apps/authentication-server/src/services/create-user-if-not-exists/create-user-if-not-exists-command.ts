@@ -18,6 +18,7 @@ export class CreateUserIfNotExistsCommand {
     const userAlreadyExists = await this.userAlreadyExists(uid);
 
     if (userAlreadyExists) {
+      this.logger.info('Skipping user creation. User already exists.', { uid });
       return;
     }
 

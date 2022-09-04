@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import functions from 'firebase-functions';
 import { SaveMessageCommand } from '../../../services/save-message';
 import { UpdateAccountMessageHandler } from '../update-account-message-handler';
 
@@ -16,7 +17,10 @@ describe('UpdateAccountMessageHandler', () => {
       execute: mockSaveMessageCommandExecute,
     } as unknown as SaveMessageCommand;
 
-    handler = new UpdateAccountMessageHandler(saveMessageCommand);
+    handler = new UpdateAccountMessageHandler(
+      saveMessageCommand,
+      functions.logger
+    );
 
     req = {} as Request;
     res = {

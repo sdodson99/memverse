@@ -20,6 +20,7 @@ export const createServiceProvider = (): ServiceProvider => {
   const firebaseConfig = functions.config();
   const youTubeStudioConfig = firebaseConfig.youtube_studio;
   const firebaseApp = admin.app();
+  const logger = functions.logger;
 
   const messageByMemberIdQuery = new MessageByMemberIdQuery(
     firebaseApp,
@@ -44,12 +45,17 @@ export const createServiceProvider = (): ServiceProvider => {
     manyMessagesByMemberIdsQuery
   );
 
-  const getAllMembersHandler = new GetAllMembersHandler(allMembersQuery);
+  const getAllMembersHandler = new GetAllMembersHandler(
+    allMembersQuery,
+    logger
+  );
   const getAccountMessageHandler = new GetAccountMessageHandler(
-    messageByMemberIdQuery
+    messageByMemberIdQuery,
+    logger
   );
   const updateAccountMessageHandler = new UpdateAccountMessageHandler(
-    saveMessageCommand
+    saveMessageCommand,
+    logger
   );
 
   return {
