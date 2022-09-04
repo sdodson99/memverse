@@ -36,15 +36,6 @@ describe('useYouTubeLogin', () => {
 
       expect(actualAccessToken).toBe(accessToken);
     });
-
-    it('should throw error when no access token returned', async () => {
-      mockClient.requestAccessToken = () => {
-        mockClient.callback?.({} as GoogleTokenClientCallbackResponse);
-      };
-      const { login } = useYouTubeLogin();
-
-      await expect(async () => await login()).rejects.toThrow();
-    });
   });
 
   describe('isInitializing', () => {

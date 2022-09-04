@@ -67,13 +67,14 @@ const Login = ({}: LoginProps) => {
             >
               <ErrorMessage>
                 You are not a SingletonSean YouTube member.{' '}
-                <a
+                <Link
                   href="https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg/join"
                   target="_blank"
                   rel="noreferrer"
+                  color="blue"
                 >
                   Become a member
-                </a>{' '}
+                </Link>{' '}
                 in order to login.
               </ErrorMessage>
             </div>

@@ -9,15 +9,18 @@ export const useYouTubeLogin = () => {
     }
 
     return new Promise<string>((resolve, reject) => {
-      client.callback = (response) => {
-        if (!response.access_token) {
-          return reject(
-            new Error('No access token returned from Google Auth.')
-          );
-        }
-
-        return resolve(response.access_token);
+      const focusEventHandler = () => {
+        reject(new Error('client_focused_back_to_window'));
+        window.removeEventListener('focus', focusEventHandler);
       };
+
+      // When user focuses our application, cancel the login flow and throw an error.
+      // This will handle cases where the user closes out of the login flow.
+      // Without this functionality, the login flow would never finish and we could
+      // infinitely show a loading spinner on the UI.
+      window.addEventListener('focus', focusEventHandler);
+
+      client.callback = (response) => resolve(response.access_token);
 
       client.requestAccessToken();
     });
