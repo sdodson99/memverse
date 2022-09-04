@@ -10,7 +10,7 @@
     "esModuleInterop": true
   },
   "compileOnSave": true,
-  "include": ["src"],
+  "include": ["."],
   "typeAcquisition": {
     "include": ["jest"]
   }
