@@ -11,6 +11,7 @@ Website: https://memverse.web.app
 - [Applications](#applications)
 - [Tech Stack](#tech-stack)
 - [How to Run Locally](#how-to-run-locally)
+  - [Prerequisites](#prerequisites)
   - [Authentication Server](#authentication-server)
   - [Memspace Server](#memspace-server)
   - [Memspace Web](#memspace-web)
@@ -32,9 +33,17 @@ More applications are on the way!
 
 - Next.js
 - Express
-- Firebase (Functions, Realtime Database, Hosting)
+- Firebase (Functions, Realtime Database, Authentication, Hosting)
 
 # How to Run Locally
+
+## Prerequisites
+
+1. Start Firebase emulators. It is recommended to run against Firebase emulators in order to prevent impacting production data.
+
+```
+npm run emulators
+```
 
 ## Authentication Server
 
@@ -44,7 +53,7 @@ More applications are on the way!
 cd apps/authentication-server
 ```
 
-2. Install packages
+2. Install packages.
 
 ```
 npm install
@@ -60,15 +69,11 @@ npm install
     "cookie_header": "<COOKE HEADER FROM YOUTUBE STUDIO REQUEST>",
     "authorization_header": "<AUTHORIZATION HEADER FROM YOUTUBE STUDIO REQUEST>",
     "user_behalf_id": "<ON BEHALF OF USER FROM YOUTUBE STUDIO REQUEST>"
-  },
-  "access_token": {
-    "secret_key": "<SECRET SIGNING KEY>",
-    "expires_in": "<SECONDS TO EXPIRE>"
   }
 }
 ```
 
-4. Start the application
+4. Start the application.
 
 ```
 npm run dev
@@ -82,7 +87,7 @@ npm run dev
 cd apps/memspace-server
 ```
 
-2. Install packages
+2. Install packages.
 
 ```
 npm install
@@ -98,14 +103,11 @@ npm install
     "cookie_header": "<COOKE HEADER FROM YOUTUBE STUDIO REQUEST>",
     "authorization_header": "<AUTHORIZATION HEADER FROM YOUTUBE STUDIO REQUEST>",
     "user_behalf_id": "<ON BEHALF OF USER FROM YOUTUBE STUDIO REQUEST>"
-  },
-  "access_token": {
-    "secret_key": "<SECRET SIGNING KEY>"
   }
 }
 ```
 
-4. Start the application
+4. Start the application.
 
 ```
 npm run dev
@@ -113,15 +115,21 @@ npm run dev
 
 ## Memspace Web
 
-1. Run [Authentication Server](#authentication-server) and [Memspace Server](#memspace-server)
+1. Ensure the [Authentication Server](#authentication-server) and [Memspace Server](#memspace-server) are running locally.
 
-2. Install packages
+2. Change directory to "apps/memspace-web".
+
+```
+cd apps/memspace-web
+```
+
+2. Install packages.
 
 ```
 npm install
 ```
 
-3. Start the application
+3. Start the application.
 
 ```
 npm run dev
