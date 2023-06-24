@@ -1,3 +1,11 @@
+import { MembersStage } from '@/features/view-members';
+
 export default function Home() {
-  return <main>Hello world!</main>;
+  return (
+    <div>
+      <main>
+        <MembersStage />
+      </main>
+    </div>
+  );
 }
