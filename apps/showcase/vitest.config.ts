@@ -15,8 +15,9 @@ export default defineConfig({
     css: true,
     include: ['./src/**/*.test.[jt]s?(x)'],
     setupFiles: [
-        './test/integration/mock-server-only.ts',
-        './test/integration/mock-youtube-member-querier.ts'
+      './test/integration/mock-server-only.ts',
+      './test/integration/mock-youtube-member-querier.ts',
+      './test/integration/mock-pixi.tsx',
     ],
   },
 });

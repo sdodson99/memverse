@@ -1,10 +1,18 @@
-import { MembersStage } from '@/features/view-members';
+import {
+  MembersProvider,
+  MembersStage,
+  getAllMembers,
+} from '@/features/view-members';
 
-export default function Home() {
+export default async function Home() {
+  const members = await getAllMembers();
+
   return (
     <div>
       <main>
-        <MembersStage />
+        <MembersProvider members={members}>
+          <MembersStage />
+        </MembersProvider>
       </main>
     </div>
   );
