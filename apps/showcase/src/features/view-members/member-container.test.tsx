@@ -3,6 +3,7 @@ import {
   MEMBER_SPRITE_LENGTH_HALF,
   MemberContainer,
   MemberContainerProps,
+  MemberPosition,
 } from './member-container';
 import '@testing-library/jest-dom';
 import { generateRandom } from '@/shared/math';
@@ -20,8 +21,7 @@ const mockGenerateRandom = generateRandom as Mock;
 describe('<MemberContainer />', () => {
   let props: MemberContainerProps;
 
-  let initialX: number;
-  let initialY: number;
+  let initialMemberPosition: MemberPosition;
 
   beforeEach(() => {
     props = {
@@ -32,24 +32,27 @@ describe('<MemberContainer />', () => {
       },
     };
 
-    initialX = 100;
-    initialY = 200;
+    initialMemberPosition = {
+      x: 100,
+      y: 200,
+      directionRadians: Math.PI / 3,
+    };
 
     when(mockGenerateRandom)
       .calledWith(
         mockApp.screen.left + MEMBER_SPRITE_LENGTH_HALF,
         mockApp.screen.right - MEMBER_SPRITE_LENGTH_HALF
       )
-      .mockReturnValue(initialX);
+      .mockImplementation(() => initialMemberPosition.x);
     when(mockGenerateRandom)
       .calledWith(
         mockApp.screen.top + MEMBER_SPRITE_LENGTH_HALF,
         mockApp.screen.bottom - MEMBER_SPRITE_LENGTH_HALF
       )
-      .mockReturnValue(initialY);
+      .mockImplementation(() => initialMemberPosition.y);
     when(mockGenerateRandom)
       .calledWith(0, 2 * Math.PI)
-      .mockReturnValue(Math.PI / 3);
+      .mockImplementation(() => initialMemberPosition.directionRadians);
   });
 
   afterEach(() => {
@@ -68,7 +71,7 @@ describe('<MemberContainer />', () => {
     expect(screen.getByAltText('photo-url-1')).toBeInTheDocument();
   });
 
-  it('initially positions member within stage', () => {
+  it('initially positions within stage', () => {
     render(<MemberContainer {...props} />);
 
     const memberContainerData = JSON.parse(
@@ -79,7 +82,7 @@ describe('<MemberContainer />', () => {
     expect(memberContainerData.y).toBe(200);
   });
 
-  it('moves member within stage over time', () => {
+  it('moves across stage over time', () => {
     render(<MemberContainer {...props} />);
 
     act(() => executeMockTick(100));
@@ -90,5 +93,81 @@ describe('<MemberContainer />', () => {
 
     expect(memberContainerData.x).toBe(125);
     expect(memberContainerData.y).toBeCloseTo(243.301);
+  });
+
+  it('stays within left wall', () => {
+    initialMemberPosition = {
+      x: 500,
+      y: 250,
+      directionRadians: (5 * Math.PI) / 6,
+    };
+    render(<MemberContainer {...props} />);
+
+    act(() => executeMockTick(5000));
+
+    const memberContainerData = JSON.parse(
+      screen.getByTestId('member-container-1')?.textContent ?? ''
+    );
+
+    expect(memberContainerData.x).toBe(
+      mockApp.screen.left + MEMBER_SPRITE_LENGTH_HALF
+    );
+  });
+
+  it('stays within right wall', () => {
+    initialMemberPosition = {
+      x: 500,
+      y: 250,
+      directionRadians: Math.PI / 6,
+    };
+    render(<MemberContainer {...props} />);
+
+    act(() => executeMockTick(5000));
+
+    const memberContainerData = JSON.parse(
+      screen.getByTestId('member-container-1')?.textContent ?? ''
+    );
+
+    expect(memberContainerData.x).toBe(
+      mockApp.screen.right - MEMBER_SPRITE_LENGTH_HALF
+    );
+  });
+
+  it('stays within top wall', () => {
+    initialMemberPosition = {
+      x: 500,
+      y: 250,
+      directionRadians: Math.PI / 3,
+    };
+    render(<MemberContainer {...props} />);
+
+    act(() => executeMockTick(5000));
+
+    const memberContainerData = JSON.parse(
+      screen.getByTestId('member-container-1')?.textContent ?? ''
+    );
+
+    expect(memberContainerData.y).toBe(
+      mockApp.screen.bottom - MEMBER_SPRITE_LENGTH_HALF
+    );
+  });
+
+  it('stays within bottom wall', () => {
+    initialMemberPosition = {
+      x: 500,
+      y: 250,
+      directionRadians: (5 * Math.PI) / 3,
+    };
+    render(<MemberContainer {...props} />);
+
+    act(() => executeMockTick(5000));
+
+    const memberContainerData = JSON.parse(
+      screen.getByTestId('member-container-1')?.textContent ?? ''
+    );
+
+    expect(memberContainerData.y).toBe(
+      mockApp.screen.top + MEMBER_SPRITE_LENGTH_HALF
+    );
   });
 });

@@ -16,41 +16,78 @@ export type MemberContainerProps = {
   member: YouTubeMember;
 };
 
+export type MemberPosition = {
+  x: number;
+  y: number;
+  directionRadians: number;
+};
+
 export function MemberContainer({ member }: MemberContainerProps) {
   const { screen } = useApp();
   const { top, bottom, left, right } = screen;
 
-  const [x, setX] = useState(
-    generateRandom(
+  const [position, setPosition] = useState<MemberPosition>({
+    x: generateRandom(
       left + MEMBER_SPRITE_LENGTH_HALF,
       right - MEMBER_SPRITE_LENGTH_HALF
-    )
-  );
-  const [y, setY] = useState(
-    generateRandom(
+    ),
+    y: generateRandom(
       top + MEMBER_SPRITE_LENGTH_HALF,
       bottom - MEMBER_SPRITE_LENGTH_HALF
-    )
-  );
-  const [directionRadians, setDirectionRadians] = useState(
-    generateRandom(0, 2 * Math.PI)
-  );
+    ),
+    directionRadians: generateRandom(0, 2 * Math.PI),
+  });
 
   useTick((deltaMilliseconds) => {
-    const pixelsTravelled =
-      MEMBER_SPEED_PIXELS_PER_MILLISECOND * deltaMilliseconds;
+    setPosition((currentPosition) => {
+      const pixelsTravelled =
+        MEMBER_SPEED_PIXELS_PER_MILLISECOND * deltaMilliseconds;
 
-    const xPixelsTravelled = Math.cos(directionRadians) * pixelsTravelled;
-    const yPixelsTravelled = Math.sin(directionRadians) * pixelsTravelled;
+      const xPixelsTravelled =
+        Math.cos(currentPosition.directionRadians) * pixelsTravelled;
+      const yPixelsTravelled =
+        Math.sin(currentPosition.directionRadians) * pixelsTravelled;
 
-    setX((x) => x + xPixelsTravelled);
-    setY((y) => y + yPixelsTravelled);
+      let nextX = currentPosition.x + xPixelsTravelled;
+      let nextY = currentPosition.y + yPixelsTravelled;
+      let nextDirectionRadians = currentPosition.directionRadians;
+
+      if (nextX > right - MEMBER_SPRITE_LENGTH_HALF) {
+        nextDirectionRadians = Math.PI - nextDirectionRadians;
+        nextX = right - MEMBER_SPRITE_LENGTH_HALF;
+      }
+
+      if (nextX < left + MEMBER_SPRITE_LENGTH_HALF) {
+        nextDirectionRadians = Math.PI - nextDirectionRadians;
+        nextX = left + MEMBER_SPRITE_LENGTH_HALF;
+      }
+
+      if (nextY > bottom - MEMBER_SPRITE_LENGTH_HALF) {
+        nextDirectionRadians = 2 * Math.PI - nextDirectionRadians;
+        nextY = bottom - MEMBER_SPRITE_LENGTH_HALF;
+      }
+
+      if (nextY < top + MEMBER_SPRITE_LENGTH_HALF) {
+        nextDirectionRadians = 2 * Math.PI - nextDirectionRadians;
+        nextY = top + MEMBER_SPRITE_LENGTH_HALF;
+      }
+
+      return {
+        x: nextX,
+        y: nextY,
+        directionRadians: nextDirectionRadians,
+      };
+    });
   });
 
   const { channelId, username, photoUrl } = member;
 
   return (
-    <Container x={x} y={y} data-testid={`member-container-${channelId}`}>
+    <Container
+      x={position.x}
+      y={position.y}
+      data-testid={`member-container-${channelId}`}
+    >
       <Text
         text={username}
         style={
