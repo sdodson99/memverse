@@ -1,6 +1,6 @@
 import {
   MembersProvider,
-  MembersStage,
+  MembersApplicationBootstrapper,
   getAllMembers,
 } from '@/features/view-members';
 
@@ -11,7 +11,7 @@ export default async function Home() {
     <div>
       <main>
         <MembersProvider members={members}>
-          <MembersStage />
+          <MembersApplicationBootstrapper />
         </MembersProvider>
       </main>
     </div>

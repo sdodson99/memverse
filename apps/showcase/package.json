@@ -6,13 +6,13 @@
     "dev": "next dev",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier -w ./src"
   },
   "dependencies": {
-    "@pixi/react": "^7.1.0",
     "@types/node": "20.3.1",
     "@types/react": "18.2.13",
     "@types/react-dom": "18.2.6",
@@ -34,6 +34,7 @@
     "@types/jest-when": "^3.5.2",
     "@types/testing-library__jest-dom": "^5.14.6",
     "@vitejs/plugin-react": "^4.0.1",
+    "@vitest/coverage-v8": "^0.32.2",
     "eslint-config-next": "13.4.7",
     "eslint-config-prettier": "^8.8.0",
     "jest-when": "^3.5.2",
