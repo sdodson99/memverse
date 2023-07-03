@@ -8,6 +8,7 @@ import { generateRandom } from '@/shared/math';
 import { Mock } from 'vitest';
 import { when } from 'jest-when';
 import { MEMBER_SPRITE_LENGTH_HALF } from '@/features/view-members/member-container';
+import { NextPageRequest } from '@/shared/http';
 
 vi.mock('@/shared/math', () => ({
   ...vi.importActual('@/shared/math'),
@@ -21,6 +22,8 @@ describe('<Home />', () => {
   let x: number;
   let y: number;
   let directionRadians: number;
+
+  let request: NextPageRequest;
 
   beforeEach(() => {
     members = [
@@ -62,10 +65,14 @@ describe('<Home />', () => {
     when(mockGenerateRandom)
       .calledWith(0, 2 * Math.PI)
       .mockImplementation(() => directionRadians);
+
+    request = {
+      searchParams: {},
+    };
   });
 
   it('renders members', async () => {
-    render(await Home());
+    render(await Home(request));
 
     currentMockApplication.render();
 
@@ -85,7 +92,7 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-1',
       },
     ];
-    render(await Home());
+    render(await Home(request));
     currentMockApplication.render();
 
     const startMemberContainer = screen.getByText('username-1').parentElement;
@@ -116,7 +123,7 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-1',
       },
     ];
-    render(await Home());
+    render(await Home(request));
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByText('username-1').parentElement;
@@ -134,7 +141,7 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-1',
       },
     ];
-    render(await Home());
+    render(await Home(request));
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByText('username-1').parentElement;
@@ -152,7 +159,7 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-1',
       },
     ];
-    render(await Home());
+    render(await Home(request));
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByText('username-1').parentElement;
@@ -170,7 +177,7 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-1',
       },
     ];
-    render(await Home());
+    render(await Home(request));
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByText('username-1').parentElement;

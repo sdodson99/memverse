@@ -1,11 +1,14 @@
 import {
   MembersProvider,
   MembersApplicationBootstrapper,
-  getAllMembers,
 } from '@/features/view-members';
+import { NextPageRequest } from '@/shared/http';
+import { createServiceProvider } from './create-service-provider';
 
-export default async function Home() {
-  const members = await getAllMembers();
+export default async function Home(request: NextPageRequest) {
+  const { getAllMembersQuery } = createServiceProvider(request);
+
+  const members = await getAllMembersQuery.execute();
 
   return (
     <div>
