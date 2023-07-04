@@ -1,17 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Home from './page';
-import { mockYouTubeMembersQueryExecute } from '../../test/integration/mock-youtube-member-querier';
+import { mockYouTubeMembers } from '../../test/integration/mock-youtube-member-querier';
 import { currentMockApplication } from '../../test/integration/mock-pixi';
-import { YouTubeMember } from 'youtube-member-querier';
+import { mockFirebaseInitialData } from '../../test/integration/mock-firebase-admin';
 import { generateRandom } from '@/shared/math';
 import { Mock } from 'vitest';
 import { when } from 'jest-when';
 import { MEMBER_SPRITE_LENGTH_HALF } from '@/features/view-members/member-container';
 import { NextPageRequest } from '@/shared/http';
-import * as firebase from 'firebase-admin';
-import { MockFirebaseAdminApp } from '@/shared/firebase';
-import { getMockData } from '@/mocks';
 
 vi.mock('@/shared/math', () => ({
   ...vi.importActual('@/shared/math'),
@@ -19,19 +16,7 @@ vi.mock('@/shared/math', () => ({
 }));
 const mockGenerateRandom = generateRandom as Mock;
 
-vi.mock('firebase-admin', () => ({
-  ...vi.importActual('firebase-admin'),
-  app: vi.fn(),
-  initializeApp: vi.fn(),
-  credential: {
-    cert: () => {},
-  },
-}));
-const mockInitializeApp = firebase.initializeApp as Mock;
-
 describe('<Home />', () => {
-  let members: YouTubeMember[];
-
   let x: number;
   let y: number;
   let directionRadians: number;
@@ -39,7 +24,7 @@ describe('<Home />', () => {
   let request: NextPageRequest;
 
   beforeEach(() => {
-    members = [
+    mockYouTubeMembers.data = [
       {
         channelId: '1',
         username: 'username-1',
@@ -56,8 +41,10 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-3',
       },
     ];
-
-    mockYouTubeMembersQueryExecute.mockImplementation(() => members);
+    mockFirebaseInitialData.data = {
+      '/messages/1': { content: 'message-1' },
+      '/messages/3': { content: 'message-3' },
+    };
 
     x = 500;
     y = 250;
@@ -79,8 +66,6 @@ describe('<Home />', () => {
       .calledWith(0, 2 * Math.PI)
       .mockImplementation(() => directionRadians);
 
-    mockInitializeApp.mockReturnValue(new MockFirebaseAdminApp(getMockData('base').firebaseDatabase));
-
     request = {
       searchParams: {},
     };
@@ -94,21 +79,14 @@ describe('<Home />', () => {
     expect(screen.getByText('username-1')).toBeInTheDocument();
     expect(screen.getByText('username-2')).toBeInTheDocument();
     expect(screen.getByText('username-3')).toBeInTheDocument();
-    expect(screen.getByText('Message 1')).toBeInTheDocument();
-    expect(screen.getByText('Message 2')).toBeInTheDocument();
+    expect(screen.getByText('message-1')).toBeInTheDocument();
+    expect(screen.getByText('message-3')).toBeInTheDocument();
     expect(screen.getByAltText('photo-url-1')).toBeInTheDocument();
     expect(screen.getByAltText('photo-url-2')).toBeInTheDocument();
     expect(screen.getByAltText('photo-url-3')).toBeInTheDocument();
   });
 
   it('moves members over time', async () => {
-    members = [
-      {
-        channelId: '1',
-        username: 'username-1',
-        photoUrl: 'photo-url-1',
-      },
-    ];
     render(await Home(request));
     currentMockApplication.render();
 
@@ -133,13 +111,7 @@ describe('<Home />', () => {
 
   it('bounces members off left wall', async () => {
     directionRadians = (5 * Math.PI) / 6;
-    members = [
-      {
-        channelId: '1',
-        username: 'username-1',
-        photoUrl: 'photo-url-1',
-      },
-    ];
+
     render(await Home(request));
     currentMockApplication.render(5000);
 
@@ -151,13 +123,7 @@ describe('<Home />', () => {
 
   it('bounces members off right wall', async () => {
     directionRadians = Math.PI / 6;
-    members = [
-      {
-        channelId: '1',
-        username: 'username-1',
-        photoUrl: 'photo-url-1',
-      },
-    ];
+
     render(await Home(request));
     currentMockApplication.render(5000);
 
@@ -169,13 +135,7 @@ describe('<Home />', () => {
 
   it('bounces members off top wall', async () => {
     directionRadians = Math.PI / 3;
-    members = [
-      {
-        channelId: '1',
-        username: 'username-1',
-        photoUrl: 'photo-url-1',
-      },
-    ];
+
     render(await Home(request));
     currentMockApplication.render(5000);
 
@@ -187,13 +147,7 @@ describe('<Home />', () => {
 
   it('bounces members off bottom wall', async () => {
     directionRadians = (5 * Math.PI) / 3;
-    members = [
-      {
-        channelId: '1',
-        username: 'username-1',
-        photoUrl: 'photo-url-1',
-      },
-    ];
+
     render(await Home(request));
     currentMockApplication.render(5000);
 

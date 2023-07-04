@@ -1,21 +1,21 @@
+import { MockYouTubeMembersQuery } from '../../src/features/view-members/mock-youtube-members-query';
 import { Mock } from 'vitest';
-import { YouTubeMembersQuery } from 'youtube-member-querier';
+import { YouTubeMember, YouTubeMembersQuery } from 'youtube-member-querier';
 
 vi.mock('youtube-member-querier');
+const ViMockYouTubeMembersQuery = YouTubeMembersQuery as Mock;
 
-const MockYouTubeMembersQuery = YouTubeMembersQuery as Mock;
-const mockYouTubeMembersQueryExecute = vi.fn();
+export const mockYouTubeMembers = {
+  data: [] as YouTubeMember[],
+};
 
 beforeEach(() => {
-  MockYouTubeMembersQuery.mockReturnValue({
-    execute: mockYouTubeMembersQueryExecute,
-  });
-  mockYouTubeMembersQueryExecute.mockReturnValue([]);
+  ViMockYouTubeMembersQuery.mockImplementation(
+    () => new MockYouTubeMembersQuery(mockYouTubeMembers.data)
+  );
 });
 
 afterEach(() => {
-  MockYouTubeMembersQuery.mockReset();
-  mockYouTubeMembersQueryExecute.mockReset();
+  ViMockYouTubeMembersQuery.mockReset();
+  mockYouTubeMembers.data = [];
 });
-
-export { mockYouTubeMembersQueryExecute };
