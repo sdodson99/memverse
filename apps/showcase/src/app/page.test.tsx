@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Home from './page';
 import { mockYouTubeMembers } from '../../test/integration/mock-youtube-member-querier';
@@ -155,5 +156,18 @@ describe('<Home />', () => {
     expect(Number(memberContainer?.getAttribute('data-y'))).toBeCloseTo(
       currentMockApplication.screen.top + MEMBER_SPRITE_LENGTH_HALF
     );
+  });
+
+  it('raises member to top on click', async () => {
+    render(await Home(request));
+    currentMockApplication.render();
+
+    const memberContainer = screen.getByText('username-1').parentElement!;
+    await userEvent.click(memberContainer);
+    currentMockApplication.render();
+
+    const updatedMemberContainer =
+      screen.getByText('username-1').parentElement!;
+    expect(updatedMemberContainer.getAttribute('data-z')).toBe('2');
   });
 });

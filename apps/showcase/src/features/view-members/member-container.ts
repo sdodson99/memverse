@@ -10,6 +10,8 @@ const MEMBER_SPEED_PIXELS_PER_MILLISECOND = 0.75;
 const CENTER_ANCHOR = { x: 0.5, y: 0.5 };
 
 export class MemberContainer {
+  private static topZIndex: number = 2;
+
   private avatarSprite: Sprite;
   private usernameText: Text;
   private messageText?: Text;
@@ -52,6 +54,11 @@ export class MemberContainer {
       bottom - MEMBER_SPRITE_LENGTH_HALF
     );
     this.directionRadians = generateRandom(0, 2 * Math.PI);
+
+    this._container.interactive = true;
+    this._container.on('pointerdown', () => {
+      this.raiseToTop();
+    });
   }
 
   private createText(value: string) {
@@ -121,5 +128,9 @@ export class MemberContainer {
     this.x = nextX;
     this.y = nextY;
     this.directionRadians = nextDirectionRadians;
+  }
+
+  private raiseToTop() {
+    this.container.zIndex = MemberContainer.topZIndex++;
   }
 }

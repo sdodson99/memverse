@@ -1,5 +1,10 @@
 type TickerCallback = (delta: number) => void;
 
+type EventCallback = {
+  event: string;
+  callback: () => void;
+};
+
 // NOTE: This approach will not support testing for multiple applications. This is
 // fine for now, but we might need a different approach in the future.
 const currentMockApplication = {
@@ -90,15 +95,28 @@ const MockText = vi.fn().mockImplementation((text) => ({
 const MockContainer = vi.fn().mockImplementation(() => ({
   x: 0,
   y: 0,
+  zIndex: 0,
   children: [] as any[],
   addChild: function (child: any) {
     this.children.push(child);
+  },
+  eventCallbacks: [] as EventCallback[],
+  on: function (event: string, callback: EventCallback['callback']) {
+    this.eventCallbacks.push({
+      event,
+      callback,
+    });
   },
   toNode: function () {
     const node = document.createElement('div');
 
     node.setAttribute('data-x', this.x.toString());
     node.setAttribute('data-y', this.y.toString());
+    node.setAttribute('data-z', this.zIndex.toString());
+
+    this.eventCallbacks.forEach((e) =>
+      node.addEventListener(e.event, () => e.callback())
+    );
 
     this.children.forEach((c) => node.appendChild(c?.toNode?.()));
 

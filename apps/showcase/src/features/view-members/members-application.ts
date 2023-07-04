@@ -15,6 +15,7 @@ export class MembersApplication {
       height: window.innerHeight,
       width: window.innerWidth,
     });
+    this.application.stage.sortableChildren = true;
 
     this.memberContainers = members.map(
       (m) => new MemberContainer(m, this.application.screen)
