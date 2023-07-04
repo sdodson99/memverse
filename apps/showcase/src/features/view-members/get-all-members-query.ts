@@ -1,14 +1,25 @@
+import { GetManyMessagesByMemberIdsQuery } from '@/entities/member-message';
 import 'server-only';
-import { YouTubeMember } from 'youtube-member-querier';
-
-type YouTubeMembersQuery = {
-  execute: () => Promise<YouTubeMember[]>;
-};
+import { YouTubeMembersQuery } from 'youtube-member-querier';
+import { Member } from './member';
 
 export class GetAllMembersQuery {
-  constructor(private youTubeMembersQuery: YouTubeMembersQuery) {}
+  constructor(
+    private youTubeMembersQuery: YouTubeMembersQuery,
+    private getManyMessagesByMemberIdsQuery: GetManyMessagesByMemberIdsQuery
+  ) {}
 
-  execute() {
-    return this.youTubeMembersQuery.execute();
+  async execute(): Promise<Member[]> {
+    const youTubeMembers = await this.youTubeMembersQuery.execute();
+
+    const memberIds = youTubeMembers.map((m) => m.channelId);
+    const memberIdToMessageMap =
+      await this.getManyMessagesByMemberIdsQuery.execute(memberIds);
+
+    return youTubeMembers.map((m) => ({
+      ...m,
+      id: m.channelId,
+      message: memberIdToMessageMap.get(m.channelId)?.content ?? null,
+    }));
   }
 }

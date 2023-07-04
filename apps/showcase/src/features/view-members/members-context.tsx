@@ -1,10 +1,10 @@
 'use client';
 
 import { PropsWithChildren, createContext, useContext } from 'react';
-import { YouTubeMember } from 'youtube-member-querier';
+import { Member } from './member';
 
 type MembersContextData = {
-  members: YouTubeMember[];
+  members: Member[];
 };
 
 const MembersContext = createContext<MembersContextData>({ members: [] });
@@ -14,7 +14,7 @@ export function useMembersContext() {
 }
 
 type MembersProviderProps = PropsWithChildren<{
-  members: YouTubeMember[];
+  members: Member[];
 }>;
 
 export function MembersProvider({ members, children }: MembersProviderProps) {

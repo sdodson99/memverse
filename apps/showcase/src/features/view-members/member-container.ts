@@ -1,36 +1,45 @@
 import { Container, Rectangle, Sprite, Text } from 'pixi.js';
 import { generateRandom } from '@/shared/math';
-import { YouTubeMember } from 'youtube-member-querier';
+import { Member } from './member';
 
 const MEMBER_SPRITE_LENGTH = 50;
 export const MEMBER_SPRITE_LENGTH_HALF = MEMBER_SPRITE_LENGTH / 2;
-const MEMBER_USERNAME_Y_OFFSET = -35;
+const MEMBER_TEXT_OFFET = -35;
+const MEMBER_TEXT_SPACING = 15;
 const MEMBER_SPEED_PIXELS_PER_MILLISECOND = 0.75;
 const CENTER_ANCHOR = { x: 0.5, y: 0.5 };
 
 export class MemberContainer {
   private avatarSprite: Sprite;
   private usernameText: Text;
+  private messageText?: Text;
   private _container: Container;
   private directionRadians: number;
+  private textCount: number;
 
-  constructor(member: YouTubeMember, private bounds: Rectangle) {
+  constructor(member: Member, private bounds: Rectangle) {
+    this._container = new Container();
+
     this.avatarSprite = Sprite.from(member.photoUrl);
     this.avatarSprite.height = MEMBER_SPRITE_LENGTH;
     this.avatarSprite.width = MEMBER_SPRITE_LENGTH;
     this.avatarSprite.anchor.x = CENTER_ANCHOR.x;
     this.avatarSprite.anchor.y = CENTER_ANCHOR.y;
-
-    this.usernameText = new Text(member.username);
-    this.usernameText.style.fill = 'white';
-    this.usernameText.y = MEMBER_USERNAME_Y_OFFSET;
-    this.usernameText.anchor.x = CENTER_ANCHOR.x;
-    this.usernameText.anchor.y = CENTER_ANCHOR.y;
-    this.usernameText.scale.set(0.5, 0.5);
-
-    this._container = new Container();
     this._container.addChild(this.avatarSprite);
+
+    this.textCount = 0;
+
+    if (member.message) {
+      this.messageText = this.createText(member.message);
+      this.messageText.alpha = 1;
+      this._container.addChild(this.messageText);
+      this.textCount++;
+    }
+
+    this.usernameText = this.createText(member.username);
+    this.usernameText.alpha = 1;
     this._container.addChild(this.usernameText);
+    this.textCount++;
 
     const { top, bottom, left, right } = this.bounds;
 
@@ -43,6 +52,18 @@ export class MemberContainer {
       bottom - MEMBER_SPRITE_LENGTH_HALF
     );
     this.directionRadians = generateRandom(0, 2 * Math.PI);
+  }
+
+  private createText(value: string) {
+    const text = new Text(value);
+
+    text.style.fill = 'white';
+    text.y = MEMBER_TEXT_OFFET - MEMBER_TEXT_SPACING * this.textCount;
+    text.anchor.x = CENTER_ANCHOR.x;
+    text.anchor.y = CENTER_ANCHOR.y;
+    text.scale.set(0.5, 0.5);
+
+    return text;
   }
 
   get container() {

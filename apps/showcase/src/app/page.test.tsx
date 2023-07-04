@@ -9,12 +9,25 @@ import { Mock } from 'vitest';
 import { when } from 'jest-when';
 import { MEMBER_SPRITE_LENGTH_HALF } from '@/features/view-members/member-container';
 import { NextPageRequest } from '@/shared/http';
+import * as firebase from 'firebase-admin';
+import { MockFirebaseAdminApp } from '@/shared/firebase';
+import { getMockData } from '@/mocks';
 
 vi.mock('@/shared/math', () => ({
   ...vi.importActual('@/shared/math'),
   generateRandom: vi.fn(),
 }));
 const mockGenerateRandom = generateRandom as Mock;
+
+vi.mock('firebase-admin', () => ({
+  ...vi.importActual('firebase-admin'),
+  app: vi.fn(),
+  initializeApp: vi.fn(),
+  credential: {
+    cert: () => {},
+  },
+}));
+const mockInitializeApp = firebase.initializeApp as Mock;
 
 describe('<Home />', () => {
   let members: YouTubeMember[];
@@ -66,6 +79,8 @@ describe('<Home />', () => {
       .calledWith(0, 2 * Math.PI)
       .mockImplementation(() => directionRadians);
 
+    mockInitializeApp.mockReturnValue(new MockFirebaseAdminApp(getMockData('base').firebaseDatabase));
+
     request = {
       searchParams: {},
     };
@@ -79,6 +94,8 @@ describe('<Home />', () => {
     expect(screen.getByText('username-1')).toBeInTheDocument();
     expect(screen.getByText('username-2')).toBeInTheDocument();
     expect(screen.getByText('username-3')).toBeInTheDocument();
+    expect(screen.getByText('Message 1')).toBeInTheDocument();
+    expect(screen.getByText('Message 2')).toBeInTheDocument();
     expect(screen.getByAltText('photo-url-1')).toBeInTheDocument();
     expect(screen.getByAltText('photo-url-2')).toBeInTheDocument();
     expect(screen.getByAltText('photo-url-3')).toBeInTheDocument();

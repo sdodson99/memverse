@@ -1,6 +1,6 @@
 import { Application } from 'pixi.js';
-import { YouTubeMember } from 'youtube-member-querier';
 import { MemberContainer } from './member-container';
+import { Member } from './member';
 
 const STAGE_BACKGROUND_COLOR = '#1F232D';
 
@@ -8,7 +8,7 @@ export class MembersApplication {
   private application: Application;
   private memberContainers: MemberContainer[];
 
-  constructor(members: YouTubeMember[]) {
+  constructor(members: Member[]) {
     this.application = new Application({
       backgroundColor: STAGE_BACKGROUND_COLOR,
       resizeTo: window,
