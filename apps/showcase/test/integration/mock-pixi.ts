@@ -95,9 +95,11 @@ const MockText = vi.fn().mockImplementation((text) => ({
 }));
 
 const MockContainer = vi.fn().mockImplementation(() => ({
+  name: '',
   x: 0,
   y: 0,
   zIndex: 0,
+  alpha: 1,
   scale: {
     x: 1,
     y: 1,
@@ -116,11 +118,13 @@ const MockContainer = vi.fn().mockImplementation(() => ({
   toNode: function () {
     const node = document.createElement('div');
 
+    node.setAttribute('data-testid', this.name);
     node.setAttribute('data-x', this.x.toString());
     node.setAttribute('data-y', this.y.toString());
     node.setAttribute('data-z', this.zIndex.toString());
     node.setAttribute('data-scale-x', this.scale.x.toString());
     node.setAttribute('data-scale-y', this.scale.y.toString());
+    node.setAttribute('data-alpha', this.alpha.toString());
 
     this.eventCallbacks.forEach((e) =>
       node.addEventListener(e.event, () => e.callback())

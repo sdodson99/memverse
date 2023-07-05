@@ -17,14 +17,23 @@ export class MemberContainer {
   private static topZIndex: number = 2;
 
   private avatarSprite: Sprite;
+  private textContainer: Container;
   private usernameText: Text;
   private messageText?: Text;
   private _container: Container;
   private directionRadians: number;
   private textCount: number;
 
+  private active: boolean;
+
   constructor(member: Member, private bounds: Rectangle) {
     this._container = new Container();
+    this._container.name = `${member.username}-container`;
+    this._container.interactive = true;
+
+    this._container.on('pointerdown', () => this.handlePointerDown());
+    this._container.on('pointerenter', () => this.handlePointerEnter());
+    this._container.on('pointerleave', () => this.handlePointerLeave());
 
     this.avatarSprite = Sprite.from(member.photoUrl);
     this.avatarSprite.height = MEMBER_SPRITE_LENGTH;
@@ -35,28 +44,28 @@ export class MemberContainer {
 
     this.textCount = 0;
 
+    this.textContainer = new Container();
+    this.textContainer.name = `${member.username}-text-container`;
+    this.textContainer.alpha = 0;
+    this._container.addChild(this.textContainer);
+
     if (member.message) {
       this.messageText = this.createText(member.message);
-      this.messageText.alpha = 1;
-      this._container.addChild(this.messageText);
+      this.textContainer.addChild(this.messageText);
       this.textCount++;
     }
 
     this.usernameText = this.createText(member.username);
-    this.usernameText.alpha = 1;
-    this._container.addChild(this.usernameText);
+    this.usernameText.style.fontWeight = 'bold';
+    this.textContainer.addChild(this.usernameText);
     this.textCount++;
 
     const { top, bottom, left, right } = this.bounds;
-
     this.x = generateRandom(left + this.width / 2, right - this.width / 2);
     this.y = generateRandom(top + this.height / 2, bottom - this.height / 2);
     this.directionRadians = generateRandom(0, 2 * Math.PI);
 
-    this._container.interactive = true;
-    this._container.on('pointerdown', () => {
-      this.raiseToTop();
-    });
+    this.active = false;
   }
 
   private createText(value: string) {
@@ -164,6 +173,28 @@ export class MemberContainer {
       x: scale,
       y: scale,
     };
+  }
+
+  private handlePointerDown() {
+    this.raiseToTop();
+
+    this.active = !this.active;
+
+    if (this.active) {
+      this.textContainer.alpha = 1;
+    } else {
+      this.textContainer.alpha = 0;
+    }
+  }
+
+  private handlePointerEnter() {
+    this.textContainer.alpha = 1;
+  }
+
+  private handlePointerLeave() {
+    if (!this.active) {
+      this.textContainer.alpha = 0;
+    }
   }
 
   private raiseToTop() {

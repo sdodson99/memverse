@@ -91,7 +91,7 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render();
 
-    const startMemberContainer = screen.getByText('username-1').parentElement;
+    const startMemberContainer = screen.getByTestId('username-1-container');
     expect(Number(startMemberContainer?.getAttribute('data-x'))).toBeCloseTo(
       500
     );
@@ -101,7 +101,7 @@ describe('<Home />', () => {
 
     currentMockApplication.render(100);
 
-    const endMemberContainer = screen.getByText('username-1').parentElement;
+    const endMemberContainer = screen.getByTestId('username-1-container');
     expect(Number(endMemberContainer?.getAttribute('data-x'))).toBeCloseTo(
       537.5
     );
@@ -116,7 +116,7 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render(5000);
 
-    const memberContainer = screen.getByText('username-1').parentElement;
+    const memberContainer = screen.getByTestId('username-1-container');
     expect(Number(memberContainer?.getAttribute('data-x'))).toBeCloseTo(
       currentMockApplication.screen.left + MEMBER_SPRITE_LENGTH_HALF
     );
@@ -128,7 +128,7 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render(5000);
 
-    const memberContainer = screen.getByText('username-1').parentElement;
+    const memberContainer = screen.getByTestId('username-1-container');
     expect(Number(memberContainer?.getAttribute('data-x'))).toBeCloseTo(
       currentMockApplication.screen.right - MEMBER_SPRITE_LENGTH_HALF
     );
@@ -140,7 +140,7 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render(5000);
 
-    const memberContainer = screen.getByText('username-1').parentElement;
+    const memberContainer = screen.getByTestId('username-1-container');
     expect(Number(memberContainer?.getAttribute('data-y'))).toBeCloseTo(
       currentMockApplication.screen.bottom - MEMBER_SPRITE_LENGTH_HALF
     );
@@ -152,7 +152,7 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render(5000);
 
-    const memberContainer = screen.getByText('username-1').parentElement;
+    const memberContainer = screen.getByTestId('username-1-container');
     expect(Number(memberContainer?.getAttribute('data-y'))).toBeCloseTo(
       currentMockApplication.screen.top + MEMBER_SPRITE_LENGTH_HALF
     );
@@ -162,26 +162,103 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render();
 
-    const memberContainer = screen.getByText('username-1').parentElement;
-    await userEvent.click(memberContainer!);
+    const memberContainer = screen.getByTestId('username-1-container');
+    await userEvent.click(memberContainer);
     currentMockApplication.render();
 
-    const updatedMemberContainer = screen.getByText('username-1').parentElement;
+    const updatedMemberContainer = screen.getByTestId('username-1-container');
     expect(updatedMemberContainer?.getAttribute('data-z')).toBe('2');
+  });
+
+  it('toggles member username and message visibility on click', async () => {
+    render(await Home(request));
+    currentMockApplication.render();
+
+    const initialMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(initialMemberTextContainer?.getAttribute('data-alpha')).toBe('0');
+
+    await userEvent.click(initialMemberTextContainer);
+    currentMockApplication.render();
+
+    const toggledMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(toggledMemberTextContainer?.getAttribute('data-alpha')).toBe('1');
+
+    await userEvent.click(initialMemberTextContainer);
+    currentMockApplication.render();
+
+    const unToggledMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(unToggledMemberTextContainer?.getAttribute('data-alpha')).toBe('0');
+  });
+
+  it('toggles member username and message visibility on hover', async () => {
+    render(await Home(request));
+    currentMockApplication.render();
+
+    const initialMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(initialMemberTextContainer?.getAttribute('data-alpha')).toBe('0');
+
+    await userEvent.hover(initialMemberTextContainer);
+    currentMockApplication.render();
+
+    const hoveredMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(hoveredMemberTextContainer?.getAttribute('data-alpha')).toBe('1');
+
+    await userEvent.unhover(initialMemberTextContainer);
+    currentMockApplication.render();
+
+    const unHoveredMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(unHoveredMemberTextContainer?.getAttribute('data-alpha')).toBe('0');
+  });
+
+  it('does not hide member username and message on unhover when active', async () => {
+    render(await Home(request));
+    currentMockApplication.render();
+
+    const initialMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    await userEvent.hover(initialMemberTextContainer);
+    await userEvent.click(initialMemberTextContainer);
+    currentMockApplication.render();
+
+    const hoveredMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(hoveredMemberTextContainer?.getAttribute('data-alpha')).toBe('1');
+
+    await userEvent.unhover(initialMemberTextContainer);
+    currentMockApplication.render();
+
+    const unHoveredMemberTextContainer = screen.getByTestId(
+      'username-1-text-container'
+    );
+    expect(unHoveredMemberTextContainer?.getAttribute('data-alpha')).toBe('1');
   });
 
   it('scales members on screen resizes', async () => {
     render(await Home(request));
     currentMockApplication.render();
 
-    const memberContainer = screen.getByText('username-1').parentElement;
+    const memberContainer = screen.getByTestId('username-1-container');
     expect(memberContainer?.getAttribute('data-scale-x')).toBe('1');
     expect(memberContainer?.getAttribute('data-scale-y')).toBe('1');
 
     currentMockApplication.screen.width = 250;
     currentMockApplication.render();
 
-    const updatedMemberContainer = screen.getByText('username-1').parentElement;
+    const updatedMemberContainer = screen.getByTestId('username-1-container');
     expect(updatedMemberContainer?.getAttribute('data-scale-x')).toBe('0.8');
     expect(updatedMemberContainer?.getAttribute('data-scale-y')).toBe('0.8');
   });
