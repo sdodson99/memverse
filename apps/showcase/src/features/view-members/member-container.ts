@@ -1,4 +1,4 @@
-import { Container, Rectangle, Sprite, Text } from 'pixi.js';
+import { Container, IPointData, Rectangle, Sprite, Text } from 'pixi.js';
 import { generateRandom } from '@/shared/math';
 import { Member } from './member';
 
@@ -8,6 +8,10 @@ const MEMBER_TEXT_OFFET = -35;
 const MEMBER_TEXT_SPACING = 15;
 const MEMBER_SPEED_PIXELS_PER_MILLISECOND = 0.75;
 const CENTER_ANCHOR = { x: 0.5, y: 0.5 };
+
+const BASE_SCALE_SCREEN_LENGTH = 500;
+const MIN_SCALE = 0.8;
+const MAX_SCALE = 1.2;
 
 export class MemberContainer {
   private static topZIndex: number = 2;
@@ -45,14 +49,8 @@ export class MemberContainer {
 
     const { top, bottom, left, right } = this.bounds;
 
-    this.x = generateRandom(
-      left + MEMBER_SPRITE_LENGTH_HALF,
-      right - MEMBER_SPRITE_LENGTH_HALF
-    );
-    this.y = generateRandom(
-      top + MEMBER_SPRITE_LENGTH_HALF,
-      bottom - MEMBER_SPRITE_LENGTH_HALF
-    );
+    this.x = generateRandom(left + this.width / 2, right - this.width / 2);
+    this.y = generateRandom(top + this.height / 2, bottom - this.height / 2);
     this.directionRadians = generateRandom(0, 2 * Math.PI);
 
     this._container.interactive = true;
@@ -93,6 +91,18 @@ export class MemberContainer {
     this._container.y = value;
   }
 
+  private set scale(value: IPointData) {
+    this.container.scale = value;
+  }
+
+  private get width() {
+    return this.avatarSprite.width * this.container.scale.x;
+  }
+
+  private get height() {
+    return this.avatarSprite.height * this.container.scale.y;
+  }
+
   update(delta: number) {
     const pixelsTravelled = MEMBER_SPEED_PIXELS_PER_MILLISECOND * delta;
 
@@ -104,30 +114,56 @@ export class MemberContainer {
     let nextDirectionRadians = this.directionRadians;
 
     const { top, bottom, left, right } = this.bounds;
+    const halfWidth = this.width / 2;
+    const halfHeight = this.height / 2;
 
-    if (nextX > right - MEMBER_SPRITE_LENGTH_HALF) {
+    if (nextX > right - halfWidth) {
       nextDirectionRadians = Math.PI - nextDirectionRadians;
-      nextX = right - MEMBER_SPRITE_LENGTH_HALF;
+      nextX = right - halfWidth;
     }
 
-    if (nextX < left + MEMBER_SPRITE_LENGTH_HALF) {
+    if (nextX < left + halfWidth) {
       nextDirectionRadians = Math.PI - nextDirectionRadians;
-      nextX = left + MEMBER_SPRITE_LENGTH_HALF;
+      nextX = left + halfWidth;
     }
 
-    if (nextY > bottom - MEMBER_SPRITE_LENGTH_HALF) {
+    if (nextY > bottom - halfHeight) {
       nextDirectionRadians = 2 * Math.PI - nextDirectionRadians;
-      nextY = bottom - MEMBER_SPRITE_LENGTH_HALF;
+      nextY = bottom - halfHeight;
     }
 
-    if (nextY < top + MEMBER_SPRITE_LENGTH_HALF) {
+    if (nextY < top + halfHeight) {
       nextDirectionRadians = 2 * Math.PI - nextDirectionRadians;
-      nextY = top + MEMBER_SPRITE_LENGTH_HALF;
+      nextY = top + halfHeight;
     }
 
     this.x = nextX;
     this.y = nextY;
     this.directionRadians = nextDirectionRadians;
+
+    this.updateScale();
+  }
+
+  private updateScale() {
+    const smallestScreenLength = Math.min(
+      this.bounds.height,
+      this.bounds.width
+    );
+
+    let scale = smallestScreenLength / BASE_SCALE_SCREEN_LENGTH;
+
+    if (scale < MIN_SCALE) {
+      scale = MIN_SCALE;
+    }
+
+    if (scale > MAX_SCALE) {
+      scale = MAX_SCALE;
+    }
+
+    this.scale = {
+      x: scale,
+      y: scale,
+    };
   }
 
   private raiseToTop() {

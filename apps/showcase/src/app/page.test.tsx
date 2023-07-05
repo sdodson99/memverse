@@ -162,12 +162,27 @@ describe('<Home />', () => {
     render(await Home(request));
     currentMockApplication.render();
 
-    const memberContainer = screen.getByText('username-1').parentElement!;
-    await userEvent.click(memberContainer);
+    const memberContainer = screen.getByText('username-1').parentElement;
+    await userEvent.click(memberContainer!);
     currentMockApplication.render();
 
-    const updatedMemberContainer =
-      screen.getByText('username-1').parentElement!;
-    expect(updatedMemberContainer.getAttribute('data-z')).toBe('2');
+    const updatedMemberContainer = screen.getByText('username-1').parentElement;
+    expect(updatedMemberContainer?.getAttribute('data-z')).toBe('2');
+  });
+
+  it('scales members on screen resizes', async () => {
+    render(await Home(request));
+    currentMockApplication.render();
+
+    const memberContainer = screen.getByText('username-1').parentElement;
+    expect(memberContainer?.getAttribute('data-scale-x')).toBe('1');
+    expect(memberContainer?.getAttribute('data-scale-y')).toBe('1');
+
+    currentMockApplication.screen.width = 250;
+    currentMockApplication.render();
+
+    const updatedMemberContainer = screen.getByText('username-1').parentElement;
+    expect(updatedMemberContainer?.getAttribute('data-scale-x')).toBe('0.8');
+    expect(updatedMemberContainer?.getAttribute('data-scale-y')).toBe('0.8');
   });
 });

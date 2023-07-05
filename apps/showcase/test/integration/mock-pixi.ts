@@ -14,6 +14,8 @@ const currentMockApplication = {
     right: 1000,
     top: 0,
     bottom: 500,
+    width: 1000,
+    height: 500,
   },
   stage: {
     children: [] as any[],
@@ -96,6 +98,10 @@ const MockContainer = vi.fn().mockImplementation(() => ({
   x: 0,
   y: 0,
   zIndex: 0,
+  scale: {
+    x: 1,
+    y: 1,
+  },
   children: [] as any[],
   addChild: function (child: any) {
     this.children.push(child);
@@ -113,6 +119,8 @@ const MockContainer = vi.fn().mockImplementation(() => ({
     node.setAttribute('data-x', this.x.toString());
     node.setAttribute('data-y', this.y.toString());
     node.setAttribute('data-z', this.zIndex.toString());
+    node.setAttribute('data-scale-x', this.scale.x.toString());
+    node.setAttribute('data-scale-y', this.scale.y.toString());
 
     this.eventCallbacks.forEach((e) =>
       node.addEventListener(e.event, () => e.callback())
