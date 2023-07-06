@@ -20,5 +20,9 @@ export default defineConfig({
       './test/integration/mock-firebase-admin.ts',
       './test/integration/mock-pixi.ts',
     ],
+    coverage: {
+        all: true,
+        include: ['src/**/*.*']
+    }
   },
 });
