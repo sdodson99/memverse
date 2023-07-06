@@ -18,11 +18,12 @@ export default defineConfig({
       './test/integration/mock-server-only.ts',
       './test/integration/mock-youtube-member-querier.ts',
       './test/integration/mock-firebase-admin.ts',
+      './test/integration/mock-next-auth.ts',
       './test/integration/mock-pixi.ts',
     ],
     coverage: {
-        all: true,
-        include: ['src/**/*.*']
-    }
+      all: true,
+      include: ['src/**/*.*'],
+    },
   },
 });
