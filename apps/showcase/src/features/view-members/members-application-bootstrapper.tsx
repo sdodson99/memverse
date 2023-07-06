@@ -29,5 +29,3 @@ export function MembersApplicationBootstrapper() {
 
   return <div ref={mountElementRef} />;
 }
-
-
