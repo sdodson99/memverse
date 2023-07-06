@@ -1,3 +1,4 @@
+import { GetYouTubeChannelQuery } from '@/features/auth';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 
@@ -15,13 +16,19 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
+      if (account?.access_token) {
+        const youTubeChannel = await new GetYouTubeChannelQuery(fetch).execute(
+          account.access_token
+        );
+
+        token.channelId = youTubeChannel?.id;
       }
 
       return token;
     },
-    async session({ session }) {
+    async session({ session, token }) {
+      session.channelId = token.channelId;
+
       return session;
     },
   },
