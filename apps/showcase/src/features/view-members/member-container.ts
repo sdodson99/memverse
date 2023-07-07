@@ -35,7 +35,13 @@ export class MemberContainer {
     this._container.on('pointerenter', () => this.handlePointerEnter());
     this._container.on('pointerleave', () => this.handlePointerLeave());
 
-    this.avatarSprite = Sprite.from(member.photoUrl);
+    const avatarSpriteImg = document.createElement('img');
+    avatarSpriteImg.src = member.photoUrl;
+    avatarSpriteImg.referrerPolicy = 'no-referrer';
+    avatarSpriteImg.crossOrigin = 'anonymous';
+    avatarSpriteImg.setAttribute('data-testid', member.photoUrl);
+
+    this.avatarSprite = Sprite.from(avatarSpriteImg);
     this.avatarSprite.height = MEMBER_SPRITE_LENGTH;
     this.avatarSprite.width = MEMBER_SPRITE_LENGTH;
     this.avatarSprite.anchor.x = CENTER_ANCHOR.x;

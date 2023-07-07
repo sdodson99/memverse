@@ -84,9 +84,9 @@ describe('<Home />', () => {
     expect(screen.getByText('username-3')).toBeInTheDocument();
     expect(screen.getByText('message-1')).toBeInTheDocument();
     expect(screen.getByText('message-3')).toBeInTheDocument();
-    expect(screen.getByAltText('photo-url-1')).toBeInTheDocument();
-    expect(screen.getByAltText('photo-url-2')).toBeInTheDocument();
-    expect(screen.getByAltText('photo-url-3')).toBeInTheDocument();
+    expect(screen.getByTestId('photo-url-1')).toBeInTheDocument();
+    expect(screen.getByTestId('photo-url-2')).toBeInTheDocument();
+    expect(screen.getByTestId('photo-url-3')).toBeInTheDocument();
   });
 
   it('moves members over time', async () => {

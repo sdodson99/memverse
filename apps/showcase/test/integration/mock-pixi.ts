@@ -55,18 +55,16 @@ afterEach(() => {
 const MockApplication = vi.fn().mockReturnValue(currentMockApplication);
 
 const MockSprite = {
-  from: vi.fn().mockImplementation((imageUrl) => ({
-    imageUrl,
+  from: vi.fn().mockImplementation((imageElement: HTMLImageElement) => ({
+    imageElement,
     height: 0,
     width: 0,
     anchor: { x: 0, y: 0 },
     toNode: function () {
-      const node = document.createElement('img');
+      const node = this.imageElement;
 
       node.height = this.height;
       node.width = this.width;
-      node.src = this.imageUrl;
-      node.alt = this.imageUrl;
 
       return node;
     },
