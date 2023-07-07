@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Home from './page';
@@ -10,6 +10,7 @@ import { Mock } from 'vitest';
 import { when } from 'jest-when';
 import { MEMBER_SPRITE_LENGTH_HALF } from '@/features/view-members/member-container';
 import { NextPageRequest } from '@/shared/http';
+import { renderServerComponent } from '../../test/unit/render-server-component';
 
 vi.mock('@/shared/math', () => ({
   ...vi.importActual('@/shared/math'),
@@ -73,7 +74,8 @@ describe('<Home />', () => {
   });
 
   it('renders members', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
 
     currentMockApplication.render();
 
@@ -88,7 +90,9 @@ describe('<Home />', () => {
   });
 
   it('moves members over time', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render();
 
     const startMemberContainer = screen.getByTestId('username-1-container');
@@ -113,7 +117,9 @@ describe('<Home />', () => {
   it('bounces members off left wall', async () => {
     directionRadians = (5 * Math.PI) / 6;
 
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByTestId('username-1-container');
@@ -125,7 +131,9 @@ describe('<Home />', () => {
   it('bounces members off right wall', async () => {
     directionRadians = Math.PI / 6;
 
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByTestId('username-1-container');
@@ -137,7 +145,9 @@ describe('<Home />', () => {
   it('bounces members off top wall', async () => {
     directionRadians = Math.PI / 3;
 
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByTestId('username-1-container');
@@ -149,7 +159,9 @@ describe('<Home />', () => {
   it('bounces members off bottom wall', async () => {
     directionRadians = (5 * Math.PI) / 3;
 
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render(5000);
 
     const memberContainer = screen.getByTestId('username-1-container');
@@ -159,7 +171,9 @@ describe('<Home />', () => {
   });
 
   it('raises member to top on click', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render();
 
     const memberContainer = screen.getByTestId('username-1-container');
@@ -171,7 +185,9 @@ describe('<Home />', () => {
   });
 
   it('toggles member username and message visibility on click', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render();
 
     const initialMemberTextContainer = screen.getByTestId(
@@ -197,7 +213,9 @@ describe('<Home />', () => {
   });
 
   it('toggles member username and message visibility on hover', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render();
 
     const initialMemberTextContainer = screen.getByTestId(
@@ -223,7 +241,9 @@ describe('<Home />', () => {
   });
 
   it('does not hide member username and message on unhover when active', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render();
 
     const initialMemberTextContainer = screen.getByTestId(
@@ -248,7 +268,9 @@ describe('<Home />', () => {
   });
 
   it('scales members on screen resizes', async () => {
-    render(await Home(request));
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
     currentMockApplication.render();
 
     const memberContainer = screen.getByTestId('username-1-container');

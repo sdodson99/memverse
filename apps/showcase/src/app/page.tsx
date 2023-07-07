@@ -12,7 +12,7 @@ export default async function Home(request: NextPageRequest) {
   const members = await getAllMembersQuery.execute();
 
   return (
-    <div>
+    <div data-testid="HomePage">
       <main>
         <MembersProvider members={members}>
           <div className="relative flex flex-col">
