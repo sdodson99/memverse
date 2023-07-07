@@ -1,5 +1,6 @@
 import { AuthProvider } from '@/features/auth';
 import './globals.css';
+import 'react-spring-bottom-sheet/dist/style.css';
 
 export const metadata = {
   title: 'Showcase - SingletonSean Members',

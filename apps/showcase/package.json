@@ -25,6 +25,7 @@
     "postcss": "8.4.24",
     "react": "next",
     "react-dom": "next",
+    "react-spring-bottom-sheet": "^3.4.1",
     "server-only": "^0.0.1",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.3",

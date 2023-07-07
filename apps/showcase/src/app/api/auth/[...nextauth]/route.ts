@@ -1,4 +1,4 @@
-import { GetYouTubeChannelQuery } from '@/features/auth';
+import { GetYouTubeChannelQuery } from '@/features/auth/get-youtube-channel-query';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 

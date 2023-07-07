@@ -1,11 +1,12 @@
 import { Session, getServerSession } from 'next-auth';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { Mock } from 'vitest';
 
 vi.mock('next-auth');
 vi.mock('next-auth/react');
 
 const mockGetServerSession = getServerSession as Mock;
+const mockUseSession = useSession as Mock;
 const mockSignIn = signIn as Mock;
 const mockSignOut = signOut as Mock;
 
@@ -17,12 +18,14 @@ export function setSession(value: Session | null) {
 
 beforeEach(() => {
   mockGetServerSession.mockImplementation(() => session);
+  mockUseSession.mockImplementation(() => ({ data: session }));
   mockSignIn.mockImplementation(() => setSession({ expires: '' }));
   mockSignOut.mockImplementation(() => setSession(null));
 });
 
 afterEach(() => {
   mockGetServerSession.mockReset();
+  mockUseSession.mockReset();
   mockSignIn.mockReset();
   mockSignOut.mockReset();
 });

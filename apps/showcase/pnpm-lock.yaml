@@ -21,10 +21,10 @@ dependencies:
     version: 11.9.0
   next:
     specifier: 13.4.7
-    version: 13.4.7(@babel/core@7.22.5)(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621)
+    version: 13.4.7(@babel/core@7.22.5)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
   next-auth:
     specifier: ^4.22.1
-    version: 4.22.1(next@13.4.7)(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621)
+    version: 4.22.1(next@13.4.7)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
   pixi.js:
     specifier: ^7.2.4
     version: 7.2.4(@pixi/utils@7.2.4)
@@ -33,10 +33,13 @@ dependencies:
     version: 8.4.24
   react:
     specifier: next
-    version: 18.3.0-canary-e3fb7c1de-20230621
+    version: 18.3.0-canary-e91142dd6-20230705
   react-dom:
     specifier: next
-    version: 18.3.0-canary-e3fb7c1de-20230621(react@18.3.0-canary-e3fb7c1de-20230621)
+    version: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
+  react-spring-bottom-sheet:
+    specifier: ^3.4.1
+    version: 3.4.1(@types/react@18.2.13)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
   server-only:
     specifier: ^0.0.1
     version: 0.0.1
@@ -56,7 +59,7 @@ devDependencies:
     version: 5.16.5
   '@testing-library/react':
     specifier: ^14.0.0
-    version: 14.0.0(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621)
+    version: 14.0.0(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
   '@testing-library/user-event':
     specifier: ^14.4.3
     version: 14.4.3(@testing-library/dom@9.3.1)
@@ -1106,6 +1109,10 @@ packages:
     dev: false
     optional: true
 
+  /@juggle/resize-observer@3.4.0:
+    resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+    dev: false
+
   /@next/env@13.4.7:
     resolution: {integrity: sha512-ZlbiFulnwiFsW9UV1ku1OvX/oyIPLtMk9p/nnvDSwI0s7vSoZdRtxXNsaO+ZXrLv/pMbXVGq4lL8TbY9iuGmVw==}
     dev: false
@@ -1635,6 +1642,31 @@ packages:
     dev: false
     optional: true
 
+  /@reach/portal@0.13.2(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-g74BnCdtuTGthzzHn2cWW+bcyIYb0iIE/yRsm89i8oNzNgpopbkh9UY8TPbhNlys52h7U60s4kpRTmcq+JqsTA==}
+    peerDependencies:
+      react: ^16.8.0 || 17.x
+      react-dom: ^16.8.0 || 17.x
+    dependencies:
+      '@reach/utils': 0.13.2(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-dom: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
+      tslib: 2.5.3
+    dev: false
+
+  /@reach/utils@0.13.2(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-3ir6cN60zvUrwjOJu7C6jec/samqAeyAB12ZADK+qjnmQPdzSYldrFWwDVV5H0WkhbYXR3uh+eImu13hCetNPQ==}
+    peerDependencies:
+      react: ^16.8.0 || 17.x
+      react-dom: ^16.8.0 || 17.x
+    dependencies:
+      '@types/warning': 3.0.0
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-dom: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
+      tslib: 2.5.3
+      warning: 4.0.3
+    dev: false
+
   /@rushstack/eslint-patch@1.3.2:
     resolution: {integrity: sha512-V+MvGwaHH03hYhY+k6Ef/xKd6RYlc4q8WBx+2ANmipHJcKuktNcI/NgEsJgdSUF6Lw32njT6OnrRsKYCdgHjYw==}
     dev: true
@@ -1690,7 +1722,7 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react@14.0.0(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621):
+  /@testing-library/react@14.0.0(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
     resolution: {integrity: sha512-S04gSNJbYE30TlIMLTzv6QCTzt9AqIF5y6s6SzVFILNcNvbV/jU96GeiTPillGQo+Ny64M/5PV7klNYYgv5Dfg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -1700,8 +1732,8 @@ packages:
       '@babel/runtime': 7.22.5
       '@testing-library/dom': 9.3.1
       '@types/react-dom': 18.2.6
-      react: 18.3.0-canary-e3fb7c1de-20230621
-      react-dom: 18.3.0-canary-e3fb7c1de-20230621(react@18.3.0-canary-e3fb7c1de-20230621)
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-dom: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
     dev: true
 
   /@testing-library/user-event@14.4.3(@testing-library/dom@9.3.1):
@@ -1962,6 +1994,10 @@ packages:
       '@types/jest': 29.5.2
     dev: true
 
+  /@types/warning@3.0.0:
+    resolution: {integrity: sha512-t/Tvs5qR47OLOr+4E9ckN8AmP2Tf16gWq+/qA4iUGS/OOyHVO8wv2vjJuX8SNOUTJyWb+2t7wJm6cXILFnOROA==}
+    dev: false
+
   /@types/yargs-parser@21.0.0:
     resolution: {integrity: sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA==}
     dev: true
@@ -2108,6 +2144,26 @@ packages:
       loupe: 2.3.6
       pretty-format: 27.5.1
     dev: true
+
+  /@xstate/react@1.6.3(@types/react@18.2.13)(react@18.3.0-canary-e91142dd6-20230705)(xstate@4.38.0):
+    resolution: {integrity: sha512-NCUReRHPGvvCvj2yLZUTfR0qVp6+apc8G83oXSjN4rl89ZjyujiKrTff55bze/HrsvCsP/sUJASf2n0nzMF1KQ==}
+    peerDependencies:
+      '@xstate/fsm': ^1.0.0
+      react: ^16.8.0 || ^17.0.0
+      xstate: ^4.11.0
+    peerDependenciesMeta:
+      '@xstate/fsm':
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      react: 18.3.0-canary-e91142dd6-20230705
+      use-isomorphic-layout-effect: 1.1.2(@types/react@18.2.13)(react@18.3.0-canary-e91142dd6-20230705)
+      use-subscription: 1.8.0(react@18.3.0-canary-e91142dd6-20230705)
+      xstate: 4.38.0
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
 
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
@@ -2439,6 +2495,10 @@ packages:
   /blueimp-md5@2.19.0:
     resolution: {integrity: sha512-DRQrD6gJyy8FbiE4s+bDoXS9hiW3Vbx5uCdwvcCf3zLHL+Iv7LtGHLpr+GZV8rHG8tK766FGYBwRbu8pELTt+w==}
     dev: true
+
+  /body-scroll-lock@3.1.5:
+    resolution: {integrity: sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==}
+    dev: false
 
   /bplist-parser@0.2.0:
     resolution: {integrity: sha512-z0M+byMThzQmD9NILRniCUXYsYpjwnlO8N5uCFaCqIOpqRsJCrQL9NK3JsD67CN5a08nF5oIL2bD6loTdHOuKw==}
@@ -3574,6 +3634,12 @@ packages:
 
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
+
+  /focus-trap@6.9.4:
+    resolution: {integrity: sha512-v2NTsZe2FF59Y+sDykKY+XjqZ0cPfhq/hikWVL88BqLivnNiEffAsac6rP6H45ff9wG9LL5ToiDqrLEP9GX9mw==}
+    dependencies:
+      tabbable: 5.3.3
+    dev: false
 
   /follow-redirects@1.15.2:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
@@ -5213,7 +5279,7 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  /next-auth@4.22.1(next@13.4.7)(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621):
+  /next-auth@4.22.1(next@13.4.7)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
     resolution: {integrity: sha512-NTR3f6W7/AWXKw8GSsgSyQcDW6jkslZLH8AiZa5PQ09w1kR8uHtR9rez/E9gAq/o17+p0JYHE8QjF3RoniiObA==}
     peerDependencies:
       next: ^12.2.5 || ^13
@@ -5228,17 +5294,17 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.14.4
-      next: 13.4.7(@babel/core@7.22.5)(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621)
+      next: 13.4.7(@babel/core@7.22.5)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
       oauth: 0.9.15
       openid-client: 5.4.2
       preact: 10.15.1
       preact-render-to-string: 5.2.6(preact@10.15.1)
-      react: 18.3.0-canary-e3fb7c1de-20230621
-      react-dom: 18.3.0-canary-e3fb7c1de-20230621(react@18.3.0-canary-e3fb7c1de-20230621)
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-dom: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
       uuid: 8.3.2
     dev: false
 
-  /next@13.4.7(@babel/core@7.22.5)(react-dom@18.3.0-canary-e3fb7c1de-20230621)(react@18.3.0-canary-e3fb7c1de-20230621):
+  /next@13.4.7(@babel/core@7.22.5)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
     resolution: {integrity: sha512-M8z3k9VmG51SRT6v5uDKdJXcAqLzP3C+vaKfLIAM0Mhx1um1G7MDnO63+m52qPdZfrTFzMZNzfsgvm3ghuVHIQ==}
     engines: {node: '>=16.8.0'}
     hasBin: true
@@ -5261,9 +5327,9 @@ packages:
       busboy: 1.6.0
       caniuse-lite: 1.0.30001506
       postcss: 8.4.14
-      react: 18.3.0-canary-e3fb7c1de-20230621
-      react-dom: 18.3.0-canary-e3fb7c1de-20230621(react@18.3.0-canary-e3fb7c1de-20230621)
-      styled-jsx: 5.1.1(@babel/core@7.22.5)(react@18.3.0-canary-e3fb7c1de-20230621)
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-dom: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
+      styled-jsx: 5.1.1(@babel/core@7.22.5)(react@18.3.0-canary-e91142dd6-20230705)
       watchpack: 2.4.0
       zod: 3.21.4
     optionalDependencies:
@@ -5776,7 +5842,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: true
 
   /proto3-json-serializer@1.1.1:
     resolution: {integrity: sha512-AwAuY4g9nxx0u52DnSMkqqgyLHaW/XaPLtaAo3y/ZCfeaQB/g4YDH4kb8Wc/mWzWvu0YjOznVnfn373MVZZrgw==}
@@ -5881,18 +5946,17 @@ packages:
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  /react-dom@18.3.0-canary-e3fb7c1de-20230621(react@18.3.0-canary-e3fb7c1de-20230621):
-    resolution: {integrity: sha512-AzK/I3CVDgxvyR3Mp/euoGXT5+WkZqlYN0FUS1sjM5418+HAqjfzwilSwCJTgdk70plGuu8BSq5z6v0UW4Xcjg==}
+  /react-dom@18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-rxm3lqKdWvhl8PzAhAvrmIPxvp2MO8/GiMh/FCH50GICcyZV4i8ZsYBgutsoxIeP00fPiHMIa/JVVQ4c/8kj7Q==}
     peerDependencies:
-      react: 18.3.0-canary-e3fb7c1de-20230621
+      react: 18.3.0-canary-e91142dd6-20230705
     dependencies:
       loose-envify: 1.4.0
-      react: 18.3.0-canary-e3fb7c1de-20230621
-      scheduler: 0.24.0-canary-e3fb7c1de-20230621
+      react: 18.3.0-canary-e91142dd6-20230705
+      scheduler: 0.24.0-canary-e91142dd6-20230705
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: true
 
   /react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -5907,8 +5971,49 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /react@18.3.0-canary-e3fb7c1de-20230621:
-    resolution: {integrity: sha512-0TknYTp0qttInKE8fqtEjrZQ9g+oGIrsEH37AikZ9p5Q2V7E+emNBtoI40DMiWHAXBEsFGJEECEFnq0IZlMZPg==}
+  /react-spring-bottom-sheet@3.4.1(@types/react@18.2.13)(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-yDFqiPMm/fjefjnOe6Q9zxccbCl6HMUKsK5bWgfGHJIj4zmXVKio5d4icQvmOLuwpuCA2pwv4J6nGWS6fUZidQ==}
+    peerDependencies:
+      react: ^16.14.0 || 17 || 18
+    dependencies:
+      '@juggle/resize-observer': 3.4.0
+      '@reach/portal': 0.13.2(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
+      '@xstate/react': 1.6.3(@types/react@18.2.13)(react@18.3.0-canary-e91142dd6-20230705)(xstate@4.38.0)
+      body-scroll-lock: 3.1.5
+      focus-trap: 6.9.4
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-spring: 8.0.27(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705)
+      react-use-gesture: 8.0.1(react@18.3.0-canary-e91142dd6-20230705)
+      xstate: 4.38.0
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@xstate/fsm'
+      - react-dom
+    dev: false
+
+  /react-spring@8.0.27(react-dom@18.3.0-canary-e91142dd6-20230705)(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-nDpWBe3ZVezukNRandTeLSPcwwTMjNVu1IDq9qA/AMiUqHuRN4BeSWvKr3eIxxg1vtiYiOLy4FqdfCP5IoP77g==}
+    peerDependencies:
+      react: '>= 16.8.0'
+      react-dom: '>= 16.8.0'
+    dependencies:
+      '@babel/runtime': 7.22.5
+      prop-types: 15.8.1
+      react: 18.3.0-canary-e91142dd6-20230705
+      react-dom: 18.3.0-canary-e91142dd6-20230705(react@18.3.0-canary-e91142dd6-20230705)
+    dev: false
+
+  /react-use-gesture@8.0.1(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-CXzUNkulUdgouaAlvAsC5ZVo0fi9KGSBSk81WrE4kOIcJccpANe9zZkAYr5YZZhqpicIFxitsrGVS4wmoMun9A==}
+    deprecated: This package is no longer maintained. Please use @use-gesture/react instead
+    peerDependencies:
+      react: '>= 16.8.0'
+    dependencies:
+      react: 18.3.0-canary-e91142dd6-20230705
+    dev: false
+
+  /react@18.3.0-canary-e91142dd6-20230705:
+    resolution: {integrity: sha512-nT4B/5zA366zpWlhitSVowv02+XhIqWa+g3xN+83c4B+XDhEnyKK01tLu9dHMLaOACdJDc2/ATC7QLJnBsXnYQ==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -6087,8 +6192,8 @@ packages:
       xmlchars: 2.2.0
     dev: true
 
-  /scheduler@0.24.0-canary-e3fb7c1de-20230621:
-    resolution: {integrity: sha512-0kPPW/9Ioc5gBpNS8bDO7Sv1bTlCXZHucHa4cLsuPj+37iyKas8ru/Ivu+5t56mVOEdYa44zSzLbDCNXuBqRXQ==}
+  /scheduler@0.24.0-canary-e91142dd6-20230705:
+    resolution: {integrity: sha512-6/+ROVqUSNm6oSesr9ZM2A4f9RSyfvHgWpgxbvurvQyZ1KxQVS1AHgMS6mWzmNymjyjdlHNb/uMIs/ytWKbyiw==}
     dependencies:
       loose-envify: 1.4.0
 
@@ -6313,7 +6418,7 @@ packages:
     dev: false
     optional: true
 
-  /styled-jsx@5.1.1(@babel/core@7.22.5)(react@18.3.0-canary-e3fb7c1de-20230621):
+  /styled-jsx@5.1.1(@babel/core@7.22.5)(react@18.3.0-canary-e91142dd6-20230705):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -6328,7 +6433,7 @@ packages:
     dependencies:
       '@babel/core': 7.22.5
       client-only: 0.0.1
-      react: 18.3.0-canary-e3fb7c1de-20230621
+      react: 18.3.0-canary-e91142dd6-20230705
     dev: false
 
   /sucrase@3.32.0:
@@ -6379,6 +6484,10 @@ packages:
       '@pkgr/utils': 2.4.1
       tslib: 2.5.3
     dev: true
+
+  /tabbable@5.3.3:
+    resolution: {integrity: sha512-QD9qKY3StfbZqWOPLp0++pOrAVb/HbUi5xCc8cUo4XjP19808oaMiDzn0leBY5mCespIBM0CIZePzZjgzR83kA==}
+    dev: false
 
   /tailwindcss@3.3.2:
     resolution: {integrity: sha512-9jPkMiIBXvPc2KywkraqsUfbfj+dHDb+JPWtSJa9MLFdrPyazI7q6WX2sUrm7R9eVR7qqv3Pas7EvQFzxKnI6w==}
@@ -6669,6 +6778,36 @@ packages:
       qs: 6.11.2
     dev: false
 
+  /use-isomorphic-layout-effect@1.1.2(@types/react@18.2.13)(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@types/react': 18.2.13
+      react: 18.3.0-canary-e91142dd6-20230705
+    dev: false
+
+  /use-subscription@1.8.0(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-LISuG0/TmmoDoCRmV5XAqYkd3UCBNM0ML3gGBndze65WITcsExCD3DTvXXTLyNcOC0heFQZzluW88bN/oC1DQQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.3.0-canary-e91142dd6-20230705
+      use-sync-external-store: 1.2.0(react@18.3.0-canary-e91142dd6-20230705)
+    dev: false
+
+  /use-sync-external-store@1.2.0(react@18.3.0-canary-e91142dd6-20230705):
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.3.0-canary-e91142dd6-20230705
+    dev: false
+
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: false
@@ -6824,6 +6963,12 @@ packages:
     dependencies:
       makeerror: 1.0.12
     dev: true
+
+  /warning@4.0.3:
+    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
 
   /watchpack@2.4.0:
     resolution: {integrity: sha512-Lcvm7MGST/4fup+ifyKi2hjyIAwcdI4HRgtvTpIUxBRhB+RFtUh8XtDOxUfctVCnhVi+QQj49i91OyvzkJl6cg==}
@@ -6986,6 +7131,10 @@ packages:
     resolution: {integrity: sha512-nquOebG4sngPmGPICTS5EnxqhKbCmz5Ox5hsszI2T6U5qdrJizBc+0ilYSEjTSzU0yZcmvppztXe/5Al5fUwdg==}
     dev: false
     optional: true
+
+  /xstate@4.38.0:
+    resolution: {integrity: sha512-oFjw2YZPyu6HeO0JWCSqfhAALsjFPURsrD2FUFN3u213dWwYU68RFuLtSHco+cEUhpQFW+hRG3PNYgq8HatudQ==}
+    dev: false
 
   /y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}

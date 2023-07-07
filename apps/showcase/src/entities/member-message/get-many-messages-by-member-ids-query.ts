@@ -1,3 +1,4 @@
+import 'server-only';
 import { GetMessageByMemberIdQuery } from './get-message-by-member-id-query';
 import { Message } from './message';
 
