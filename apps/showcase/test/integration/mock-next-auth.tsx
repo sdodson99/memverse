@@ -1,5 +1,6 @@
 import { Session, getServerSession } from 'next-auth';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { SessionProvider, signIn, signOut, useSession } from 'next-auth/react';
+import { PropsWithChildren } from 'react';
 import { Mock } from 'vitest';
 
 vi.mock('next-auth');
@@ -9,6 +10,7 @@ const mockGetServerSession = getServerSession as Mock;
 const mockUseSession = useSession as Mock;
 const mockSignIn = signIn as Mock;
 const mockSignOut = signOut as Mock;
+const mockSessionProvider = SessionProvider as Mock;
 
 let session: Session | null = null;
 
@@ -21,6 +23,11 @@ beforeEach(() => {
   mockUseSession.mockImplementation(() => ({ data: session }));
   mockSignIn.mockImplementation(() => setSession({ expires: '' }));
   mockSignOut.mockImplementation(() => setSession(null));
+  mockSessionProvider.mockImplementation(function MockSessionProvider({
+    children,
+  }: PropsWithChildren<{}>) {
+    return children;
+  });
 });
 
 afterEach(() => {
@@ -28,4 +35,5 @@ afterEach(() => {
   mockUseSession.mockReset();
   mockSignIn.mockReset();
   mockSignOut.mockReset();
+  mockSessionProvider.mockReset();
 });

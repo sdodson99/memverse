@@ -1,14 +1,15 @@
-import { useSession } from 'next-auth/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { updateMemberMessageAction } from './update-member-message-action';
 import { useState } from 'react';
 import { useMembersContext } from '@/entities/member';
+import { useAuthContext } from '../auth';
+import { useSearchParams } from 'next/navigation';
 
 type UpdateMemberMessageFieldVaues = {
   message: string;
 };
 
-type UpdateMemberMessageFormProps = {
+export type UpdateMemberMessageFormProps = {
   onSuccess: () => void;
   onCancel: () => void;
 };
@@ -17,7 +18,7 @@ export function UpdateMemberMessageForm({
   onSuccess,
   onCancel,
 }: UpdateMemberMessageFormProps) {
-  const session = useSession();
+  const session = useAuthContext().useSession();
   const { members, updateMemberMessage } = useMembersContext();
 
   const currentMemberId = session?.data?.channelId;
@@ -36,13 +37,18 @@ export function UpdateMemberMessageForm({
 
   const [submitError, setSubmitError] = useState(false);
 
+  const searchParams = useSearchParams();
+
   const handleValidSubmit: SubmitHandler<
     UpdateMemberMessageFieldVaues
   > = async (data) => {
     setSubmitError(false);
 
     try {
-      await updateMemberMessageAction(data);
+      await updateMemberMessageAction(data, {
+        mock: searchParams.get('mock') ?? undefined,
+        mockChannelId: searchParams.get('mockChannelId') ?? undefined,
+      });
 
       if (currentMemberId) {
         updateMemberMessage(currentMemberId, data.message);

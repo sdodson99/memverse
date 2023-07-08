@@ -15,14 +15,17 @@ import {
 } from '@/shared/firebase';
 import { getMockData } from '@/mocks';
 import { UpdateMemberMessageCommand } from '@/features/update-member-message/update-member-message-command';
+import { getServerSession } from '@/features/auth/get-server-session';
+import { mockGetServerSession } from '@/features/auth/mock-get-server-session';
 
 type ServiceProviderOptions = {
   mock?: string;
+  mockChannelId?: string;
 };
 
 export function createServiceProvider(options: ServiceProviderOptions = {}) {
+  const getServerSession = createGetServerSession(options);
   const firebaseApp = createFirebaseAdminApp(options);
-
   const youTubeMembersQuery = createYouTubeMembersQuery(options);
 
   const getMessageByMemberIdQuery = new GetMessageByMemberIdQuery(firebaseApp);
@@ -40,6 +43,7 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
   );
 
   return {
+    getServerSession,
     getAllMembersQuery,
     updateMemberMessageCommand,
   };
@@ -82,4 +86,18 @@ function createFirebaseAdminApp({ mock }: ServiceProviderOptions) {
     }),
     databaseURL: process.env.FIREBASE_DATABASE_URL,
   });
+}
+
+function createGetServerSession({
+  mock,
+  mockChannelId,
+}: ServiceProviderOptions) {
+  if (mock) {
+    return () =>
+      mockGetServerSession({
+        channelId: mockChannelId,
+      });
+  }
+
+  return getServerSession;
 }

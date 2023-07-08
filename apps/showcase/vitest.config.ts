@@ -18,9 +18,10 @@ export default defineConfig({
       './test/integration/mock-server-only.ts',
       './test/integration/mock-youtube-member-querier.ts',
       './test/integration/mock-firebase-admin.ts',
-      './test/integration/mock-next-auth.ts',
+      './test/integration/mock-next-auth.tsx',
       './test/integration/mock-pixi.ts',
       './test/integration/mock-match-media.ts',
+      './test/integration/mock-use-search-params.ts',
     ],
     coverage: {
       all: true,

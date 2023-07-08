@@ -12,6 +12,7 @@ import { MEMBER_SPRITE_LENGTH_HALF } from '@/features/view-members/member-contai
 import { NextPageRequest } from '@/shared/http';
 import { renderServerComponent } from '../../test/unit/render-server-component';
 import { setSession } from '../../test/integration/mock-next-auth';
+import { AuthProvider } from '@/features/auth';
 
 vi.mock('@/shared/math', () => ({
   ...vi.importActual('@/shared/math'),
@@ -291,7 +292,11 @@ describe('<Home />', () => {
     const initialMessage = 'message-1';
     const updatedMessage = 'updated-message-1';
 
-    renderServerComponent(<Home {...request} />);
+    renderServerComponent(
+      <AuthProvider>
+        <Home {...request} />
+      </AuthProvider>
+    );
     await screen.findByTestId('HomePage');
 
     currentMockApplication.render();

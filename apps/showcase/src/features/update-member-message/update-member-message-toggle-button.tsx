@@ -7,6 +7,7 @@ import { UpdateMemberMessageForm } from './update-member-message-form';
 import { useSession } from 'next-auth/react';
 import * as Toast from '@radix-ui/react-toast';
 import { useMembersContext } from '@/entities/member';
+import { useAuthContext } from '../auth';
 
 const MESSAGE_UPDATED_TOAST_TIMEOUT_LENGTH = 3000;
 
@@ -33,7 +34,7 @@ export function UpdateMemberMessageToggleButton() {
     setIsUpdateMemberMessageSheetOpen(false);
   }
 
-  const session = useSession();
+  const session = useAuthContext().useSession();
   const { members } = useMembersContext();
   const isCurrentMember = members.some(
     (m) => m.id === session?.data?.channelId

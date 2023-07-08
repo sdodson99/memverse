@@ -1,7 +1,7 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
 import { ButtonHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
+import { useAuthContext } from './auth-context';
 
 type SignInButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -13,6 +13,8 @@ export function SignInButton({
   onClick,
   ...props
 }: SignInButtonProps) {
+  const { signIn } = useAuthContext();
+
   async function handleClick(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) {

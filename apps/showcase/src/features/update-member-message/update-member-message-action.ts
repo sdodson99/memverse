@@ -1,16 +1,25 @@
 'use server';
 
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { createServiceProvider } from '@/app/create-service-provider';
-import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
 const updateMemberMessageRequestSchema = z.object({
   message: z.string().max(50).nullable(),
 });
 
-export async function updateMemberMessageAction(data: unknown) {
-  const session = await getServerSession(authOptions);
+type ActionOptions = {
+  mock?: string;
+  mockChannelId?: string;
+};
+
+export async function updateMemberMessageAction(
+  data: unknown,
+  options: ActionOptions = {}
+) {
+  const { updateMemberMessageCommand, getServerSession } =
+    createServiceProvider(options);
+
+  const session = await getServerSession();
   const memberId = session?.channelId;
 
   if (!memberId) {
@@ -24,8 +33,6 @@ export async function updateMemberMessageAction(data: unknown) {
   }
 
   const message = parsedData.data.message;
-
-  const { updateMemberMessageCommand } = createServiceProvider();
 
   await updateMemberMessageCommand.execute(memberId, message);
 }

@@ -8,15 +8,18 @@ import { setSession } from '../../../test/integration/mock-next-auth';
 import { Member, MembersProvider } from '@/entities/member';
 import userEvent from '@testing-library/user-event';
 import { mockFirebaseData } from '../../../test/integration/mock-firebase-admin';
+import { AuthProvider } from '../auth';
 
 function renderComponent(
   props: UpdateMemberMessageFormProps,
   members: Member[] = []
 ) {
   render(
-    <MembersProvider initialMembers={members}>
-      <UpdateMemberMessageForm {...props} />
-    </MembersProvider>
+    <AuthProvider>
+      <MembersProvider initialMembers={members}>
+        <UpdateMemberMessageForm {...props} />
+      </MembersProvider>
+    </AuthProvider>
   );
 }
 

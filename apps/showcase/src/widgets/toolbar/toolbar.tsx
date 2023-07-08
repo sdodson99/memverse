@@ -1,12 +1,13 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { createServiceProvider } from '@/app/create-service-provider';
 import { SignInButton, SignOutButton } from '@/features/auth';
 import { UpdateMemberMessageToggleButton } from '@/features/update-member-message';
-import { getServerSession } from 'next-auth';
+import { NextPageRequest } from '@/shared/http';
 import Image from 'next/image';
 
-export async function Toolbar() {
-  const session = await getServerSession(authOptions);
+export async function Toolbar(request: NextPageRequest) {
+  const { getServerSession } = createServiceProvider(request.searchParams);
 
+  const session = await getServerSession();
   const isLoggedIn = Boolean(session);
 
   return (
