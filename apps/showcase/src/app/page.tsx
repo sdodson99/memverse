@@ -1,10 +1,8 @@
-import {
-  MembersProvider,
-  MembersApplicationBootstrapper,
-} from '@/features/view-members';
+import { MembersApplicationBootstrapper } from '@/features/view-members';
 import { NextPageRequest } from '@/shared/http';
 import { createServiceProvider } from './create-service-provider';
 import { Toolbar } from '@/widgets/toolbar';
+import { MembersProvider } from '@/entities/member';
 
 export default async function Home(request: NextPageRequest) {
   const { getAllMembersQuery } = createServiceProvider(request.searchParams);

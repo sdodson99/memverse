@@ -1,7 +1,7 @@
 import 'server-only';
 import { GetManyMessagesByMemberIdsQuery } from '@/entities/member-message';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
-import { Member } from './member';
+import { Member } from '@/entities/member';
 
 export class GetAllMembersQuery {
   constructor(

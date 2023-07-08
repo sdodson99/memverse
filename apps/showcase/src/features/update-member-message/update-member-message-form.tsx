@@ -1,8 +1,8 @@
 import { useSession } from 'next-auth/react';
-import { useMembersContext } from '../view-members/members-context';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { updateMemberMessageAction } from './update-member-message-action';
 import { useState } from 'react';
+import { useMembersContext } from '@/entities/member';
 
 type UpdateMemberMessageFieldVaues = {
   message: string;

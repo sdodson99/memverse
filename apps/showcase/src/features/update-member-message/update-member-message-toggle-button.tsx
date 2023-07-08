@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { UpdateMemberMessageForm } from './update-member-message-form';
-import { useMembersContext } from '../view-members/members-context';
 import { useSession } from 'next-auth/react';
 import * as Toast from '@radix-ui/react-toast';
+import { useMembersContext } from '@/entities/member';
 
 const MESSAGE_UPDATED_TOAST_TIMEOUT_LENGTH = 3000;
 

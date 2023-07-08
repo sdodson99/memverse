@@ -1,6 +1,6 @@
 import { Container, IPointData, Rectangle, Sprite, Text } from 'pixi.js';
 import { generateRandom } from '@/shared/math';
-import { Member } from './member';
+import { Member } from '@/entities/member';
 
 const MEMBER_SPRITE_LENGTH = 50;
 export const MEMBER_SPRITE_LENGTH_HALF = MEMBER_SPRITE_LENGTH / 2;

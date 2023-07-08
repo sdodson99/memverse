@@ -1,6 +1,6 @@
 import { Application } from 'pixi.js';
 import { MemberContainer } from './member-container';
-import { Member } from './member';
+import { Member } from '@/entities/member';
 
 const STAGE_BACKGROUND_COLOR = '#1F232D';
 

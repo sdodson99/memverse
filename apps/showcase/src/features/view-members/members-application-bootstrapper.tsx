@@ -1,6 +1,6 @@
 'use client';
 
-import { useMembersContext } from './members-context';
+import { useMembersContext } from '@/entities/member';
 import { useEffect, useRef, useState } from 'react';
 import { MembersApplication } from './members-application';
 
