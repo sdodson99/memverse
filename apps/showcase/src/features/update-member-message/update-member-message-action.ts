@@ -23,16 +23,22 @@ export async function updateMemberMessageAction(
   const memberId = session?.channelId;
 
   if (!memberId) {
+    console.warn('Unable to authenticate update message request.');
     throw new Error('Unauthenticated');
   }
+
+  console.log('Updating message for member ID:', memberId);
 
   const parsedData = updateMemberMessageRequestSchema.safeParse(data);
 
   if (!parsedData.success) {
+    console.warn('Update message validation failed:', parsedData.error);
     throw new Error('Invalid');
   }
 
   const message = parsedData.data.message;
 
   await updateMemberMessageCommand.execute(memberId, message);
+
+  console.log('Successfully updated message for member ID:', memberId);
 }

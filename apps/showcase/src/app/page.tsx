@@ -9,6 +9,8 @@ export default async function Home(request: NextPageRequest) {
 
   const members = await getAllMembersQuery.execute();
 
+  console.log('Loaded members:', members.length);
+
   return (
     <div data-testid="HomePage">
       <MembersProvider initialMembers={members}>
