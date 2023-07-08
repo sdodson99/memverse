@@ -2,16 +2,19 @@ import { useSession } from 'next-auth/react';
 import { useMembersContext } from '../view-members/members-context';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { updateMemberMessageAction } from './update-member-message-action';
+import { useState } from 'react';
 
 type UpdateMemberMessageFieldVaues = {
   message: string;
 };
 
 type UpdateMemberMessageFormProps = {
+  onSuccess: () => void;
   onCancel: () => void;
 };
 
 export function UpdateMemberMessageForm({
+  onSuccess,
   onCancel,
 }: UpdateMemberMessageFormProps) {
   const session = useSession();
@@ -31,24 +34,36 @@ export function UpdateMemberMessageForm({
     },
   });
 
+  const [submitError, setSubmitError] = useState(false);
+
   const handleValidSubmit: SubmitHandler<
     UpdateMemberMessageFieldVaues
   > = async (data) => {
+    setSubmitError(false);
+
     try {
       await updateMemberMessageAction(data);
 
       if (currentMemberId) {
         updateMemberMessage(currentMemberId, data.message);
       }
-    } catch {}
-  };
 
-  const handleInvalidSubmit = () => {
-    console.warn('Invalid form submit');
+      onSuccess();
+    } catch (err) {
+      setSubmitError(true);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(handleValidSubmit, handleInvalidSubmit)}>
+    <form onSubmit={handleSubmit(handleValidSubmit)}>
+      {submitError ? (
+        <p className="p-4 bg-red-600 text-white mb-8 rounded-lg">
+          Failed to update message. Please try again!
+        </p>
+      ) : null}
+
+      <p>As a member, you get to share a message with the world.</p>
+
       <div className="mt-8 flex flex-col">
         <label htmlFor="message">Message</label>
         <input
