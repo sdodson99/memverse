@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { UpdateMemberMessageForm } from './update-member-message-form';
+import { useMembersContext } from '../view-members/members-context';
+import { useSession } from 'next-auth/react';
 
 export function UpdateMemberMessageToggleButton() {
   const [isUpdateMemberMessageSheetOpen, setIsUpdateMemberMessageSheetOpen] =
@@ -17,9 +19,19 @@ export function UpdateMemberMessageToggleButton() {
     setIsUpdateMemberMessageSheetOpen(false);
   }
 
+  const session = useSession();
+  const { members } = useMembersContext();
+  const isCurrentMember = members.some(
+    (m) => m.id === session?.data?.channelId
+  );
+
   return (
     <div>
-      <button className="mx-8" onClick={openUpdateMemberMessageSheet}>
+      <button
+        disabled={!isCurrentMember}
+        className="mx-8 disabled:opacity-70"
+        onClick={openUpdateMemberMessageSheet}
+      >
         <Image
           src="/pencil-emoji.png"
           alt="Update Message"
