@@ -8,18 +8,22 @@ import {
   GetAllMembersQuery,
   MockYouTubeMembersQuery,
 } from '@/features/view-members';
-import { NextPageRequest } from '@/shared/http';
 import { YouTubeMembersQuery } from 'youtube-member-querier';
 import {
   MockFirebaseAdminApp,
   initializeFirebaseAdminApp,
 } from '@/shared/firebase';
 import { getMockData } from '@/mocks';
+import { UpdateMemberMessageCommand } from '@/features/update-member-message/update-member-message-command';
 
-export function createServiceProvider(request: NextPageRequest) {
-  const firebaseApp = createFirebaseAdminApp(request);
+type ServiceProviderOptions = {
+  mock?: string;
+};
 
-  const youTubeMembersQuery = createYouTubeMembersQuery(request);
+export function createServiceProvider(options: ServiceProviderOptions = {}) {
+  const firebaseApp = createFirebaseAdminApp(options);
+
+  const youTubeMembersQuery = createYouTubeMembersQuery(options);
 
   const getMessageByMemberIdQuery = new GetMessageByMemberIdQuery(firebaseApp);
   const getManyMessagesByMembersIdsQuery = new GetManyMessagesByMemberIdsQuery(
@@ -31,14 +35,19 @@ export function createServiceProvider(request: NextPageRequest) {
     getManyMessagesByMembersIdsQuery
   );
 
+  const updateMemberMessageCommand = new UpdateMemberMessageCommand(
+    firebaseApp
+  );
+
   return {
     getAllMembersQuery,
+    updateMemberMessageCommand,
   };
 }
 
-function createYouTubeMembersQuery(request: NextPageRequest) {
-  if (request.searchParams.mock) {
-    const { youTubeMembers } = getMockData(request.searchParams.mock);
+function createYouTubeMembersQuery({ mock }: ServiceProviderOptions) {
+  if (mock) {
+    const { youTubeMembers } = getMockData(mock);
 
     // TBD: Could wrap youtube-member-querier completely instead of casting.
     return new MockYouTubeMembersQuery(
@@ -55,9 +64,9 @@ function createYouTubeMembersQuery(request: NextPageRequest) {
   });
 }
 
-function createFirebaseAdminApp(request: NextPageRequest) {
-  if (request.searchParams.mock) {
-    const { firebaseDatabase } = getMockData(request.searchParams.mock);
+function createFirebaseAdminApp({ mock }: ServiceProviderOptions) {
+  if (mock) {
+    const { firebaseDatabase } = getMockData(mock);
 
     // TBD: Could wrap Firebase completely instead of casting.
     return new MockFirebaseAdminApp(

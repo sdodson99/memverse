@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
+import { UpdateMemberMessageForm } from './update-member-message-form';
 
 export function UpdateMemberMessageToggleButton() {
   const [isUpdateMemberMessageSheetOpen, setIsUpdateMemberMessageSheetOpen] =
@@ -35,32 +36,7 @@ export function UpdateMemberMessageToggleButton() {
         <section className="max-w-2xl mx-auto my-8 px-8">
           <p>As a member, you get to share a message with the world.</p>
 
-          <form>
-            <div className="mt-8 flex flex-col">
-              <label htmlFor="message">Message</label>
-              <input
-                type="text"
-                name="message"
-                id="message"
-                className="mt-2 px-1 py-2 border border-gray-300 rounded"
-              />
-            </div>
-            <div className="mt-8">
-              <button
-                type="submit"
-                className="mr-4 bg-blue-600 hover:bg-blue-800 transition text-white rounded px-4 py-2"
-              >
-                Update
-              </button>
-              <button
-                type="button"
-                className="mr-4 bg-gray-100 hover:bg-gray-300 transition text-black rounded px-4 py-2"
-                onClick={handleSheetDismiss}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+          <UpdateMemberMessageForm onCancel={handleSheetDismiss} />
         </section>
       </BottomSheet>
     </div>

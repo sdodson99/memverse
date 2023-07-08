@@ -7,7 +7,7 @@ import { createServiceProvider } from './create-service-provider';
 import { Toolbar } from '@/widgets/toolbar';
 
 export default async function Home(request: NextPageRequest) {
-  const { getAllMembersQuery } = createServiceProvider(request);
+  const { getAllMembersQuery } = createServiceProvider(request.searchParams);
 
   const members = await getAllMembersQuery.execute();
 
