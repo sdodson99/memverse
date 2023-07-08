@@ -5,3 +5,7 @@
 .break-word {
   word-break: break-word;
 }
+
+.bg-primary {
+  background: #1f232d;
+}
