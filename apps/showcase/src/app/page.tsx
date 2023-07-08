@@ -11,16 +11,14 @@ export default async function Home(request: NextPageRequest) {
 
   return (
     <div data-testid="HomePage">
-      <main>
-        <MembersProvider initialMembers={members}>
-          <div className="relative flex flex-col">
-            <MembersApplicationBootstrapper />
-            <div className="absolute bottom-0 self-center rounded-t-xl bg-white bg-opacity-50">
-              <Toolbar {...request} />
-            </div>
+      <MembersProvider initialMembers={members}>
+        <div className="relative flex flex-col">
+          <MembersApplicationBootstrapper />
+          <div className="absolute bottom-0 self-center rounded-t-xl bg-white bg-opacity-50">
+            <Toolbar {...request} />
           </div>
-        </MembersProvider>
-      </main>
+        </div>
+      </MembersProvider>
     </div>
   );
 }

@@ -17,6 +17,16 @@ export class MembersApplication {
     });
     this.application.stage.sortableChildren = true;
 
+    const fixMobileScrolling = () => {
+      this.application.renderer.plugins.interaction.autoPreventDefault = false;
+      const applicationStyle = this.application.view.style;
+      if (applicationStyle) {
+        applicationStyle.touchAction = 'auto';
+      }
+    };
+
+    fixMobileScrolling();
+
     this.memberContainers = members.map(
       (m) => new MemberContainer(m, this.application.screen)
     );

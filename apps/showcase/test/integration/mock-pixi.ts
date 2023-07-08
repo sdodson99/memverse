@@ -23,6 +23,13 @@ const currentMockApplication = {
       this.children.push(child);
     },
   },
+  renderer: {
+    plugins: {
+      interaction: {
+        autoPreventDefault: false,
+      },
+    },
+  },
   ticker: {
     tickerCallbacks: [] as TickerCallback[],
     add: function (cb: TickerCallback) {
