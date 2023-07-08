@@ -1,6 +1,7 @@
 import { createServiceProvider } from '@/app/create-service-provider';
 import { SignInButton, SignOutButton } from '@/features/auth';
 import { UpdateMemberMessageToggleButton } from '@/features/update-member-message';
+import { ViewMembersListingToggleButton } from '@/features/view-members';
 import { NextPageRequest } from '@/shared/http';
 import Image from 'next/image';
 
@@ -12,6 +13,8 @@ export async function Toolbar(request: NextPageRequest) {
 
   return (
     <section className="flex items-center justify-center text-black px-12 py-4">
+      <ViewMembersListingToggleButton />
+
       {isLoggedIn ? <UpdateMemberMessageToggleButton /> : null}
 
       {!isLoggedIn ? (

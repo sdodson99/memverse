@@ -43,6 +43,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.45.1
     version: 7.45.1(react@18.3.0-canary-fdc8c81e0-20230707)
+  react-icons:
+    specifier: ^4.10.1
+    version: 4.10.1(react@18.3.0-canary-fdc8c81e0-20230707)
   react-spring-bottom-sheet:
     specifier: ^3.4.1
     version: 3.4.1(@types/react@18.2.13)(react-dom@18.3.0-canary-fdc8c81e0-20230707)(react@18.3.0-canary-fdc8c81e0-20230707)
@@ -6242,6 +6245,14 @@ packages:
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.3.0-canary-fdc8c81e0-20230707
+    dev: false
+
+  /react-icons@4.10.1(react@18.3.0-canary-fdc8c81e0-20230707):
+    resolution: {integrity: sha512-/ngzDP/77tlCfqthiiGNZeYFACw85fUjZtLbedmJ5DTlNDIwETxhwBzdOJ21zj4iJdvc0J3y7yOsX3PpxAJzrw==}
+    peerDependencies:
+      react: '*'
     dependencies:
       react: 18.3.0-canary-fdc8c81e0-20230707
     dev: false

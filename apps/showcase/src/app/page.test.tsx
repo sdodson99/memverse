@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { getByTestId, getByText, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Home from './page';
@@ -32,17 +32,17 @@ describe('<Home />', () => {
       {
         channelId: '1',
         username: 'username-1',
-        photoUrl: 'photo-url-1',
+        photoUrl: 'https://test.com/photo-url-1',
       },
       {
         channelId: '2',
         username: 'username-2',
-        photoUrl: 'photo-url-2',
+        photoUrl: 'https://test.com/photo-url-2',
       },
       {
         channelId: '3',
         username: 'username-3',
-        photoUrl: 'photo-url-3',
+        photoUrl: 'https://test.com/photo-url-3',
       },
     ];
     mockFirebaseData.data = {
@@ -86,9 +86,15 @@ describe('<Home />', () => {
     expect(screen.getByText('username-3')).toBeInTheDocument();
     expect(screen.getByText('message-1')).toBeInTheDocument();
     expect(screen.getByText('message-3')).toBeInTheDocument();
-    expect(screen.getByTestId('photo-url-1')).toBeInTheDocument();
-    expect(screen.getByTestId('photo-url-2')).toBeInTheDocument();
-    expect(screen.getByTestId('photo-url-3')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('https://test.com/photo-url-1')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('https://test.com/photo-url-2')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByTestId('https://test.com/photo-url-3')
+    ).toBeInTheDocument();
   });
 
   it('moves members over time', async () => {
@@ -323,5 +329,30 @@ describe('<Home />', () => {
     updatedMessageElement = screen.queryByText(updatedMessage);
     expect(initialMessageElement).not.toBeInTheDocument();
     expect(updatedMessageElement).toBeInTheDocument();
+  });
+
+  it('lists members in sheet when view members sheet open', async () => {
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
+    const viewMembersToggleButton = await screen.findByAltText('View Members');
+    await userEvent.click(viewMembersToggleButton);
+
+    const sheet = await screen.findByTestId('ViewMembersSheet');
+
+    expect(getByText(sheet, 'username-1')).toBeInTheDocument();
+    expect(getByText(sheet, 'username-2')).toBeInTheDocument();
+    expect(getByText(sheet, 'username-3')).toBeInTheDocument();
+    expect(getByText(sheet, 'message-1')).toBeInTheDocument();
+    expect(getByText(sheet, 'message-3')).toBeInTheDocument();
+    expect(
+      getByTestId(sheet, 'https://test.com/photo-url-1')
+    ).toBeInTheDocument();
+    expect(
+      getByTestId(sheet, 'https://test.com/photo-url-2')
+    ).toBeInTheDocument();
+    expect(
+      getByTestId(sheet, 'https://test.com/photo-url-3')
+    ).toBeInTheDocument();
   });
 });
