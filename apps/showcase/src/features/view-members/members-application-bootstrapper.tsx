@@ -12,8 +12,7 @@ export function MembersApplicationBootstrapper() {
   } = useMembersContext();
 
   const mountElementRef = useRef<HTMLDivElement>(null);
-
-  const [application] = useState(() => new MembersApplication(members));
+  const initialMembersRef = useRef(members);
 
   useEffect(() => {
     const mountElement = mountElementRef.current;
@@ -21,6 +20,8 @@ export function MembersApplicationBootstrapper() {
     if (!mountElement) {
       return;
     }
+
+    const application = new MembersApplication(initialMembersRef.current);
 
     mountElement.appendChild(application.view);
     application.run();
@@ -33,7 +34,6 @@ export function MembersApplicationBootstrapper() {
       removeUpdateMemberMessageListener(application.updateMemberMessage);
     };
   }, [
-    application,
     mountElementRef,
     addUpdateMemberMessageListener,
     removeUpdateMemberMessageListener,
