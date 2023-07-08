@@ -1,8 +1,8 @@
 export class MockFirebaseAdminApp {
   private _database: MockFirebaseAdminDatabase;
 
-  constructor(initialData: Record<string, unknown> = {}) {
-    this._database = new MockFirebaseAdminDatabase(initialData);
+  constructor(data: Record<string, unknown> = {}) {
+    this._database = new MockFirebaseAdminDatabase(data);
   }
 
   database() {
@@ -27,6 +27,10 @@ class MockFirebaseAdminDatabase {
   get(path: string) {
     return this.data[path];
   }
+
+  set(path: string, value: unknown) {
+    this.data[path] = value;
+  }
 }
 
 class MockFirebaseAdminDatabaseQuery {
@@ -34,6 +38,10 @@ class MockFirebaseAdminDatabaseQuery {
 
   constructor(private database: MockFirebaseAdminDatabase) {
     this.paths = [];
+  }
+
+  get fullPath() {
+    return this.paths.join('/');
   }
 
   ref(path: string) {
@@ -49,12 +57,15 @@ class MockFirebaseAdminDatabaseQuery {
   }
 
   async get() {
-    const fullPath = this.paths.join('/');
-    const data = this.database.get(fullPath);
+    const data = this.database.get(this.fullPath);
 
     return {
       exists: () => Boolean(data),
       val: () => data,
     };
+  }
+
+  async set(value: unknown) {
+    this.database.set(this.fullPath, value);
   }
 }

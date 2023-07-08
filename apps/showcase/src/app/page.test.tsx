@@ -4,13 +4,14 @@ import '@testing-library/jest-dom';
 import Home from './page';
 import { mockYouTubeMembers } from '../../test/integration/mock-youtube-member-querier';
 import { currentMockApplication } from '../../test/integration/mock-pixi';
-import { mockFirebaseInitialData } from '../../test/integration/mock-firebase-admin';
+import { mockFirebaseData } from '../../test/integration/mock-firebase-admin';
 import { generateRandom } from '@/shared/math';
 import { Mock } from 'vitest';
 import { when } from 'jest-when';
 import { MEMBER_SPRITE_LENGTH_HALF } from '@/features/view-members/member-container';
 import { NextPageRequest } from '@/shared/http';
 import { renderServerComponent } from '../../test/unit/render-server-component';
+import { setSession } from '../../test/integration/mock-next-auth';
 
 vi.mock('@/shared/math', () => ({
   ...vi.importActual('@/shared/math'),
@@ -43,7 +44,7 @@ describe('<Home />', () => {
         photoUrl: 'photo-url-3',
       },
     ];
-    mockFirebaseInitialData.data = {
+    mockFirebaseData.data = {
       '/messages/1': { content: 'message-1' },
       '/messages/3': { content: 'message-3' },
     };
@@ -283,5 +284,39 @@ describe('<Home />', () => {
     const updatedMemberContainer = screen.getByTestId('username-1-container');
     expect(updatedMemberContainer?.getAttribute('data-scale-x')).toBe('0.8');
     expect(updatedMemberContainer?.getAttribute('data-scale-y')).toBe('0.8');
+  });
+
+  it('updates member message in showcase when user updates message', async () => {
+    setSession({ channelId: '1', expires: '' });
+    const initialMessage = 'message-1';
+    const updatedMessage = 'updated-message-1';
+
+    renderServerComponent(<Home {...request} />);
+    await screen.findByTestId('HomePage');
+
+    currentMockApplication.render();
+    let initialMessageElement = screen.queryByText(initialMessage);
+    let updatedMessageElement = screen.queryByText(updatedMessage);
+    expect(initialMessageElement).toBeInTheDocument();
+    expect(updatedMessageElement).not.toBeInTheDocument();
+
+    const updateMessageToggleButton = await screen.findByAltText(
+      'Update Message'
+    );
+    await userEvent.click(updateMessageToggleButton);
+
+    const messageInput = await screen.findByLabelText('Message');
+    await userEvent.clear(messageInput);
+    await userEvent.type(messageInput, updatedMessage);
+
+    const submitButton = await screen.findByText('Update');
+    await userEvent.click(submitButton);
+
+    currentMockApplication.render();
+
+    initialMessageElement = screen.queryByText(initialMessage);
+    updatedMessageElement = screen.queryByText(updatedMessage);
+    expect(initialMessageElement).not.toBeInTheDocument();
+    expect(updatedMessageElement).toBeInTheDocument();
   });
 });

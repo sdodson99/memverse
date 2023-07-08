@@ -20,6 +20,7 @@ export default defineConfig({
       './test/integration/mock-firebase-admin.ts',
       './test/integration/mock-next-auth.ts',
       './test/integration/mock-pixi.ts',
+      './test/integration/mock-match-media.ts',
     ],
     coverage: {
       all: true,

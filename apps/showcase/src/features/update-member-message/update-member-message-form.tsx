@@ -68,6 +68,7 @@ export function UpdateMemberMessageForm({
         <label htmlFor="message">Message</label>
         <input
           {...register('message')}
+          id="message"
           className="mt-2 px-1 py-2 border border-gray-300 rounded"
           maxLength={50}
         />
