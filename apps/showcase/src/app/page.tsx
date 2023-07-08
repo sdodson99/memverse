@@ -14,7 +14,7 @@ export default async function Home(request: NextPageRequest) {
   return (
     <div data-testid="HomePage">
       <main>
-        <MembersProvider members={members}>
+        <MembersProvider initialMembers={members}>
           <div className="relative flex flex-col">
             <MembersApplicationBootstrapper />
             <div className="absolute bottom-0 self-center rounded-t-xl bg-white bg-opacity-50">

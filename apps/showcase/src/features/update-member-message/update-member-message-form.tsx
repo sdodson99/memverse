@@ -15,7 +15,7 @@ export function UpdateMemberMessageForm({
   onCancel,
 }: UpdateMemberMessageFormProps) {
   const session = useSession();
-  const { members } = useMembersContext();
+  const { members, updateMemberMessage } = useMembersContext();
 
   const currentMemberId = session?.data?.channelId;
   const currentMember = members.find((m) => m.id === currentMemberId);
@@ -36,9 +36,11 @@ export function UpdateMemberMessageForm({
   > = async (data) => {
     try {
       await updateMemberMessageAction(data);
-    } catch {
-      onCancel();
-    }
+
+      if (currentMemberId) {
+        updateMemberMessage(currentMemberId, data.message);
+      }
+    } catch {}
   };
 
   const handleInvalidSubmit = () => {

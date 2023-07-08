@@ -26,6 +26,7 @@ export class MembersApplication {
     );
 
     this.update = this.update.bind(this);
+    this.updateMemberMessage = this.updateMemberMessage.bind(this);
   }
 
   get view() {
@@ -42,5 +43,17 @@ export class MembersApplication {
 
   update(delta: number) {
     this.memberContainers.forEach((m) => m.update(delta));
+  }
+
+  updateMemberMessage(memberId: string, message: string) {
+    const memberContainer = this.memberContainers.find(
+      (m) => m.id === memberId
+    );
+
+    if (!memberContainer) {
+      return;
+    }
+
+    memberContainer.message = message;
   }
 }

@@ -16,10 +16,13 @@ const MAX_SCALE = 1.2;
 export class MemberContainer {
   private static topZIndex: number = 2;
 
+  private _id: string;
+  private username: string;
+
   private avatarSprite: Sprite;
   private textContainer: Container;
-  private usernameText: Text;
-  private messageText?: Text;
+  private topText: Text;
+  private bottomText: Text;
   private _container: Container;
   private directionRadians: number;
   private textCount: number;
@@ -27,6 +30,9 @@ export class MemberContainer {
   private active: boolean;
 
   constructor(member: Member, private bounds: Rectangle) {
+    this._id = member.id;
+    this.username = member.username;
+
     this._container = new Container();
     this._container.name = `${member.username}-container`;
     this._container.interactive = true;
@@ -55,16 +61,15 @@ export class MemberContainer {
     this.textContainer.alpha = 0;
     this._container.addChild(this.textContainer);
 
-    if (member.message) {
-      this.messageText = this.createText(member.message);
-      this.textContainer.addChild(this.messageText);
-      this.textCount++;
-    }
-
-    this.usernameText = this.createText(member.username);
-    this.usernameText.style.fontWeight = 'bold';
-    this.textContainer.addChild(this.usernameText);
+    this.bottomText = this.createText();
+    this.textContainer.addChild(this.bottomText);
     this.textCount++;
+
+    this.topText = this.createText();
+    this.textContainer.addChild(this.topText);
+    this.textCount++;
+
+    this.populateText(this.username, member.message);
 
     const { top, bottom, left, right } = this.bounds;
     this.x = generateRandom(left + this.width / 2, right - this.width / 2);
@@ -74,8 +79,8 @@ export class MemberContainer {
     this.active = false;
   }
 
-  private createText(value: string) {
-    const text = new Text(value);
+  private createText() {
+    const text = new Text();
 
     text.style.fill = 'white';
     text.y = MEMBER_TEXT_OFFET - MEMBER_TEXT_SPACING * this.textCount;
@@ -84,6 +89,28 @@ export class MemberContainer {
     text.scale.set(0.5, 0.5);
 
     return text;
+  }
+
+  private populateText(username: string, message: string | null) {
+    if (!message) {
+      this.topText.text = '';
+      this.bottomText.text = username;
+      this.bottomText.style.fontWeight = 'bold';
+      return;
+    }
+
+    this.topText.text = username;
+    this.topText.style.fontWeight = 'bold';
+    this.bottomText.text = message;
+    this.bottomText.style.fontWeight = 'normal';
+  }
+
+  get id() {
+    return this._id;
+  }
+
+  set message(newMessage: string) {
+    this.populateText(this.username, newMessage);
   }
 
   get container() {

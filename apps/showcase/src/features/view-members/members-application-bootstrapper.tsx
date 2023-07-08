@@ -1,13 +1,19 @@
 'use client';
 
 import { useMembersContext } from './members-context';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MembersApplication } from './members-application';
 
 export function MembersApplicationBootstrapper() {
-  const { members } = useMembersContext();
+  const {
+    members,
+    addUpdateMemberMessageListener,
+    removeUpdateMemberMessageListener,
+  } = useMembersContext();
 
   const mountElementRef = useRef<HTMLDivElement>(null);
+
+  const [application] = useState(() => new MembersApplication(members));
 
   useEffect(() => {
     const mountElement = mountElementRef.current;
@@ -16,16 +22,22 @@ export function MembersApplicationBootstrapper() {
       return;
     }
 
-    const application = new MembersApplication(members);
-
     mountElement.appendChild(application.view);
     application.run();
+
+    addUpdateMemberMessageListener(application.updateMemberMessage);
 
     return () => {
       mountElement.removeChild(application.view);
       application.stop();
+      removeUpdateMemberMessageListener(application.updateMemberMessage);
     };
-  }, [mountElementRef, members]);
+  }, [
+    application,
+    mountElementRef,
+    addUpdateMemberMessageListener,
+    removeUpdateMemberMessageListener,
+  ]);
 
   return <div ref={mountElementRef} />;
 }
