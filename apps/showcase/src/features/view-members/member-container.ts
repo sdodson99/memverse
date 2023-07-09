@@ -122,7 +122,7 @@ export class MemberContainer {
   }
 
   private set x(value) {
-    this._container.x = value;
+    this._container.x = Math.round(value);
   }
 
   private get y() {
@@ -130,7 +130,7 @@ export class MemberContainer {
   }
 
   private set y(value) {
-    this._container.y = value;
+    this._container.y = Math.round(value);
   }
 
   private set scale(value: IPointData) {

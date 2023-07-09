@@ -114,12 +114,8 @@ describe('<Home />', () => {
     currentMockApplication.render(100);
 
     const endMemberContainer = screen.getByTestId('username-1-container');
-    expect(Number(endMemberContainer?.getAttribute('data-x'))).toBeCloseTo(
-      537.5
-    );
-    expect(Number(endMemberContainer?.getAttribute('data-y'))).toBeCloseTo(
-      314.951
-    );
+    expect(Number(endMemberContainer?.getAttribute('data-x'))).toBeCloseTo(538);
+    expect(Number(endMemberContainer?.getAttribute('data-y'))).toBeCloseTo(315);
   });
 
   it('bounces members off left wall', async () => {
