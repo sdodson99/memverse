@@ -2,6 +2,7 @@
 
 import { ButtonHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
 import { useAuthContext } from './auth-context';
+import { logAnalyticsEvent } from '@/shared/analytics';
 
 type SignOutButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -18,9 +19,11 @@ export function SignOutButton({
   async function handleClick(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) {
-    await signOut();
+    logAnalyticsEvent('sign_out_click');
 
     onClick?.(e);
+
+    await signOut();
   }
 
   return (

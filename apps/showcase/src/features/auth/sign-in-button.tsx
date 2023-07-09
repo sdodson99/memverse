@@ -2,6 +2,7 @@
 
 import { ButtonHTMLAttributes, DetailedHTMLProps, MouseEvent } from 'react';
 import { useAuthContext } from './auth-context';
+import { logAnalyticsEvent } from '@/shared/analytics';
 
 type SignInButtonProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -18,9 +19,11 @@ export function SignInButton({
   async function handleClick(
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) {
-    await signIn('google');
+    logAnalyticsEvent('sign_in_click');
 
     onClick?.(e);
+
+    await signIn('google');
   }
 
   return (
