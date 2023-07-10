@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useMembersContext } from '@/entities/member';
 import { useAuthContext } from '../auth';
 import { useSearchParams } from 'next/navigation';
+import { logAnalyticsEvent } from '@/shared/analytics';
 
 type UpdateMemberMessageFieldVaues = {
   message: string;
@@ -42,6 +43,8 @@ export function UpdateMemberMessageForm({
   const handleValidSubmit: SubmitHandler<
     UpdateMemberMessageFieldVaues
   > = async (data) => {
+    logAnalyticsEvent('update_message_valid_submit');
+
     setSubmitError(false);
 
     try {
@@ -54,14 +57,34 @@ export function UpdateMemberMessageForm({
         updateMemberMessage(currentMemberId, data.message);
       }
 
+      logAnalyticsEvent('update_message_success', {
+        messageLength: data.message.length,
+      });
+
       onSuccess();
     } catch (err) {
+      logAnalyticsEvent('update_message_error');
+
       setSubmitError(true);
     }
   };
 
+  const handleInvalidSubmit = () => {
+    logAnalyticsEvent('update_message_invalid_submit');
+  };
+
+  const handleCancelClick = () => {
+    logAnalyticsEvent('update_message_cancel');
+
+    onCancel();
+  };
+
+  const handleMessageInputBlur = () => {
+    logAnalyticsEvent('update_message_input_change');
+  };
+
   return (
-    <form onSubmit={handleSubmit(handleValidSubmit)}>
+    <form onSubmit={handleSubmit(handleValidSubmit, handleInvalidSubmit)}>
       {submitError ? (
         <p className="p-4 bg-red-600 text-white mb-8 rounded-lg">
           Failed to update message. Please try again!
@@ -73,7 +96,9 @@ export function UpdateMemberMessageForm({
       <div className="mt-8 flex flex-col">
         <label htmlFor="message">Message</label>
         <input
-          {...register('message')}
+          {...register('message', {
+            onBlur: handleMessageInputBlur,
+          })}
           id="message"
           className="mt-2 px-1 py-2 border border-gray-300 rounded"
           maxLength={50}
@@ -90,7 +115,7 @@ export function UpdateMemberMessageForm({
         <button
           type="button"
           className="mr-4 bg-gray-100 hover:bg-gray-300 transition text-black rounded px-4 py-2"
-          onClick={onCancel}
+          onClick={handleCancelClick}
         >
           Cancel
         </button>

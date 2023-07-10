@@ -1,6 +1,7 @@
 import { Container, IPointData, Rectangle, Sprite, Text } from 'pixi.js';
 import { generateRandom } from '@/shared/math';
 import { Member } from '@/entities/member';
+import { logAnalyticsEvent } from '@/shared/analytics';
 
 const MEMBER_SPRITE_LENGTH = 50;
 export const MEMBER_SPRITE_LENGTH_HALF = MEMBER_SPRITE_LENGTH / 2;
@@ -209,6 +210,10 @@ export class MemberContainer {
   }
 
   private handlePointerDown() {
+    logAnalyticsEvent('showcase_member_click', {
+      targetMemberId: this.id,
+    });
+
     this.raiseToTop();
 
     this.active = !this.active;

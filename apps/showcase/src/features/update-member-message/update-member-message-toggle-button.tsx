@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { BottomSheet } from 'react-spring-bottom-sheet';
 import { UpdateMemberMessageForm } from './update-member-message-form';
-import { useSession } from 'next-auth/react';
 import * as Toast from '@radix-ui/react-toast';
 import { useMembersContext } from '@/entities/member';
 import { useAuthContext } from '../auth';
+import { logAnalyticsEvent } from '@/shared/analytics';
 
 const MESSAGE_UPDATED_TOAST_TIMEOUT_LENGTH = 3000;
 
@@ -18,20 +18,29 @@ export function UpdateMemberMessageToggleButton() {
   const messageUpdatedToastTimeoutRef = useRef(0);
 
   function openUpdateMemberMessageSheet() {
+    logAnalyticsEvent('open_update_message_sheet');
     setIsUpdateMemberMessageSheetOpen(true);
   }
 
-  function handleUpdateMessageSuccess() {
+  function closeUpdateMemberMessageSheet() {
+    logAnalyticsEvent('close_update_message_sheet');
     setIsUpdateMemberMessageSheetOpen(false);
+  }
 
+  function handleUpdateMessageSuccess() {
+    closeUpdateMemberMessageSheet();
+
+    logAnalyticsEvent('show_update_message_success_toast');
     setShowMessageUpdatedToast(true);
+
     messageUpdatedToastTimeoutRef.current = window.setTimeout(() => {
+      logAnalyticsEvent('close_update_message_success_toast');
       setShowMessageUpdatedToast(false);
     }, MESSAGE_UPDATED_TOAST_TIMEOUT_LENGTH);
   }
 
   function handleSheetDismiss() {
-    setIsUpdateMemberMessageSheetOpen(false);
+    closeUpdateMemberMessageSheet();
   }
 
   const session = useAuthContext().useSession();
@@ -75,7 +84,7 @@ export function UpdateMemberMessageToggleButton() {
         >
           <Toast.Title className="font-bold">Message Updated</Toast.Title>
           <Toast.Description>
-            We successfully updated your message.
+            You successfully updated your message.
           </Toast.Description>
         </Toast.Root>
 

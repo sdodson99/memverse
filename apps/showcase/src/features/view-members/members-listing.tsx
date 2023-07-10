@@ -1,4 +1,5 @@
 import { Member, useMembersContext } from '@/entities/member';
+import { logAnalyticsEvent } from '@/shared/analytics';
 import Image from 'next/image';
 import { MdOpenInNew } from 'react-icons/md';
 
@@ -19,6 +20,12 @@ export function MembersListing() {
 function MemberListingItem({ id, username, message, photoUrl }: Member) {
   const channelLink = `https://www.youtube.com/channel/${id}`;
 
+  function handleViewChannelClick() {
+    logAnalyticsEvent('view_member_channel_click', {
+      targetMemberId: id,
+    });
+  }
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center">
@@ -38,6 +45,7 @@ function MemberListingItem({ id, username, message, photoUrl }: Member) {
       <a
         className="ml-2"
         href={channelLink}
+        onClick={handleViewChannelClick}
         target="_blank"
         referrerPolicy="no-referrer"
       >
