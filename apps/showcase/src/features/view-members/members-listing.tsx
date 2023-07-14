@@ -1,20 +1,52 @@
 import { Member, useMembersContext } from '@/entities/member';
 import { logAnalyticsEvent } from '@/shared/analytics';
 import Image from 'next/image';
+import { useState } from 'react';
 import { MdOpenInNew } from 'react-icons/md';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-export function MembersListing() {
+const MEMBERS_TO_SHOW_PER_SCROLL = 20;
+
+type MembersListingProps = {
+  scrollTargetId?: string;
+};
+
+export function MembersListing({ scrollTargetId }: MembersListingProps) {
   const { members } = useMembersContext();
 
-  const sortedMembers = members.sort((a, b) => {
-    return (b.message?.length ?? 0) - (a.message?.length ?? 0);
-  });
+  const [membersToShowLength, setMembersToShowLength] = useState(
+    MEMBERS_TO_SHOW_PER_SCROLL
+  );
 
-  return sortedMembers.map((m) => (
-    <article key={m.id} className="mb-4">
-      <MemberListingItem {...m} />
-    </article>
-  ));
+  const transformedMembers = members
+    .sort((a, b) => {
+      return (b.message?.length ?? 0) - (a.message?.length ?? 0);
+    })
+    .slice(0, membersToShowLength);
+
+  const loadMoreMembers = () => {
+    setMembersToShowLength((c) => c + MEMBERS_TO_SHOW_PER_SCROLL);
+  };
+
+  const canLoadMoreMembers = members.length !== transformedMembers.length;
+
+  return (
+    <InfiniteScroll
+      next={loadMoreMembers}
+      hasMore={canLoadMoreMembers}
+      dataLength={transformedMembers.length}
+      loader={<div />}
+      scrollableTarget={scrollTargetId}
+    >
+      <div>
+        {transformedMembers.map((m) => (
+          <article key={m.id} className="mb-4">
+            <MemberListingItem {...m} />
+          </article>
+        ))}
+      </div>
+    </InfiniteScroll>
+  );
 }
 
 function MemberListingItem({ id, username, message, photoUrl }: Member) {
