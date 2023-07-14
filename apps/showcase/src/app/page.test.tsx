@@ -331,6 +331,28 @@ describe('<Home />', () => {
     expect(updatedMessageElement).toBeInTheDocument();
   });
 
+  it('does not allow non-members to update their message', async () => {
+    setSession({ channelId: 'not-a-member', expires: '' });
+
+    renderServerComponent(
+      <AuthProvider>
+        <Home {...request} />
+      </AuthProvider>
+    );
+    await screen.findByTestId('HomePage');
+
+    const updateMessageToggleButton = await screen.findByAltText(
+      'Update Message'
+    );
+    await userEvent.click(updateMessageToggleButton);
+
+    const updateMemberMessageForbiddenText = await screen.findByText(
+      'You must be a SingletonSean YouTube Member in order to share a message.'
+    );
+
+    expect(updateMemberMessageForbiddenText).toBeInTheDocument();
+  });
+
   it('lists members in sheet when view members sheet open', async () => {
     renderServerComponent(<Home {...request} />);
     await screen.findByTestId('HomePage');

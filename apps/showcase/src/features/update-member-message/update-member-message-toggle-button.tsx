@@ -8,6 +8,7 @@ import * as Toast from '@radix-ui/react-toast';
 import { useMembersContext } from '@/entities/member';
 import { useAuthContext } from '../auth';
 import { logAnalyticsEvent } from '@/shared/analytics';
+import { UpdateMemberMessageForbidden } from './forbidden';
 
 const MESSAGE_UPDATED_TOAST_TIMEOUT_LENGTH = 3000;
 
@@ -52,7 +53,6 @@ export function UpdateMemberMessageToggleButton() {
   return (
     <div>
       <button
-        disabled={!isCurrentMember}
         className="mx-8 disabled:opacity-70"
         onClick={openUpdateMemberMessageSheet}
       >
@@ -70,10 +70,14 @@ export function UpdateMemberMessageToggleButton() {
         maxHeight={500}
       >
         <section className="max-w-2xl mx-auto my-8 px-8">
-          <UpdateMemberMessageForm
-            onSuccess={handleUpdateMessageSuccess}
-            onCancel={handleSheetDismiss}
-          />
+          {isCurrentMember ? (
+            <UpdateMemberMessageForm
+              onSuccess={handleUpdateMessageSuccess}
+              onCancel={handleSheetDismiss}
+            />
+          ) : (
+            <UpdateMemberMessageForbidden onClose={handleSheetDismiss} />
+          )}
         </section>
       </BottomSheet>
 
