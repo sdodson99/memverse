@@ -3,6 +3,7 @@ import { SignInButton, SignOutButton } from '@/features/auth';
 import { UpdateMemberMessageToggleButton } from '@/features/update-member-message';
 import { ViewMembersListingToggleButton } from '@/features/view-members';
 import { NextPageRequest } from '@/shared/http';
+import { Tooltip } from '@/shared/tooltip';
 import Image from 'next/image';
 
 export async function Toolbar(request: NextPageRequest) {
@@ -13,28 +14,40 @@ export async function Toolbar(request: NextPageRequest) {
 
   return (
     <section className="flex items-center justify-center text-black px-12 py-4">
-      <ViewMembersListingToggleButton />
+      <Tooltip label="View Members">
+        <ViewMembersListingToggleButton />
+      </Tooltip>
 
-      {isLoggedIn ? <UpdateMemberMessageToggleButton /> : null}
+      {isLoggedIn ? (
+        <>
+          <Tooltip label="Update Message">
+            <UpdateMemberMessageToggleButton />
+          </Tooltip>
+        </>
+      ) : null}
 
       {!isLoggedIn ? (
-        <SignInButton className="mx-8">
-          <Image
-            src="/open-lock-emoji.png"
-            alt="Sign In"
-            width="50"
-            height="50"
-          />
-        </SignInButton>
+        <Tooltip label="Sign In">
+          <SignInButton className="mx-8">
+            <Image
+              src="/open-lock-emoji.png"
+              alt="Sign In"
+              width="50"
+              height="50"
+            />
+          </SignInButton>
+        </Tooltip>
       ) : (
-        <SignOutButton className="mx-8">
-          <Image
-            src="/closed-lock-emoji.png"
-            alt="Sign Out"
-            width="50"
-            height="50"
-          />
-        </SignOutButton>
+        <Tooltip label="Sign Out">
+          <SignOutButton className="mx-8">
+            <Image
+              src="/closed-lock-emoji.png"
+              alt="Sign Out"
+              width="50"
+              height="50"
+            />
+          </SignOutButton>
+        </Tooltip>
       )}
     </section>
   );
