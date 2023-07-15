@@ -28,7 +28,7 @@ export async function Toolbar(request: NextPageRequest) {
 
       {!isLoggedIn ? (
         <Tooltip label="Sign In">
-          <SignInButton className="mx-8">
+          <SignInButton className="mx-5">
             <Image
               src="/open-lock-emoji.png"
               alt="Sign In"
@@ -39,7 +39,7 @@ export async function Toolbar(request: NextPageRequest) {
         </Tooltip>
       ) : (
         <Tooltip label="Sign Out">
-          <SignOutButton className="mx-8">
+          <SignOutButton className="mx-5">
             <Image
               src="/closed-lock-emoji.png"
               alt="Sign Out"

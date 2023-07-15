@@ -22,7 +22,7 @@ export function ViewMembersListingToggleButton() {
 
   return (
     <div>
-      <button className="mx-8" onClick={openMembersListingSheet}>
+      <button className="mx-5" onClick={openMembersListingSheet}>
         <Image
           src="/magnifying-glass-emoji.png"
           alt="View Members"

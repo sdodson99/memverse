@@ -4,7 +4,7 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ['yt3.ggpht.com'],
+    domains: ['yt3.ggpht.com', 'upload.wikimedia.org'],
   },
 };
 

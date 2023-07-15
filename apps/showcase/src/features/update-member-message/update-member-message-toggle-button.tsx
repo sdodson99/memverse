@@ -53,7 +53,7 @@ export function UpdateMemberMessageToggleButton() {
   return (
     <div>
       <button
-        className="mx-8 disabled:opacity-70"
+        className="mx-5 disabled:opacity-70"
         onClick={openUpdateMemberMessageSheet}
       >
         <Image
