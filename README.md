@@ -4,15 +4,15 @@ A suite of projects for [SingletonSean](https://www.youtube.com/channel/UC7X9mQ_
 
 Website: https://members.seandodson.com
 
-# Table of Contents
+## Table of Contents
 
 -   [Applications](#applications)
--   [Tech Stack](#tech-stack)
+-   [Technologies](#technologies)
 -   [How to Run Locally](#how-to-run-locally)
     -   [Showcase](#showcase)
 -   [Contributing](#contributing)
 
-# Applications
+## Applications
 
 Current applications in the Singletonsean Members suite:
 
@@ -22,17 +22,18 @@ Current applications in the Singletonsean Members suite:
 
 More applications are on the way!
 
-# Technologies
+## Technologies
 
 -   TypeScript
 -   Next.js (App Directory!)
+-   NextAuth
 -   Tailwind
 -   Google Analytics
 -   Vercel
 
-# How to Run Locally
+## How to Run Locally
 
-## Showcase
+### Showcase
 
 1. Go to Showcase application directory.
 
@@ -69,6 +70,6 @@ NEXTAUTH_SECRET=
 pnpm dev
 ```
 
-# Contributing
+## Contributing
 
 Please create a new issue if you have any questions, problems, or suggestions. Feel free to open a pull request if you have a feature or fix you want to contribute to the project.
