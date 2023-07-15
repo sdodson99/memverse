@@ -1,19 +1,19 @@
-name: Build YouTube Member Querier
+name: Build Showcase
 
 on:
   push:
     branches:
       - "master"
     paths:
-      - "packages/youtube-member-querier/**"
+      - "apps/showcase/**"
   pull_request:
     branches:
       - "*"
     paths:
-      - "packages/youtube-member-querier/**"
+      - "apps/showcase/**"
 
 env:
-  PROJECT_PATH: "packages/youtube-member-querier"
+  PROJECT_PATH: "apps/showcase"
 
 jobs:
   build:
@@ -26,21 +26,26 @@ jobs:
       - name: "Setup Node"
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
 
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@v2
+        with:
+          version: "8"
+
       - name: "Install packages"
-        run: "npm ci"
+        run: "pnpm install"
         working-directory: ${{ env.PROJECT_PATH }}
 
       - name: "Lint"
-        run: "npm run lint"
+        run: "pnpm lint"
         working-directory: ${{ env.PROJECT_PATH }}
 
       - name: "Test"
-        run: "npm run test:ci"
+        run: "pnpm test:ci"
         working-directory: ${{ env.PROJECT_PATH }}
 
       - name: "Build"
-        run: "npm run build"
+        run: "pnpm build"
         working-directory: ${{ env.PROJECT_PATH }}
