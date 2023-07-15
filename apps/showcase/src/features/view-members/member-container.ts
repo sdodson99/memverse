@@ -84,6 +84,7 @@ export class MemberContainer {
     const text = new Text();
 
     text.style.fill = 'white';
+    text.style.fontFamily = ['Encode Sans Semi Expanded', 'sans-serif'];
     text.y = MEMBER_TEXT_OFFET - MEMBER_TEXT_SPACING * this.textCount;
     text.anchor.x = CENTER_ANCHOR.x;
     text.anchor.y = CENTER_ANCHOR.y;

@@ -4,3 +4,4 @@ coverage
 secrets.txt
 *.cache
 *.log
+.vercel

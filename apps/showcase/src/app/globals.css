@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Encode Sans Semi Expanded', sans-serif;
+}
+
 .break-word {
   word-break: break-word;
 }

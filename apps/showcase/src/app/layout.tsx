@@ -23,6 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Tag Manager */}
         <Script id="gtm" strategy="afterInteractive">
           {`window.analytics = window.analytics || {}; 
             window.analytics.userId = "${channelId}";
@@ -32,9 +33,24 @@ export default async function RootLayout({
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-K4DGPB4');`}
         </Script>
+
+        {/* Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <AuthProvider>{children}</AuthProvider>
+
+        {/* Google Tag Manager */}
         <noscript
           dangerouslySetInnerHTML={{
             __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4DGPB4" height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
