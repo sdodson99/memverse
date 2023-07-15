@@ -1,6 +1,6 @@
 # SingletonSean Members
 
-A suite of projects for YouTube Member perks.
+A suite of projects for [SingletonSean](https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg) YouTube Member perks.
 
 Website: https://members.seandodson.com
 
@@ -16,9 +16,9 @@ Website: https://members.seandodson.com
 
 Current applications in the Singletonsean Members suite:
 
-| Name     | Description         |                                    Source Code                                    |
-| -------- | ------------------- | :-------------------------------------------------------------------------------: |
-| Showcase | Display of members. | [/apps/showcase](https://github.com/sdodson99/memverse/tree/master/apps/showcase) |
+| Name     | Description         |                                          Source Code                                           |
+| -------- | ------------------- | :--------------------------------------------------------------------------------------------: |
+| Showcase | Display of members. | [/apps/showcase](https://github.com/sdodson99/singletonsean-members/tree/master/apps/showcase) |
 
 More applications are on the way!
 
