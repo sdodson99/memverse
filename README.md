@@ -1,138 +1,72 @@
-# Memverse
-
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+# SingletonSean Members
 
 A suite of projects for YouTube Member perks.
 
-Website: https://memverse.web.app
+Website: https://members.seandodson.com
 
 # Table of Contents
 
-- [Applications](#applications)
-- [Tech Stack](#tech-stack)
-- [How to Run Locally](#how-to-run-locally)
-  - [Prerequisites](#prerequisites)
-  - [Authentication Server](#authentication-server)
-  - [Memspace Server](#memspace-server)
-  - [Memspace Web](#memspace-web)
-- [Contributing](#contributing)
+-   [Applications](#applications)
+-   [Tech Stack](#tech-stack)
+-   [How to Run Locally](#how-to-run-locally)
+    -   [Showcase](#showcase)
+-   [Contributing](#contributing)
 
 # Applications
 
-The following table describes the applications in the Memverse suite.
+Current applications in the Singletonsean Members suite:
 
-| Name                  | Description                                               |                                      Source Code                                      |
-| --------------------- | --------------------------------------------------------- | :-----------------------------------------------------------------------------------: |
-| Memspace Web          | Front-end web application for Memspace.                   |     [Go to](https://github.com/sdodson99/memverse/tree/master/apps/memspace-web)      |
-| Memspace Server       | Back-end Express application for Memspace business logic. |    [Go to](https://github.com/sdodson99/memverse/tree/master/apps/memspace-server)    |
-| Authentication Server | Authenticate YouTube channel members.                     | [Go to](https://github.com/sdodson99/memverse/tree/master/apps/authentication-server) |
+| Name     | Description         |                                    Source Code                                    |
+| -------- | ------------------- | :-------------------------------------------------------------------------------: |
+| Showcase | Display of members. | [/apps/showcase](https://github.com/sdodson99/memverse/tree/master/apps/showcase) |
 
 More applications are on the way!
 
-# Tech Stack
+# Technologies
 
-- Next.js
-- Express
-- Firebase (Functions, Realtime Database, Authentication, Hosting)
+-   TypeScript
+-   Next.js (App Directory!)
+-   Tailwind
+-   Google Analytics
+-   Vercel
 
 # How to Run Locally
 
-## Prerequisites
+## Showcase
 
-1. Start Firebase emulators. It is recommended to run against Firebase emulators in order to prevent impacting production data.
-
-```
-npm run emulators
-```
-
-## Authentication Server
-
-1. Change directory to "apps/authentication-server".
+1. Go to Showcase application directory.
 
 ```
-cd apps/authentication-server
+cd /apps/showcase
 ```
 
 2. Install packages.
 
 ```
-npm install
+pnpm install
 ```
 
-3. Create a file named '.runtimeconfig.json' with the following environment variables.
+3. Create a `.env.local` file with the following values.
 
 ```
-{
-  "youtube_studio": {
-    "api_key": "<API KEY FROM YOUTUBE STUDIO REQUEST>",
-    "channel_id": "<YOUTUBE CHANNEL ID>",
-    "cookie_header": "<COOKE HEADER FROM YOUTUBE STUDIO REQUEST>",
-    "authorization_header": "<AUTHORIZATION HEADER FROM YOUTUBE STUDIO REQUEST>",
-    "user_behalf_id": "<ON BEHALF OF USER FROM YOUTUBE STUDIO REQUEST>"
-  }
-}
+YOUTUBE_CHANNEL_ID=
+YOUTUBE_API_KEY=
+YOUTUBE_ON_BEHALF_OF_USER=
+YOUTUBE_AUTHORIZATION_HEADER=
+YOUTUBE_COOKIE_HEADER=
+FIREBASE_PROJECT_ID=
+FIREBASE_PRIVATE_KEY=
+FIREBASE_DATABASE_URL=
+FIREBASE_CLIENT_EMAIL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+NEXTAUTH_SECRET=
 ```
 
 4. Start the application.
 
 ```
-npm run dev
-```
-
-## Memspace Server
-
-1. Change directory to "apps/memspace-server".
-
-```
-cd apps/memspace-server
-```
-
-2. Install packages.
-
-```
-npm install
-```
-
-3. Create a file named '.runtimeconfig.json' with the following environment variables.
-
-```
-{
-  "youtube_studio": {
-    "api_key": "<API KEY FROM YOUTUBE STUDIO REQUEST>",
-    "channel_id": "<YOUTUBE CHANNEL ID>",
-    "cookie_header": "<COOKE HEADER FROM YOUTUBE STUDIO REQUEST>",
-    "authorization_header": "<AUTHORIZATION HEADER FROM YOUTUBE STUDIO REQUEST>",
-    "user_behalf_id": "<ON BEHALF OF USER FROM YOUTUBE STUDIO REQUEST>"
-  }
-}
-```
-
-4. Start the application.
-
-```
-npm run dev
-```
-
-## Memspace Web
-
-1. Ensure the [Authentication Server](#authentication-server) and [Memspace Server](#memspace-server) are running locally.
-
-2. Change directory to "apps/memspace-web".
-
-```
-cd apps/memspace-web
-```
-
-2. Install packages.
-
-```
-npm install
-```
-
-3. Start the application.
-
-```
-npm run dev
+pnpm dev
 ```
 
 # Contributing
