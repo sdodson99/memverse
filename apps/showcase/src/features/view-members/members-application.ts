@@ -2,15 +2,13 @@ import { Application } from 'pixi.js';
 import { MemberContainer } from './member-container';
 import { Member } from '@/entities/member';
 
-const STAGE_BACKGROUND_COLOR = '#1F232D';
-
 export class MembersApplication {
   private application: Application;
   private memberContainers: MemberContainer[];
 
   constructor(members: Member[]) {
     this.application = new Application({
-      backgroundColor: STAGE_BACKGROUND_COLOR,
+      backgroundAlpha: 0,
       resizeTo: window,
       height: window.innerHeight,
       width: window.innerWidth,

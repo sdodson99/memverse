@@ -46,10 +46,13 @@ export function MembersApplicationBootstrapper() {
 
   return (
     <div
-      className={classNames({
-        // Push footer to bottom while full-screen application still loading.
-        ['min-h-screen']: !initialized,
-      })}
+      className={classNames(
+        {
+          // Push footer to bottom while full-screen application still loading.
+          ['min-h-screen']: !initialized,
+        },
+        'bg-primary'
+      )}
       ref={mountElementRef}
     />
   );
