@@ -84,7 +84,7 @@ export function UpdateMemberMessageToggleButton() {
       <Toast.Provider>
         <Toast.Root
           open={showMessageUpdatedToast}
-          className="text-white bg-green-700 rounded-lg p-4"
+          className="text-white bg-green-700 rounded-lg p-4 w-full"
         >
           <Toast.Title className="font-bold">Message Updated</Toast.Title>
           <Toast.Description>
@@ -92,7 +92,7 @@ export function UpdateMemberMessageToggleButton() {
           </Toast.Description>
         </Toast.Root>
 
-        <Toast.Viewport className="fixed top-0 p-4 right-1/2 translate-x-1/2" />
+        <Toast.Viewport className="fixed top-0 p-4 right-1/2 translate-x-1/2 w-full sm:w-auto" />
       </Toast.Provider>
     </div>
   );
