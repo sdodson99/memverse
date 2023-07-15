@@ -1,5 +1,6 @@
 'use client';
 
+import { useCurrentMock } from '@/shared/mock';
 import { Session } from 'next-auth';
 import { SessionProvider, signIn, signOut, useSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
@@ -22,8 +23,7 @@ export const useAuthContext = () => useContext(AuthContext);
 type AuthProviderProps = PropsWithChildren<{}>;
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const searchParams = useSearchParams();
-  const mock = searchParams.get('mock');
+  const { mock } = useCurrentMock();
 
   if (mock) {
     return <MockAuthProvider>{children}</MockAuthProvider>;
@@ -51,11 +51,9 @@ function RealAuthProvider({ children }: AuthProviderProps) {
 }
 
 function MockAuthProvider({ children }: AuthProviderProps) {
-  const searchParams = useSearchParams();
+  const { mockChannelId } = useCurrentMock();
 
   const [session, setSession] = useState<Session | null>(() => {
-    const mockChannelId = searchParams.get('mockChannelId');
-
     if (!mockChannelId) {
       return null;
     }

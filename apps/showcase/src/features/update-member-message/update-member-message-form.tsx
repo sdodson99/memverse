@@ -3,8 +3,8 @@ import { updateMemberMessageAction } from './update-member-message-action';
 import { useState } from 'react';
 import { useMembersContext } from '@/entities/member';
 import { useAuthContext } from '../auth';
-import { useSearchParams } from 'next/navigation';
 import { logAnalyticsEvent } from '@/shared/analytics';
+import { useCurrentMock } from '@/shared/mock';
 
 type UpdateMemberMessageFieldVaues = {
   message: string;
@@ -38,7 +38,7 @@ export function UpdateMemberMessageForm({
 
   const [submitError, setSubmitError] = useState(false);
 
-  const searchParams = useSearchParams();
+  const { mock, mockChannelId } = useCurrentMock();
 
   const handleValidSubmit: SubmitHandler<
     UpdateMemberMessageFieldVaues
@@ -49,8 +49,8 @@ export function UpdateMemberMessageForm({
 
     try {
       await updateMemberMessageAction(data, {
-        mock: searchParams.get('mock') ?? undefined,
-        mockChannelId: searchParams.get('mockChannelId') ?? undefined,
+        mock,
+        mockChannelId,
       });
 
       if (currentMemberId) {
