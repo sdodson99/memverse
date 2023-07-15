@@ -1,10 +1,12 @@
 import { Application } from 'pixi.js';
 import { MemberContainer } from './member-container';
 import { Member } from '@/entities/member';
+import { ShowcaseBackgroundLogoSprite } from './showcase-background-logo-sprite';
 
 export class MembersApplication {
   private application: Application;
   private memberContainers: MemberContainer[];
+  private logoSprite: ShowcaseBackgroundLogoSprite;
 
   constructor(members: Member[]) {
     this.application = new Application({
@@ -33,6 +35,12 @@ export class MembersApplication {
       this.application.stage.addChild(m.container)
     );
 
+    this.logoSprite = new ShowcaseBackgroundLogoSprite(
+      '/logo-light.png',
+      this.application.screen
+    );
+    this.application.stage.addChild(this.logoSprite.sprite);
+
     this.update = this.update.bind(this);
     this.updateMemberMessage = this.updateMemberMessage.bind(this);
   }
@@ -50,6 +58,8 @@ export class MembersApplication {
   }
 
   update(delta: number) {
+    this.logoSprite.update();
+
     this.memberContainers.forEach((m) => m.update(delta));
   }
 

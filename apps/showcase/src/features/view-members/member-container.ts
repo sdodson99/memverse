@@ -37,6 +37,7 @@ export class MemberContainer {
     this._container = new Container();
     this._container.name = `${member.username}-container`;
     this._container.interactive = true;
+    this._container.zIndex = 2;
 
     this._container.on('pointerdown', () => this.handlePointerDown());
     this._container.on('pointerenter', () => this.handlePointerEnter());
