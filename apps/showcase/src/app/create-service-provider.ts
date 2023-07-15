@@ -17,6 +17,7 @@ import { getMockData } from '@/mocks';
 import { UpdateMemberMessageCommand } from '@/features/update-member-message/update-member-message-command';
 import { getServerSession } from '@/features/auth/get-server-session';
 import { mockGetServerSession } from '@/features/auth/mock-get-server-session';
+import { IsProductionServer } from '@/shared/configuration';
 
 type ServiceProviderOptions = {
   mock?: string;
@@ -24,9 +25,11 @@ type ServiceProviderOptions = {
 };
 
 export function createServiceProvider(options: ServiceProviderOptions = {}) {
-  const getServerSession = createGetServerSession(options);
-  const firebaseApp = createFirebaseAdminApp(options);
-  const youTubeMembersQuery = createYouTubeMembersQuery(options);
+  const normalizedOptions = normalize(options);
+
+  const getServerSession = createGetServerSession(normalizedOptions);
+  const firebaseApp = createFirebaseAdminApp(normalizedOptions);
+  const youTubeMembersQuery = createYouTubeMembersQuery(normalizedOptions);
 
   const getMessageByMemberIdQuery = new GetMessageByMemberIdQuery(firebaseApp);
   const getManyMessagesByMembersIdsQuery = new GetManyMessagesByMemberIdsQuery(
@@ -47,6 +50,19 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
     getAllMembersQuery,
     updateMemberMessageCommand,
   };
+}
+
+function normalize(options: ServiceProviderOptions) {
+  const normalizedOptions = {
+    ...options,
+  };
+
+  if (IsProductionServer()) {
+    normalizedOptions.mock = undefined;
+    normalizedOptions.mockChannelId = undefined;
+  }
+
+  return normalizedOptions;
 }
 
 function createYouTubeMembersQuery({ mock }: ServiceProviderOptions) {

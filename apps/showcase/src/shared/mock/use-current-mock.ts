@@ -13,7 +13,7 @@ export function useCurrentMock() {
   }
 
   return {
-    mock: searchParams.get('mock'),
-    mockChannelId: searchParams.get('mockChannelId'),
+    mock: searchParams.get('mock') ?? undefined,
+    mockChannelId: searchParams.get('mockChannelId') ?? undefined,
   };
 }
