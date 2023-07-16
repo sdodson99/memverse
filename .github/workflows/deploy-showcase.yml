@@ -1,0 +1,42 @@
+name: Deploy Showcase
+
+on:
+  push:
+    branches:
+      - "release/showcase"
+
+env:
+  PROJECT_PATH: "apps/showcase"
+  VERCEL_ORG_ID: "${{ secrets.SHOWCASE_VERCEL_ORG_ID }}"
+  VERCEL_PROJECT_ID: "${{ secrets.SHOWCASE_VERCEL_PROJECT_ID }}"
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@master
+
+      - name: "Setup Node"
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: "Setup pnpm"
+        uses: pnpm/action-setup@v2
+        with:
+          version: "8"
+
+      - name: "Install packages"
+        run: "pnpm install"
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: "Build"
+        run: "pnpm build"
+        working-directory: ${{ env.PROJECT_PATH }}
+
+      - name: "Deploy"
+        run: "pnpm run deploy --token ${{ secrets.SHOWCASE_VERCEL_TOKEN}}"
+        working-directory: ${{ env.PROJECT_PATH }}
