@@ -5,3 +5,4 @@ secrets.txt
 *.cache
 *.log
 .vercel
+.luarc.json
