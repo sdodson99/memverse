@@ -1,14 +1,12 @@
 import { MembersApplicationBootstrapper } from '@/features/view-members';
 import { NextPageRequest } from '@/shared/http';
-import { createServiceProvider } from './create-service-provider';
+import { Services, withServiceProvider } from './create-service-provider';
 import { Toolbar } from '@/widgets/toolbar';
 import { MembersProvider } from '@/entities/member';
 import { Layout } from '@/widgets/layout';
 
-export default async function Home(request: NextPageRequest) {
-  const { getAllMembersQuery } = createServiceProvider(request.searchParams);
-
-  const members = await getAllMembersQuery.execute();
+async function Home(props: NextPageRequest & Services) {
+  const members = await props.getAllMembersQuery.execute();
 
   console.log('Loaded members:', members.length);
 
@@ -19,7 +17,7 @@ export default async function Home(request: NextPageRequest) {
           <div className="relative flex flex-col">
             <MembersApplicationBootstrapper />
             <div className="absolute bottom-0 self-center rounded-xl bg-white bg-opacity-50 m-4">
-              <Toolbar {...request} />
+              <Toolbar {...props} />
             </div>
           </div>
         </MembersProvider>
@@ -27,3 +25,11 @@ export default async function Home(request: NextPageRequest) {
     </Layout>
   );
 }
+
+export default withServiceProvider(
+  (services) =>
+    function ServiceProvider(request) {
+      return <Home {...request} {...services} />;
+    },
+  (request: NextPageRequest) => request.searchParams
+);

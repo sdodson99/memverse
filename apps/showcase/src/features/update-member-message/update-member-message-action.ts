@@ -1,6 +1,6 @@
 'use server';
 
-import { createServiceProvider } from '@/app/create-service-provider';
+import { Services, withServiceProvider } from '@/app/create-service-provider';
 import { z } from 'zod';
 
 const updateMemberMessageRequestSchema = z.object({
@@ -12,14 +12,13 @@ type ActionOptions = {
   mockChannelId?: string;
 };
 
-export async function updateMemberMessageAction(
-  data: unknown,
-  options: ActionOptions = {}
-) {
-  const { updateMemberMessageCommand, getServerSession } =
-    createServiceProvider(options);
+type ActionParameters = [data: unknown, options: ActionOptions];
 
-  const session = await getServerSession();
+async function updateMemberMessageActionInner(
+  data: unknown,
+  services: Services
+) {
+  const session = await services.getServerSession();
   const memberId = session?.channelId;
 
   if (!memberId) {
@@ -38,7 +37,15 @@ export async function updateMemberMessageAction(
 
   const message = parsedData.data.message;
 
-  await updateMemberMessageCommand.execute(memberId, message);
+  await services.updateMemberMessageCommand.execute(memberId, message);
 
   console.log('Successfully updated message for member ID:', memberId);
 }
+
+export const updateMemberMessageAction = withServiceProvider<
+  ActionParameters,
+  Promise<void>
+>(
+  (services) => (data) => updateMemberMessageActionInner(data, services),
+  (_, options) => options
+);

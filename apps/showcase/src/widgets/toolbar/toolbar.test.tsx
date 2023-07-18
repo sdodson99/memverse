@@ -2,17 +2,20 @@ import { screen } from '@testing-library/react';
 import { Toolbar } from './toolbar';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import { setSession } from '../../../test/integration/mock-next-auth';
+import {
+  getSession,
+  setSession,
+} from '../../../test/integration/mock-next-auth';
 import { renderServerComponent } from '../../../test/unit/render-server-component';
-import { NextPageRequest } from '@/shared/http';
 import { AuthProvider } from '@/features/auth';
 
 describe('<Toolbar />', () => {
-  let props: NextPageRequest;
+  let props: Parameters<typeof Toolbar>[0];
 
   beforeEach(() => {
     props = {
       searchParams: {},
+      getServerSession: async () => getSession(),
     };
   });
 

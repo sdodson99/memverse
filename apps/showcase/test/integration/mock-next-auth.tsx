@@ -14,6 +14,10 @@ const mockSessionProvider = SessionProvider as Mock;
 
 let session: Session | null = null;
 
+export function getSession() {
+  return session;
+}
+
 export function setSession(value: Session | null) {
   session = value;
 }

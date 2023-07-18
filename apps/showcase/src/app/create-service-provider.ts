@@ -19,10 +19,12 @@ import { getServerSession } from '@/features/auth/get-server-session';
 import { mockGetServerSession } from '@/features/auth/mock-get-server-session';
 import { IsProductionServer } from '@/shared/configuration';
 
-type ServiceProviderOptions = {
+export type ServiceProviderOptions = {
   mock?: string;
   mockChannelId?: string;
 };
+
+export type Services = ReturnType<typeof createServiceProvider>;
 
 export function createServiceProvider(options: ServiceProviderOptions = {}) {
   const normalizedOptions = normalize(options);
@@ -107,13 +109,25 @@ function createFirebaseAdminApp({ mock }: ServiceProviderOptions) {
 function createGetServerSession({
   mock,
   mockChannelId,
-}: ServiceProviderOptions) {
+}: ServiceProviderOptions): typeof getServerSession {
   if (mock) {
-    return () =>
+    return (() =>
       mockGetServerSession({
         channelId: mockChannelId,
-      });
+      })) as unknown as typeof getServerSession;
   }
 
   return getServerSession;
+}
+
+export function withServiceProvider<TParams extends unknown[], TResponse>(
+  execute: (serviceProvider: Services) => (...params: TParams) => TResponse,
+  optionsSelector: (...params: TParams) => ServiceProviderOptions
+) {
+  return function passServiceProvider(...params: TParams) {
+    const options = optionsSelector(...params);
+    const serviceProvider = createServiceProvider(options);
+
+    return execute(serviceProvider)(...params);
+  };
 }

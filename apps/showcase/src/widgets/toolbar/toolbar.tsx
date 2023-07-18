@@ -1,15 +1,15 @@
-import { createServiceProvider } from '@/app/create-service-provider';
 import { SignInButton, SignOutButton } from '@/features/auth';
+import { getServerSession } from '@/features/auth/get-server-session';
 import { UpdateMemberMessageToggleButton } from '@/features/update-member-message';
 import { ViewMembersListingToggleButton } from '@/features/view-members';
 import { NextPageRequest } from '@/shared/http';
 import { Tooltip } from '@/shared/tooltip';
 import Image from 'next/image';
 
-export async function Toolbar(request: NextPageRequest) {
-  const { getServerSession } = createServiceProvider(request.searchParams);
-
-  const session = await getServerSession();
+export async function Toolbar(
+  props: NextPageRequest & { getServerSession: typeof getServerSession }
+) {
+  const session = await props.getServerSession();
   const isLoggedIn = Boolean(session);
 
   return (
