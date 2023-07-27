@@ -2,6 +2,8 @@
 
 Use this tool to get a YouTube API refresh token with scopes to access the YouTube Members API endpoints.
 
+Powered by Deno for fun :)
+
 ## Setup
 
 1. Create a `.env` file at the project root

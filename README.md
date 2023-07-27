@@ -14,7 +14,7 @@ Website: https://members.seandodson.com
 
 ## Applications
 
-Current applications in the Singletonsean Members suite:
+Current applications in the SingletonSean Members suite:
 
 | Name     | Description         |                                          Source Code                                           |
 | -------- | ------------------- | :--------------------------------------------------------------------------------------------: |
