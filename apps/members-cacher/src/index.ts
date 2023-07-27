@@ -1,20 +1,26 @@
-import { onSchedule } from 'firebase-functions/v2/scheduler';
-import { logger } from 'firebase-functions';
+import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { setGlobalOptions } from 'firebase-functions/v2/options';
 import { getYouTubeMembers } from './get-youtube-members';
 import { updateYouTubeMembersCache } from './update-youtube-members-cache';
 
 admin.initializeApp();
 
-setGlobalOptions({ maxInstances: 10 });
+const logger = functions.logger;
 
-exports.updateMembersCache = onSchedule('0 1 * * *', async () => {
-  const members = await getYouTubeMembers();
+exports.updateMembersCache = functions
+  .region('us-central1')
+  .pubsub.schedule('0 1 * * *')
+  .timeZone('UTC')
+  .onRun(async () => {
+    try {
+      const members = await getYouTubeMembers();
 
-  logger.info('Successfully fetched YouTube Members: ', members.length);
+      logger.info('Successfully fetched YouTube Members: ', members.length);
 
-  await updateYouTubeMembersCache(members);
+      await updateYouTubeMembersCache(members);
 
-  logger.info('Successfully updated YouTube members cache');
-});
+      logger.info('Successfully updated YouTube Members cache');
+    } catch (e) {
+      logger.error('Failed to update YouTube Members cache');
+    }
+  });
