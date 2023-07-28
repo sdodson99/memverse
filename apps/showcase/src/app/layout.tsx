@@ -18,10 +18,12 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions);
 
   const channelId = session?.channelId;
-  const isMember = session?.isMember;
 
-  console.log('Signed In:', Boolean(channelId));
-  console.log('Is Member:', Boolean(isMember));
+  const isSignedIn = Boolean(channelId);
+  const isMember = Boolean(session?.isMember);
+
+  console.log('Signed In:', isSignedIn);
+  console.log('Is Member:', isMember);
 
   return (
     <html lang="en">
