@@ -16,7 +16,6 @@ export default defineConfig({
     include: ['./src/**/*.test.[jt]s?(x)'],
     setupFiles: [
       './test/integration/mock-server-only.ts',
-      './test/integration/mock-youtube-member-querier.ts',
       './test/integration/mock-firebase-admin.ts',
       './test/integration/mock-next-auth.tsx',
       './test/integration/mock-pixi.ts',

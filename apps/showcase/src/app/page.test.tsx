@@ -2,7 +2,6 @@ import { getByTestId, getByText, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import Home from './page';
-import { mockYouTubeMembers } from '../../test/integration/mock-youtube-member-querier';
 import { currentMockApplication } from '../../test/integration/mock-pixi';
 import { mockFirebaseData } from '../../test/integration/mock-firebase-admin';
 import { generateRandom } from '@/shared/math';
@@ -28,24 +27,24 @@ describe('<Home />', () => {
   let request: NextPageRequest;
 
   beforeEach(() => {
-    mockYouTubeMembers.data = [
-      {
-        channelId: '1',
-        username: 'username-1',
-        photoUrl: 'https://test.com/photo-url-1',
-      },
-      {
-        channelId: '2',
-        username: 'username-2',
-        photoUrl: 'https://test.com/photo-url-2',
-      },
-      {
-        channelId: '3',
-        username: 'username-3',
-        photoUrl: 'https://test.com/photo-url-3',
-      },
-    ];
     mockFirebaseData.data = {
+      '/members': {
+        '1': {
+          channelId: '1',
+          username: 'username-1',
+          photoUrl: 'https://test.com/photo-url-1',
+        },
+        '2': {
+          channelId: '2',
+          username: 'username-2',
+          photoUrl: 'https://test.com/photo-url-2',
+        },
+        '3': {
+          channelId: '3',
+          username: 'username-3',
+          photoUrl: 'https://test.com/photo-url-3',
+        },
+      },
       '/messages/1': { content: 'message-1' },
       '/messages/3': { content: 'message-3' },
     };

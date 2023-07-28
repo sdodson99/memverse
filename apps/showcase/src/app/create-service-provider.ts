@@ -4,11 +4,7 @@ import {
   GetManyMessagesByMemberIdsQuery,
   GetMessageByMemberIdQuery,
 } from '@/entities/member-message';
-import {
-  GetAllMembersQuery,
-  MockYouTubeMembersQuery,
-} from '@/features/view-members';
-import { YouTubeMembersQuery } from 'youtube-member-querier';
+import { GetAllMembersQuery } from '@/features/view-members';
 import {
   MockFirebaseAdminApp,
   initializeFirebaseAdminApp,
@@ -29,7 +25,6 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
 
   const getServerSession = createGetServerSession(normalizedOptions);
   const firebaseApp = createFirebaseAdminApp(normalizedOptions);
-  const youTubeMembersQuery = createYouTubeMembersQuery(normalizedOptions);
 
   const getMessageByMemberIdQuery = new GetMessageByMemberIdQuery(firebaseApp);
   const getManyMessagesByMembersIdsQuery = new GetManyMessagesByMemberIdsQuery(
@@ -37,7 +32,7 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
   );
 
   const getAllMembersQuery = new GetAllMembersQuery(
-    youTubeMembersQuery,
+    firebaseApp,
     getManyMessagesByMembersIdsQuery
   );
 
@@ -63,25 +58,6 @@ function normalize(options: ServiceProviderOptions) {
   }
 
   return normalizedOptions;
-}
-
-function createYouTubeMembersQuery({ mock }: ServiceProviderOptions) {
-  if (mock) {
-    const { youTubeMembers } = getMockData(mock);
-
-    // TBD: Could wrap youtube-member-querier completely instead of casting.
-    return new MockYouTubeMembersQuery(
-      youTubeMembers
-    ) as unknown as YouTubeMembersQuery;
-  }
-
-  return new YouTubeMembersQuery({
-    channelId: process.env.YOUTUBE_CHANNEL_ID ?? '',
-    apiKey: process.env.YOUTUBE_API_KEY ?? '',
-    onBehalfOfUser: process.env.YOUTUBE_ON_BEHALF_OF_USER ?? '',
-    authorizationHeader: process.env.YOUTUBE_AUTHORIZATION_HEADER ?? '',
-    cookieHeader: process.env.YOUTUBE_COOKIE_HEADER ?? '',
-  });
 }
 
 function createFirebaseAdminApp({ mock }: ServiceProviderOptions) {
