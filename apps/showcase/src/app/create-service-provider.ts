@@ -4,7 +4,10 @@ import {
   GetManyMessagesByMemberIdsQuery,
   GetMessageByMemberIdQuery,
 } from '@/entities/member-message';
-import { GetAllMembersQuery } from '@/features/view-members';
+import {
+  GetAllMembersQuery,
+  GetAllYouTubeMembersQuery,
+} from '@/features/view-members';
 import {
   MockFirebaseAdminApp,
   initializeFirebaseAdminApp,
@@ -31,8 +34,9 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
     getMessageByMemberIdQuery
   );
 
+  const getAllYouTubeMembersQuery = new GetAllYouTubeMembersQuery(firebaseApp);
   const getAllMembersQuery = new GetAllMembersQuery(
-    firebaseApp,
+    getAllYouTubeMembersQuery,
     getManyMessagesByMembersIdsQuery
   );
 

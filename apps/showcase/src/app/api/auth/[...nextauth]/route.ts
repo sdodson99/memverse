@@ -1,6 +1,8 @@
 import { GetYouTubeChannelQuery } from '@/features/auth/get-youtube-channel-query';
+import { GetAllYouTubeMembersQuery } from '@/features/view-members';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import firebase from 'firebase-admin';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -24,10 +26,21 @@ export const authOptions: AuthOptions = {
         token.channelId = youTubeChannel?.id;
       }
 
+      if (token.channelId) {
+        const allYouTubeMembers = await new GetAllYouTubeMembersQuery(
+          firebase.app()
+        ).execute();
+
+        token.isMember = allYouTubeMembers.some(
+          (m) => m.channelId === token.channelId
+        );
+      }
+
       return token;
     },
     async session({ session, token }) {
       session.channelId = token.channelId;
+      session.isMember = token.isMember;
 
       return session;
     },
