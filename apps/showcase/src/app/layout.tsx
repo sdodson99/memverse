@@ -25,13 +25,15 @@ export default async function RootLayout({
   console.log('Signed In:', isSignedIn);
   console.log('Is Member:', isMember);
 
+  const analyticsUserId = channelId ? `"${channelId}"` : null;
+
   return (
     <html lang="en">
       <head>
         {/* Google Tag Manager */}
         <Script id="gtm" strategy="afterInteractive">
           {`window.analytics = window.analytics || {}; 
-            window.analytics.userId = "${channelId}";
+            window.analytics.userId = ${analyticsUserId};
             window.analytics.isMember = ${isMember};
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
