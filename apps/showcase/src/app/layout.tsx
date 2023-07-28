@@ -16,9 +16,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  const channelId = session?.channelId;
 
-  console.log('Signed in:', Boolean(channelId));
+  const channelId = session?.channelId;
+  const isMember = session?.isMember;
+
+  console.log('Signed In:', Boolean(channelId));
+  console.log('Is Member:', Boolean(isMember));
 
   return (
     <html lang="en">
@@ -27,6 +30,7 @@ export default async function RootLayout({
         <Script id="gtm" strategy="afterInteractive">
           {`window.analytics = window.analytics || {}; 
             window.analytics.userId = "${channelId}";
+            window.analytics.isMember = ${isMember};
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
