@@ -1,8 +1,13 @@
-# YouTueb API Refresh Token Generator
+# YouTube API Refresh Token Generator
 
 Use this tool to get a YouTube API refresh token with scopes to access the YouTube Members API endpoints.
 
 Powered by Deno for fun :)
+
+## Technologies
+
+- TypeScript
+- Deno
 
 ## Setup
 
@@ -11,8 +16,8 @@ Powered by Deno for fun :)
 2. Add the following values for the Google OAuth2 flow
 
 ```
-GOOGLE_CLIENT_ID=<value>
-GOOGLE_CLIENT_SECRET=<value>
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 ```
 
 ## Getting a Refresh Token
