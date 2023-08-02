@@ -13,3 +13,7 @@ body {
 .bg-primary {
   background: #1f232d;
 }
+
+.content-container {
+  max-width: 800px;
+}
