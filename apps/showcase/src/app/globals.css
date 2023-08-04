@@ -15,5 +15,9 @@ body {
 }
 
 .content-container {
-  max-width: 800px;
+  @apply mx-auto max-w-4xl px-16;
+}
+
+.link {
+  @apply text-blue-400 hover:underline;
 }
