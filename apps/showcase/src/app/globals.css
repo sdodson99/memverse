@@ -15,7 +15,7 @@ body {
 }
 
 .content-container {
-  @apply mx-auto max-w-4xl px-16;
+  @apply mx-auto max-w-4xl px-6;
 }
 
 .link {
