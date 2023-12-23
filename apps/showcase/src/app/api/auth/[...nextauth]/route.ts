@@ -2,7 +2,7 @@ import { GetYouTubeChannelQuery } from '@/features/auth/get-youtube-channel-quer
 import { GetAllYouTubeMembersQuery } from '@/features/view-members';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import firebase from 'firebase-admin';
+import { initializeFirebaseAdminApp } from '@/shared/firebase';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -28,7 +28,7 @@ export const authOptions: AuthOptions = {
 
       if (token.channelId) {
         const allYouTubeMembers = await new GetAllYouTubeMembersQuery(
-          firebase.app()
+          initializeFirebaseAdminApp()
         ).execute();
 
         token.isMember = allYouTubeMembers.some(
