@@ -17,6 +17,7 @@ import { UpdateMemberMessageCommand } from '@/features/update-member-message/upd
 import { getServerSession } from '@/features/auth/get-server-session';
 import { mockGetServerSession } from '@/features/auth/mock-get-server-session';
 import { IsProductionServer } from '@/shared/configuration';
+import { GetYouTubeChannelQuery } from '@/features/auth/get-youtube-channel-query';
 
 type ServiceProviderOptions = {
   mock?: string;
@@ -39,6 +40,7 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
     getAllYouTubeMembersQuery,
     getManyMessagesByMembersIdsQuery
   );
+  const getYouTubeChannelQuery = new GetYouTubeChannelQuery(fetch);
 
   const updateMemberMessageCommand = new UpdateMemberMessageCommand(
     firebaseApp
@@ -46,7 +48,9 @@ export function createServiceProvider(options: ServiceProviderOptions = {}) {
 
   return {
     getServerSession,
+    getAllYouTubeMembersQuery,
     getAllMembersQuery,
+    getYouTubeChannelQuery,
     updateMemberMessageCommand,
   };
 }

@@ -1,8 +1,6 @@
-import { GetYouTubeChannelQuery } from '@/features/auth/get-youtube-channel-query';
-import { GetAllYouTubeMembersQuery } from '@/features/view-members';
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { initializeFirebaseAdminApp } from '@/shared/firebase';
+import { createServiceProvider } from '@/app/create-service-provider';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -18,8 +16,11 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, account }) {
+      const { getYouTubeChannelQuery, getAllYouTubeMembersQuery } =
+        createServiceProvider();
+
       if (account?.access_token) {
-        const youTubeChannel = await new GetYouTubeChannelQuery(fetch).execute(
+        const youTubeChannel = await getYouTubeChannelQuery.execute(
           account.access_token
         );
 
@@ -27,9 +28,7 @@ export const authOptions: AuthOptions = {
       }
 
       if (token.channelId) {
-        const allYouTubeMembers = await new GetAllYouTubeMembersQuery(
-          initializeFirebaseAdminApp()
-        ).execute();
+        const allYouTubeMembers = await getAllYouTubeMembersQuery.execute();
 
         token.isMember = allYouTubeMembers.some(
           (m) => m.channelId === token.channelId
