@@ -2,7 +2,7 @@ import { Layout } from '@/widgets/layout';
 import Link from 'next/link';
 import { MdArrowBackIos } from 'react-icons/md';
 
-const WEBSITE_URL = 'https://members.seandodson.com';
+const WEBSITE_URL = 'https://singletonsean.com';
 
 export default function Privacy() {
   return (
@@ -135,6 +135,7 @@ export default function Privacy() {
               <a href={WEBSITE_URL} className="link">
                 {WEBSITE_URL}
               </a>
+              .
             </p>
           </section>
         </div>

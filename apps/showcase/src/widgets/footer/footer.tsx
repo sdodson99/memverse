@@ -39,7 +39,7 @@ export function Footer() {
         </div>
       </section>
       <section className="bg-black p-4 text-center text-sm">
-        Copyright © {new Date().getFullYear()} Sean Dodson. All rights
+        Copyright © {new Date().getFullYear()} SingletonSean. All rights
         reserved.
       </section>
     </footer>
