@@ -24,7 +24,10 @@ export function MembersApplicationBootstrapper() {
       return;
     }
 
-    const application = new MembersApplication(initialMembersRef.current);
+    const application = new MembersApplication(
+      initialMembersRef.current,
+      mountElementRef.current
+    );
 
     mountElement.appendChild(application.view);
     application.run();
@@ -46,13 +49,7 @@ export function MembersApplicationBootstrapper() {
 
   return (
     <div
-      className={classNames(
-        {
-          // Push footer to bottom while full-screen application still loading.
-          ['min-h-screen']: !initialized,
-        },
-        'bg-primary'
-      )}
+      className={classNames('h-screen', 'bg-primary')}
       ref={mountElementRef}
     />
   );

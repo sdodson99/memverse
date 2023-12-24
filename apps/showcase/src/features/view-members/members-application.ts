@@ -8,12 +8,10 @@ export class MembersApplication {
   private memberContainers: MemberContainer[];
   private logoSprite: ShowcaseBackgroundLogoSprite;
 
-  constructor(members: Member[]) {
+  constructor(members: Member[], mountElement: HTMLElement) {
     this.application = new Application({
       backgroundAlpha: 0,
-      resizeTo: window,
-      height: window.innerHeight,
-      width: window.innerWidth,
+      resizeTo: mountElement ?? window,
     });
     this.application.stage.sortableChildren = true;
 
