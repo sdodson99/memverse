@@ -1,7 +1,7 @@
-export function IsProductionClient() {
+export function isProductionClient() {
   return process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
 }
 
-export function IsProductionServer() {
+export function isProductionServer() {
   return process.env.VERCEL_ENV === 'production';
 }

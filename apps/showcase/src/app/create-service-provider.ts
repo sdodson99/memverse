@@ -16,7 +16,7 @@ import { getMockData } from '@/mocks';
 import { UpdateMemberMessageCommand } from '@/features/update-member-message/update-member-message-command';
 import { getServerSession } from '@/features/auth/get-server-session';
 import { mockGetServerSession } from '@/features/auth/mock-get-server-session';
-import { IsProductionServer } from '@/shared/configuration';
+import { isProductionServer } from '@/shared/configuration';
 import { GetYouTubeChannelQuery } from '@/features/auth/get-youtube-channel-query';
 
 type ServiceProviderOptions = {
@@ -60,7 +60,7 @@ function normalize(options: ServiceProviderOptions) {
     ...options,
   };
 
-  if (IsProductionServer()) {
+  if (isProductionServer()) {
     normalizedOptions.mock = undefined;
     normalizedOptions.mockChannelId = undefined;
   }
@@ -72,7 +72,6 @@ function createFirebaseAdminApp({ mock }: ServiceProviderOptions) {
   if (mock) {
     const { firebaseDatabase } = getMockData(mock);
 
-    // TBD: Could wrap Firebase completely instead of casting.
     return new MockFirebaseAdminApp(
       firebaseDatabase
     ) as unknown as firebase.app.App;

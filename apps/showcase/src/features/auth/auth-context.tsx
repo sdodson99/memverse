@@ -3,7 +3,6 @@
 import { useCurrentMock } from '@/shared/mock';
 import { Session } from 'next-auth';
 import { SessionProvider, signIn, signOut, useSession } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
 import { PropsWithChildren, createContext, useContext, useState } from 'react';
 
 type AuthContextValue = {

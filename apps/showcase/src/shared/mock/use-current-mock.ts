@@ -1,11 +1,11 @@
 import { useSearchParams } from 'next/navigation';
-import { IsProductionClient } from '../configuration';
+import { isProductionClient } from '../configuration';
 
 export function useCurrentMock() {
   const searchParams = useSearchParams();
 
   // Disable mocking in production.
-  if (IsProductionClient()) {
+  if (isProductionClient()) {
     return {
       mock: undefined,
       mockChannelId: undefined,
