@@ -23,7 +23,7 @@ export function SignInButton({
 
     onClick?.(e);
 
-    await signIn('google');
+    await signIn();
   }
 
   return (
