@@ -1,6 +1,20 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { createServiceProvider } from '@/app/create-service-provider';
+import { DateTime } from 'luxon';
+
+const IS_MEMBER_FLAG_EXPIRATION_HOURS = 24;
+
+function isMemberFlagExpired(isMemberRefreshedAt?: number) {
+  if (!isMemberRefreshedAt) {
+    return true;
+  }
+
+  return (
+    DateTime.fromMillis(isMemberRefreshedAt).diffNow('hours').hours >
+    IS_MEMBER_FLAG_EXPIRATION_HOURS
+  );
+}
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -27,12 +41,13 @@ export const authOptions: AuthOptions = {
         token.channelId = youTubeChannel?.id;
       }
 
-      if (token.channelId) {
+      if (token.channelId && isMemberFlagExpired(token.isMemberRefreshedAt)) {
         const allYouTubeMembers = await getAllYouTubeMembersQuery.execute();
 
         token.isMember = allYouTubeMembers.some(
           (m) => m.channelId === token.channelId
         );
+        token.isMemberRefreshedAt = DateTime.now().toMillis();
       }
 
       return token;

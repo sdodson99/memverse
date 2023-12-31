@@ -11,5 +11,6 @@ declare module 'next-auth/jwt' {
   interface JWT {
     channelId?: string;
     isMember?: boolean;
+    isMemberRefreshedAt?: number;
   }
 }
