@@ -1,7 +1,7 @@
 'use client';
 
 import { useMembersContext } from '@/entities/member';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { MembersApplication } from './members-application';
 import classNames from 'classnames';
 
@@ -11,8 +11,6 @@ export function MembersApplicationBootstrapper() {
     addUpdateMemberMessageListener,
     removeUpdateMemberMessageListener,
   } = useMembersContext();
-
-  const [initialized, setInitialized] = useState(false);
 
   const mountElementRef = useRef<HTMLDivElement>(null);
   const initialMembersRef = useRef(members);
@@ -33,8 +31,6 @@ export function MembersApplicationBootstrapper() {
     application.run();
 
     addUpdateMemberMessageListener(application.updateMemberMessage);
-
-    setInitialized(true);
 
     return () => {
       mountElement.removeChild(application.view);
