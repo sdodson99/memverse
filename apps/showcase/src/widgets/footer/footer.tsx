@@ -26,6 +26,13 @@ export function Footer() {
               <MdPrivacyTip />
               <span className="ml-2">Privacy</span>
             </Link>
+            <Link
+              className="mt-4 flex items-center justify-center hover:underline sm:justify-start"
+              href="about"
+            >
+              <MdPrivacyTip />
+              <span className="ml-2">About</span>
+            </Link>
             <a
               className="mt-4 flex items-center justify-center hover:underline sm:justify-start"
               href={YOUTUBE_CHANNEL_LINK}

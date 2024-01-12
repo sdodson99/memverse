@@ -1,18 +1,17 @@
 import { Layout } from '@/widgets/layout';
-import Link from 'next/link';
-import { MdArrowBackIos } from 'react-icons/md';
+import Image from 'next/image';
 
-const WEBSITE_URL = 'https://singletonsean.com';
+const WEBSITE_URL = 'https://www.singletonsean.com';
 
 export default function Privacy() {
   return (
     <Layout>
       <div className="bg-primary flex-1 text-white">
         <div className="content-container py-12">
-          <Link href="/" className="link flex items-center text-sm ">
-            <MdArrowBackIos />
-            <span className="ml-2">Back to Showcase</span>
-          </Link>
+          <div className="flex items-center">
+            <Image src="/logo-dark.png" alt="" width="50" height="50" />
+            <div className="ml-4">SingletonSean Members Showcase</div>
+          </div>
           <h1 className="mt-12 text-4xl font-bold">Privacy Policy</h1>
           <section className="mt-12">
             <h2 className="text-2xl font-bold">Introduction</h2>

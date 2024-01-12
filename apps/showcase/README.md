@@ -2,7 +2,7 @@
 
 An animated showcase of [SingletonSean](https://www.youtube.com/channel/UC7X9mQ_XtTYWzr9Tf_NYcIg) YouTube Members.
 
-Website: https://singletonsean.com
+Website: https://www.singletonsean.com
 
 ## Technologies
 
